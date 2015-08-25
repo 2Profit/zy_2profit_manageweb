@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="zy_2profit_manageweb">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="zy_vote.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zy_vote/zy_vote">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zy_org.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zy_org/zy_org">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zy_personal.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zy_personal/zy_personal">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zy_base.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zy_base/zy_base">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zy_proposal.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zy_proposal/zy_proposal">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zy_broker.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zy_broker/zy_broker">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zy_common.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zy_common/zy_common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="zy_member.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/zy_member/zy_member">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="zy_2profit_manageweb"/>
+        <property name="java-output-path" value="/zy_2profit_manageweb/build/classes"/>
+    </wb-module>
+</project-modules>

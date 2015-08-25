@@ -1,0 +1,302 @@
+﻿body { min-width: 1000px; padding-top: 61px; background-color: #fff; }
+
+
+.p20 { padding: 20px; }
+.plrb20 { padding:10px 20px 20px 20px; }
+
+.def_padding { padding: 10px 20px 20px 20px; }
+
+.ml10 { margin-left: 10px; }
+.ml40 { margin-left: 40px; }
+.ml80 { margin-left: 80px; }
+
+.mt10 { margin-top: 10px; }
+.mt20 { margin-top: 20px; }
+
+.bgfff { background-color: #fff; -webkit-box-shadow: 0px 2px 4px rgba(0,0,0,0.1); -moz-box-shadow: 0px 2px 4px rgba(0,0,0,0.1); box-shadow: 0px 2px 4px rgba(0,0,0,0.1); }
+
+.c666 { color:#666; }
+.c999 { color:#999; }
+.cddd { color:#ddd; }
+.cGreen { color: #1cb177; }
+.cRed { color: #f00; }
+
+
+.tc { text-align: center; }
+
+
+.bbd { border-bottom:1px dashed #ddd; }
+/* 定义链接 */
+a.link { text-decoration: none; border-radius: 4px; }
+    a.link.green { color: #40BB8A; }
+
+    a.link.red { color: #c9394a; }
+
+    a.link.blue { color: #adceeb; }
+
+    a.link.orange { color: #f60; }
+
+    a.link.gray { color: #ccc; }
+    a.link:hover { text-decoration:underline; }
+
+/* 定义按钮 */
+a.abtn { color: #fff !important; text-decoration: none; border-radius: 4px; }
+    a.abtn.green { background-color: #40BB8A; }
+        a.abtn.green:hover { background-color: #1cb177; }
+
+    a.abtn.red { background-color: #c9394a; }
+        a.abtn.red:hover { background-color: #cc0000; }
+
+    a.abtn.blue { background-color: #3bb4f2; }
+        a.abtn.blue:hover { background-color: #359fd6; }
+
+    a.abtn.orange { background-color: #f60; }
+        a.abtn.orange:hover { background-color: #e45d03; }
+
+    a.abtn.gray { background-color: #ccc; }
+        a.abtn.gray:hover { background-color: #bfbfbf; }
+
+.Jg_header { position: fixed; top: 0; left: 0; width: 100%; height: 60px; border-bottom: 1px solid #ddd; background-color: #fff; z-index: 999; }
+    .Jg_header .h_logo { float: left; padding-left: 20px; line-height: 60px; font-size: 24px; color: #666; }
+
+    .Jg_header .h_toggle { float: left; margin-left: 20px; height: 60px; line-height: 60px; border: 1px solid #f4f4f4; border-top: 0; border-bottom: 0; }
+        .Jg_header .h_toggle a { padding: 0 20px; font-size: 22px; color: #666; }
+            .Jg_header .h_toggle a:hover { color: #1cb177; }
+
+    .Jg_header .h_info { float: right; padding: 0 20px; line-height: 60px; font-size: 14px; color: #999; }
+        .Jg_header .h_info a { margin-left: 10px; color: #999; }
+
+
+.Jg_main { position: relative; padding-left: 240px; min-height: 800px; background-image: url(../images/dot_ddd.png); background-position-x: 239px; background-repeat: repeat-y; }
+
+    .Jg_main.mini { padding-left: 50px; background-position-x: 49px; }
+
+/* #1cb177 #3bb4f2*/
+/*
+.Jg_menu { position: fixed; left: 0; top: 65px; width: 240px; }
+    .Jg_menu .m_item { border-bottom: 1px solid #ddd; height: 50px; overflow: hidden; }
+        .Jg_menu .m_item.active { height: auto; overflow: visible; }
+            .Jg_menu .m_item.active .i_txt a { color: #1cb177; }
+
+        .Jg_menu .m_item .i_txt { background: url(../images/down_bg.png) no-repeat 210px 24px; }
+            .Jg_menu .m_item .i_txt a { display: block; padding-left: 30px; height: 50px; line-height: 50px; color: #666; }
+                .Jg_menu .m_item .i_txt a i { font-size: 28px; margin-right: 20px; vertical-align: middle; }
+                .Jg_menu .m_item .i_txt a:hover { color: #1cb177; }
+        .Jg_menu .m_item .i_child { }
+            .Jg_menu .m_item .i_child .c_li { padding-left: 30px; border-top: 1px solid #ddd; border-bottom: 1px solid #fff; }
+                .Jg_menu .m_item .i_child .c_li a { padding-left: 20px; display: block; height: 48px; line-height: 48px; color: #666; }
+                    .Jg_menu .m_item .i_child .c_li a i { font-size: 22px; margin-right: 10px; vertical-align: middle; }
+                    .Jg_menu .m_item .i_child .c_li a:hover { color: #1cb177; }
+*/
+.Jg_menu { position: fixed; left: 0; top: 61px; width: 240px; font-size: 14px; }
+    .Jg_menu .m_item { position: relative; width: 100%; float: left; border-bottom: 1px solid #ddd; height: 50px; overflow: hidden; }
+        .Jg_menu .m_item.active { height: auto; overflow: visible; }
+            .Jg_menu .m_item.active .i_txt a { color: #fff; }
+            .Jg_menu .m_item.active .i_child .c_li a { color: #666; }
+            .Jg_menu .m_item.active .i_txt { background: url(../images/down_fff_bg.png) no-repeat 210px 24px; background-color: #1cb177; }
+        .Jg_menu .m_item .i_txt { background: url(../images/down_bg.png) no-repeat 210px 24px; }
+        .Jg_menu .m_item .i_token { position: absolute; right: -32px; top: 9px; width: 0; height: 0; overflow: hidden; border: 16px solid transparent; border-left: 16px solid #1cb177; }
+
+        .Jg_menu .m_item .i_txt a { display: block; padding-left: 30px; height: 50px; line-height: 50px; color: #666; }
+            .Jg_menu .m_item .i_txt a i { font-size: 28px; margin-right: 20px; vertical-align: middle; }
+        /*.Jg_menu .m_item .i_txt a:hover { color: #1cb177; }*/
+
+        .Jg_menu .m_item .i_child { height: auto; overflow: visible; }
+            .Jg_menu .m_item .i_child .c_li { padding-left: 30px; }
+                .Jg_menu .m_item .i_child .c_li a { padding-left: 20px; display: block; height: 48px; line-height: 48px; color: #666; }
+                    .Jg_menu .m_item .i_child .c_li a i { font-size: 22px; margin-right: 10px; vertical-align: middle; }
+/*.Jg_menu .m_item .i_child .c_li a:hover { color: #1cb177; }*/
+
+
+
+.Jg_main.mini .Jg_menu { width: 50px; }
+    .Jg_main.mini .Jg_menu .m_item { height: 50px; }
+        .Jg_main.mini .Jg_menu .m_item .i_child { height: 0; overflow: hidden; }
+        .Jg_main.mini .Jg_menu .m_item .i_txt a { padding-left: 10px; }
+            .Jg_main.mini .Jg_menu .m_item .i_txt a span { display: none; }
+
+
+
+
+.Jg_footer { border-top: 1px solid #ddd; height: 30px; line-height: 30px; text-align: center; color: #999; font-size: 14px; }
+
+
+.Jg_content { padding: 6px 20px 20px 20px; background-color: #f4f4f4;  }
+
+
+
+.Jg_toolBar:after { display: block; clear: both; content: ""; visibility: hidden; height: 0; }
+.Jg_toolBar { zoom: 1; }
+
+    .Jg_toolBar .t_label { float: left; padding: 0 10px; margin-top: 10px; height: 34px; line-height: 34px; color: #333; }
+        .Jg_toolBar .t_label.not { margin-top: 0; }
+        .Jg_toolBar .t_label.error { border-color: #f00; }
+
+    .Jg_toolBar .t_text { float: left; padding: 0 10px; margin-top: 10px; height: 32px; border: 1px solid #ddd; color: #333; }
+
+        .Jg_toolBar .t_text.w200 { width: 200px; }
+            .Jg_toolBar .t_text.w200 input { width: 200px; }
+        .Jg_toolBar .t_text.w300 { width: 300px; }
+            .Jg_toolBar .t_text.w300 input { width: 300px; }
+        .Jg_toolBar .t_text.w400 { width: 400px; }
+            .Jg_toolBar .t_text.w400 input { width: 400px; }
+        .Jg_toolBar .t_text.w500 { width: 500px; }
+            .Jg_toolBar .t_text.w500 input { width: 500px; }
+
+        .Jg_toolBar .t_text.not { margin-top: 0; }
+        .Jg_toolBar .t_text.error { border-color: #f00; }
+        .Jg_toolBar .t_text input { position: relative; display: block; top: 5px; border: none; outline: none; background-color: #fff; }
+
+    .Jg_toolBar .t_select { float: left; padding: 0 10px; margin-top: 10px; height: 32px; border: 1px solid #ddd; color: #333; }
+        .Jg_toolBar .t_select.not { margin-top: 0; }
+        .Jg_toolBar .t_select.error { border-color: #f00; }
+        .Jg_toolBar .t_select select { position: relative; display: block; top: 4px; border: 0; outline: none; background-color: #fff; }
+
+    .Jg_toolBar .t_btn { float: left; padding: 0 20px; margin-top: 10px; height: 34px; line-height: 34px; color: #333; background-color: #1cb177; }
+        .Jg_toolBar .t_btn.not { margin-top: 0; }
+        .Jg_toolBar .t_btn:hover { background-color: #1ba26d; }
+        .Jg_toolBar .t_btn.orange { background-color: #f60; }
+            .Jg_toolBar .t_btn.orange:hover { background-color: #e45d03; }
+        .Jg_toolBar .t_btn.gray { background-color: #d3d1d1; }
+            .Jg_toolBar .t_btn.gray:hover { background-color: #adadad; }
+        .Jg_toolBar .t_btn.red { background-color: #dd514c; }
+            .Jg_toolBar .t_btn.red:hover { background-color: #c44641; }
+        .Jg_toolBar .t_btn.blue { background-color: #3bb4f2; }
+            .Jg_toolBar .t_btn.blue:hover { background-color: #359fd6; }
+
+        .Jg_toolBar .t_btn a { display: block; height: 100%; color: #fff; }
+
+    .Jg_toolBar .t_check { float: left; padding: 0 10px; margin-top: 10px; height: 34px; line-height: 34px; color: #333; }
+        .Jg_toolBar .t_check.not { margin-top: 0; }
+        .Jg_toolBar .t_check label { cursor: pointer; }
+
+
+.Jg_titleBar { height: 40px; background:url(../images/dot_ddd.png) 0 bottom repeat-x;  }
+    .Jg_titleBar .t_txt { float: left; padding:0 10px; height: 38px; line-height: 38px; font-size: 22px; color: #333; border-bottom:2px solid #1cb177; }
+    .Jg_titleBar .t_tips { position: relative; float: left; top: 14px; color: #666; font-size: 14px; margin-left: 20px; }
+    .Jg_titleBar .t_more { float: right; padding: 0 10px; height: 40px; line-height: 40px; }
+        .Jg_titleBar .t_more a { font-size: 14px; color: #666; }
+
+.Jg_table { }
+    .Jg_table table { width: 100%; }
+        .Jg_table table thead { }
+            .Jg_table table thead td { line-height: 40px; border-bottom: 2px solid #1cb177; color: #333; background-color: #fff; }
+        .Jg_table table tbody tr.odd { background-color: #f9f9f9; }
+        .Jg_table table tbody tr.hover { background-color: #94dec1; }
+            .Jg_table table tbody tr.hover td { color: #fff; }
+            .Jg_table table tbody tr.hover a { color: #fff; }
+        .Jg_table table tbody tr td { line-height: 40px; color: #535353; border-bottom: 1px solid #ddd; font-size: 14px; }
+
+            .Jg_table table tbody tr td a { color: #3bb4f2; text-decoration: underline; }
+                .Jg_table table tbody tr td a.btn { display: inline-block; padding: 0 10px; line-height: 24px; color: #fff; text-decoration: none; background-color: #1cb177; }
+                    .Jg_table table tbody tr td a.btn:hover { background-color: #1ba26d; }
+                    .Jg_table table tbody tr td a.btn.orange { background-color: #f60; }
+                        .Jg_table table tbody tr td a.btn.orange:hover { background-color: #e45d03; }
+                    .Jg_table table tbody tr td a.btn.gray { background-color: #ddd; }
+                        .Jg_table table tbody tr td a.btn.gray:hover { background-color: #adadad; }
+                    .Jg_table table tbody tr td a.btn.red { background-color: #dd514c; }
+                        .Jg_table table tbody tr td a.btn.red:hover { background-color: #c44641; }
+                    .Jg_table table tbody tr td a.btn.blue { background-color: #3bb4f2; }
+                        .Jg_table table tbody tr td a.btn.blue:hover { background-color: #359fd6; }
+
+
+
+
+.Jg_btnGrounp { text-align: center; }
+    .Jg_btnGrounp .b_btn { display: inline-block; padding: 0 40px; margin: 0 10px; height: 40px; line-height: 40px; color: #fff; font-size: 18px; background-color: #1cb177; }
+        .Jg_btnGrounp .b_btn:hover { background-color: #1ba26d; }
+        .Jg_btnGrounp .b_btn.orange { background-color: #f60; }
+            .Jg_btnGrounp .b_btn.orange:hover { background-color: #e45d03; }
+        .Jg_btnGrounp .b_btn.gray { background-color: #d3d1d1; }
+            .Jg_btnGrounp .b_btn.gray:hover { background-color: #adadad; }
+        .Jg_btnGrounp .b_btn.red { background-color: #dd514c; }
+            .Jg_btnGrounp .b_btn.red:hover { background-color: #c44641; }
+        .Jg_btnGrounp .b_btn.blue { background-color: #3bb4f2; }
+            .Jg_btnGrounp .b_btn.blue:hover { background-color: #359fd6; }
+
+.Jg_screening { }
+    .Jg_screening table { }
+        .Jg_screening table td { line-height: 30px; }
+            .Jg_screening table td.s_title { text-align: right; }
+            .Jg_screening table td.s_content { }
+                .Jg_screening table td.s_content a { display: inline-block; padding: 4px 16px; margin-right: 10px; height: 20px; line-height: 20px; font-size: 14px; color: #666; }
+                    .Jg_screening table td.s_content a.active { background-color: #1cb177; color: #fff; }
+
+.Jg_colorBoxArea { }
+    .Jg_colorBoxArea:after { display: block; clear: both; content: ""; visibility: hidden; height: 0; }
+.Jg_colorBoxArea { zoom: 1; }
+    .Jg_colorBoxArea .c_box { float: left; position: relative; margin: 0 20px 20px 0; width: 230px; height: 126px; overflow: hidden; /*-webkit-box-shadow: 1px 1px 1px 0 rgba(0,0,0,.07),1px 2px 5px 0 rgba(0,0,0,.06); box-shadow: 1px 1px 1px 0 rgba(0,0,0,.07),1px 2px 5px 0 rgba(0,0,0,.06);*/ }
+        .Jg_colorBoxArea .c_box.active { border-color: #1cb177; }
+        /*
+            .Jg_colorBoxArea .c_box.active .b_title { color: #1cb177; }
+                .Jg_colorBoxArea .c_box.active .b_title .t_right a { color: #1cb177; }
+            .Jg_colorBoxArea .c_box.active .b_number { color: #1cb177; }
+            .Jg_colorBoxArea .c_box.active .b_icon i { color: #1cb177; }
+        */
+        .Jg_colorBoxArea .c_box .b_title { padding: 10px; font-size: 30px; color: #fff; }
+            .Jg_colorBoxArea .c_box .b_title .t_left { float: left; }
+            .Jg_colorBoxArea .c_box .b_title .t_right { float: right; padding-top: 8px; font-size: 16px; }
+                .Jg_colorBoxArea .c_box .b_title .t_right a { color: #fff; vertical-align: middle; }
+                .Jg_colorBoxArea .c_box .b_title .t_right i { margin-right: 8px; vertical-align: middle; }
+
+        .Jg_colorBoxArea .c_box .b_icon { position: absolute; width: 140px; height: 140px; left: 10px; top: 54px; }
+        .Jg_colorBoxArea .c_box .b_number { position: absolute; right: 10px; bottom: 0px; font-size: 50px; color: #fff; }
+
+
+        .Jg_colorBoxArea .c_box .b_icon i { font-size: 70px; vertical-align: top; color: #fff; }
+
+        .Jg_colorBoxArea .c_box.green { border: 1px solid #81c784; }
+        .Jg_colorBoxArea .c_box.orange { border: 1px solid #ffb74d; }
+        .Jg_colorBoxArea .c_box.red { border: 1px solid #fdb1b1; }
+        .Jg_colorBoxArea .c_box.blue { border: 1px solid #adceeb; }
+        .Jg_colorBoxArea .c_box.pink { border: 1px solid #dac8ee; }
+
+
+
+
+        .Jg_colorBoxArea .c_box.green .b_icon i { color: #9cdb9f; }
+        .Jg_colorBoxArea .c_box.green .b_title { color: #9cdb9f; }
+        .Jg_colorBoxArea .c_box.green .b_number { color: #9cdb9f; }
+        .Jg_colorBoxArea .c_box.green .b_title .t_right a {color:#9cdb9f; }
+
+        .Jg_colorBoxArea .c_box.orange .b_icon i { color: #ffd18e; }
+        .Jg_colorBoxArea .c_box.orange .b_title { color: #ffd18e; }
+        .Jg_colorBoxArea .c_box.orange .b_number { color: #ffd18e; }
+        .Jg_colorBoxArea .c_box.orange .b_title .t_right a {color:#ffd18e; }
+
+        .Jg_colorBoxArea .c_box.red .b_icon i { color: #fdb1b1; }
+        .Jg_colorBoxArea .c_box.red .b_title { color: #fdb1b1; }
+        .Jg_colorBoxArea .c_box.red .b_number { color: #fdb1b1; }
+        .Jg_colorBoxArea .c_box.red .b_title .t_right a {color:#fdb1b1; }
+
+        .Jg_colorBoxArea .c_box.blue .b_icon i { color: #adceeb; }
+        .Jg_colorBoxArea .c_box.blue .b_title { color: #adceeb; }
+        .Jg_colorBoxArea .c_box.blue .b_number { color: #adceeb; }
+        .Jg_colorBoxArea .c_box.blue .b_title .t_right a {color:#adceeb; }
+
+        .Jg_colorBoxArea .c_box.pink .b_icon i { color: #dac8ee; }
+        .Jg_colorBoxArea .c_box.pink .b_title { color: #dac8ee; }
+        .Jg_colorBoxArea .c_box.pink .b_number { color: #dac8ee; }
+        .Jg_colorBoxArea .c_box.pink .b_title .t_right a {color:#dac8ee; }
+
+
+
+.Jg_grayTable { }
+    .Jg_grayTable table { border-top: 1px solid #ddd; border-right: 1px solid #ddd; }
+        .Jg_grayTable table thead { }
+       
+            .Jg_grayTable table thead td { line-height: 36px; background-color: #f4f4f4; border-left: 1px solid #ddd; border-bottom: 1px solid #ddd; font-size:14px; }
+
+        .Jg_grayTable table tbody { }
+            .Jg_grayTable table tbody td { line-height: 36px; border-left: 1px solid #ddd; border-bottom: 1px solid #ddd; font-size: 14px; color: #666; }
+                .Jg_grayTable table tbody td .abtn { padding: 4px 12px; margin: 0 6px; }
+                    .Jg_grayTable table tbody td .abtn i { margin-right: 8px; }
+                .Jg_grayTable table tbody td .miniBtn { color:#1cb177; }
+                    .Jg_grayTable table tbody td .miniBtn:hover { text-decoration:underline; }
+            .Jg_grayTable table tbody .g_day { line-height: 30px; font-size: 24px; color: #1cb177; }
+
+
+.Jg_form { }
+    .Jg_form table { }
+        .Jg_form table td { line-height: 50px; color: #333; }
+        .Jg_form table .f_title { text-align: right; font-size: 18px; }

@@ -1,0 +1,6 @@
+﻿/* 弹窗 */
+* { margin:0; padding:0; }
+.J_dialog { position: fixed; background-color: #fff; border: 1px solid #ddd; -webkit-box-shadow: 0px 2px 4px rgba(0,0,0,0.1); -moz-box-shadow: 0px 2px 4px rgba(0,0,0,0.1); box-shadow: 0px 2px 4px rgba(0,0,0,0.1); border-radius: 3px; }
+.J_tab { height:40px; }
+    .J_tab a { float:left; display:block; margin-left:-1px; width:100px; height:40px; line-height:40px;border:1px solid #ddd; text-align:center; color:#666; text-decoration:none; }
+        .J_tab a.active { background-color:#dff1d9; font-weight:bold; }
