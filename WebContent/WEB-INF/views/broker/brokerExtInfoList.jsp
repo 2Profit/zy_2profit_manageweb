@@ -306,11 +306,7 @@ function updateDeleteFlag(ids,deleteFlag){
 </form>
  <script type="text/javascript">
 	function toAdd(){
-<<<<<<< HEAD
 		var _url = "${ctx }/boss/brokerExtInfo/edit";
-=======
-		var _url = "${ctx }/product/courseType/edit";
->>>>>>> c0eeadf72e9b467cad33c553740bcfc2fc17e95e
         var _form = $("#form");
 		_form.attr("action",_url);
 		_form.submit();
