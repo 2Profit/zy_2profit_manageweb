@@ -136,12 +136,7 @@ function updateDeleteFlag(ids,deleteFlag){
 			<tr>
 				<td><input type="checkbox" name="ids" value="${u.id }"/></td>			
 			   <td>
-<<<<<<< HEAD
-			      <a href="${ctx }/boss/brokerExtInfo/edit?id=${u.id}">编辑</a>
-=======
-			      <a href="${ctx }/boss/brokerInfo/edit?id=${u.id}">编辑</a>
->>>>>>> c0eeadf72e9b467cad33c553740bcfc2fc17e95e
-			      <c:choose>
+			      <a href="${ctx }/boss/brokerExtInfo/edit?id=${u.id}">编辑</a>			      <c:choose>
 			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
 			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
 			      </c:choose>
