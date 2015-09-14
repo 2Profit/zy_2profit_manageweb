@@ -3,13 +3,13 @@
 	<name>zy_2profit_manageweb</name>
 	<comment></comment>
 	<projects>
+		<project>zy_common</project>
 		<project>zy_vote</project>
 		<project>zy_org</project>
 		<project>zy_personal</project>
 		<project>zy_base</project>
 		<project>zy_proposal</project>
 		<project>zy_broker</project>
-		<project>zy_common</project>
 		<project>zy_member</project>
 	</projects>
 	<buildSpec>
