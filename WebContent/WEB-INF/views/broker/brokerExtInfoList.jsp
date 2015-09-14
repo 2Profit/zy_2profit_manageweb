@@ -8,6 +8,7 @@
 <head>
 <title>经纪商列表</title>
 <%@ include file="../common/common.jsp"%>
+<script type="text/javascript" src="${ctx }/static/js/manage-web-common.js"/></script>
 <script type="text/javascript">
 $(function(){
 	$('#fresh_button').bind("click",function(){
@@ -135,8 +136,7 @@ function updateDeleteFlag(ids,deleteFlag){
 			<tr>
 				<td><input type="checkbox" name="ids" value="${u.id }"/></td>			
 			   <td>
-			      <a href="${ctx }/boss/brokerInfo/edit?id=${u.id}">编辑</a>
-			      <c:choose>
+			      <a href="${ctx }/boss/brokerExtInfo/edit?id=${u.id}">编辑</a>			      <c:choose>
 			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
 			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
 			      </c:choose>
@@ -301,7 +301,7 @@ function updateDeleteFlag(ids,deleteFlag){
 </form>
  <script type="text/javascript">
 	function toAdd(){
-		var _url = "${ctx }/product/courseType/edit";
+		var _url = "${ctx }/boss/brokerExtInfo/edit";
         var _form = $("#form");
 		_form.attr("action",_url);
 		_form.submit();

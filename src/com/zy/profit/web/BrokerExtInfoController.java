@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zy.broker.dto.BrokerExtInfoDto;
 import com.zy.broker.entity.BrokerExtInfo;
 import com.zy.broker.entity.BrokerInfo;
 import com.zy.broker.service.BrokerExtInfoService;
@@ -19,8 +21,14 @@ import com.zy.common.entity.ResultDto;
 import com.zy.common.util.UserDto;
 import com.zy.common.util.UserSessionUtil;
 
+/**
+ * 
+ * @author Pingan
+ * @since  2015年9月1日
+ */
+
 @Controller
-@RequestMapping("/boss/brokerInfo")
+@RequestMapping("/boss/brokerExtInfo")
 public class BrokerExtInfoController {
 
 	@Autowired
@@ -35,6 +43,20 @@ public class BrokerExtInfoController {
 		model.addAttribute("queryDto",queryDto);
 		
 		return "broker/brokerExtInfoList";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/deleteFlag")
+	public ResultDto<BrokerExtInfo> deleteFlag(@RequestBody BrokerExtInfoDto queryDto){
+		ResultDto<BrokerExtInfo> result = new ResultDto<BrokerExtInfo>();
+		try {
+			brokerExtInfoService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
+			result.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setSuccess(false);
+		}
+		return result;
 	}
 	
 	@RequestMapping("/edit")
