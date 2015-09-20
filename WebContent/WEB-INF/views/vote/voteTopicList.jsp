@@ -9,6 +9,7 @@
 <title>投票主题列表</title>
 <%@ include file="../common/common.jsp"%>
 <script type="text/javascript" src="${ctx }/static/js/manage-web-common.js"/></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$('#fresh_button').bind("click",function(){
@@ -18,21 +19,6 @@
 			$("#isDisplay").val("");
 			$("input[name='startDateBegin']").val("");
 			$("input[name='startDateEnd']").val("");
-		});
-		
-		$("input[name='startDateBegin']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
-		});
-		$("input[name='startDateEnd']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
 		});
 	});
 
@@ -59,38 +45,50 @@ function updateDeleteFlag(ids,deleteFlag){
 <form action="" name="form" id="form" method="post" theme="simple">
 	<table class="table table-bordered table-condensed">
 		<tr>
-			<th class="td_right">ID：</th>
-			<td>
-				<input type="text" name="id" value="${queryDto.id }">
-			</td>
-			<th class="td_right">题目内容：</th>
+			<th class="td_right">投票题目：</th>
 			<td>
 				<input type="text" name="titleContent" value="${queryDto.titleContent }">
 			</td>
+			<th class="td_right">显示模式：</th>
+			<td>
+				<select id="displayType" name="displayType">
+					<option value="">--请选择--</option>
+					<option value="0" <c:if test="${'0' == queryDto.displayType }">selected</c:if>>百分比</option>
+					<option value="1" <c:if test="${'1' == queryDto.displayType }">selected</c:if>>实数</option>
+				</select>
+			</td>			
 		</tr>
 		<tr>
 			<th class="td_right">显示位置：</th>
 			<td>
 				<select id="displayPosition" name="displayPosition">
 					<option value="">--请选择--</option>
-					<option value="0" <c:if test="${'0' == queryDto.displayPosition }">selected</c:if>>副</option>
-					<option value="1" <c:if test="${'1' == queryDto.displayPosition }">selected</c:if>>主</option>
+					<option value="0" <c:if test="${'0' == queryDto.displayPosition }">selected</c:if>>用户中心</option>
+					<option value="1" <c:if test="${'1' == queryDto.displayPosition }">selected</c:if>>网页</option>
+					<option value="2" <c:if test="${'2' == queryDto.displayPosition }">selected</c:if>>用户中心+网页</option>
 				</select>
 			</td>
-			<th class="td_right">显示功能：</th>
+			<th class="td_right">评论功能：</th>
 			<td>
-				<select id="isDisplay" name="isDisplay">
+				<select id="isComment" name="isComment">
 					<option value="">--请选择--</option>
-					<option value="0" <c:if test="${'0' == queryDto.isDisplay }">selected</c:if>>关</option>
-					<option value="1" <c:if test="${'1' == queryDto.isDisplay }">selected</c:if>>开</option>
+					<option value="0" <c:if test="${'0' == queryDto.isComment }">selected</c:if>>关闭</option>
+					<option value="1" <c:if test="${'1' == queryDto.isComment }">selected</c:if>>开启</option>
 				</select>
 			</td>
 		</tr>
 		<tr>	
 			<th class="td_right">开始时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="startDateBegin" value="<fmt:formatDate value='${queryDto.startDateBegin}' pattern='yyyy-MM-dd'/>">到：
-				<input type="text" name="startDateEnd" value="<fmt:formatDate value='${queryDto.startDateEnd}' pattern='yyyy-MM-dd'/>">
+				从：<input type="text" name="startDateBegin" value='${queryDto.startDateBegin}' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">到：
+				<input type="text" name="startDateEnd" value='${queryDto.startDateEnd}' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+			</td>
+		</tr>
+		<tr>	
+			<th class="td_right">结束时间：</th>
+			<td colspan="3">
+				从：<input type="text" name="toDateBegin" value='${queryDto.toDateBegin}' onClick='WdatePicker();'/>到：
+				<input type="text" name="toDateEnd" value='${queryDto.toDateEnd}' onClick='WdatePicker();'/>
 			</td>
 		</tr>
 		<tr>
@@ -112,36 +110,53 @@ function updateDeleteFlag(ids,deleteFlag){
 		<thead>
 			<tr style="background-color: #dff0d8">
 				<th width="20"><input type="checkbox" id="firstCheckbox"/></th>
-				<th>ID</th>
-				<th>开始日期</th>
-				<th>投票天数</th>
 				<th>题目内容</th>
 				<th>显示位置</th>
-				<th>显示功能</th>
+				<th>显示模式</th>
+				<th>评论功能</th>
+				<th>开始日期</th>
+				<th>结束日期</th>
+				<th>发布者</th>
+				<th>提案状态</th>
 				<th nowrap="nowrap">操作</th>
 			</tr>
 		</thead>
 		<c:forEach items="${page.list }" var="u">
 			<tr >
 			   <td><input type="checkbox" name="ids" value="${u.id }"/></td>
-			   <td>&nbsp;${u.id }</td>
-			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd"/></td>
-			   <td>&nbsp;${u.lastDays }</td>
 			   <td>&nbsp;${u.titleContent }</td>
 			   <td>
 			   		<c:choose>
-			   			<c:when test="${u.displayPosition == '1' }"><font color="green">主</font></c:when>
-			   			<c:when test="${u.displayPosition == '0' }"><font color="blue">副</font></c:when>
+			   			<c:when test="${u.displayPosition == '0' }">用户中心</c:when>
+			   			<c:when test="${u.displayPosition == '1' }">网页</c:when>
+			   			<c:when test="${u.displayPosition == '2' }">用户中心+网页</c:when>
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>
 			   </td>
 			   <td>
 			   		<c:choose>
-			   			<c:when test="${u.isDisplay == '1' }"><font color="green">开</font></c:when>
-			   			<c:when test="${u.isDisplay == '0' }"><font color="red">关</font></c:when>
+			   			<c:when test="${u.displayType == '0' }">百分比</c:when>
+			   			<c:when test="${u.displayType == '1' }">实数</c:when>
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>
 			   </td>
+			   <td>
+			   		<c:choose>
+			   			<c:when test="${u.isComment}"><font color="green">开启</font></c:when>
+			   			<c:when test="${u.isComment == false}"><font color="red">关闭</font></c:when>
+			   			<c:otherwise>&nbsp;</c:otherwise>
+			   		</c:choose>
+			   </td>			   
+			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+			   <td><fmt:formatDate value="${u.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+			   <td>&nbsp;${u.createName }</td>
+			   <td>
+			   		<c:choose>
+			   			<c:when test="${u.deleteFlag == '1' }"><font color="red">删除</font></c:when>
+			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">初始</font></c:when>
+			   			<c:otherwise>&nbsp;</c:otherwise>
+			   		</c:choose>
+			   </td>			   
 			   <td>
 			      <a href="${ctx }/voteTopic/edit?id=${u.id}">编辑</a>
 			      <c:choose>

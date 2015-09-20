@@ -32,18 +32,23 @@
 	        <table class="table table-bordered table-hover">
 				<thead>
 					<tr style="background-color: #dff0d8">
-						<th>账号</th>
+						<th>交易账号</th>
+						<th>会员类型</th>
 						<th>评论内容</th>
+						<th>评论日期</th>
+						<th>评论者IP</th>
 					</tr>
 				</thead>
 				<c:forEach items="${page.list }" var="u">
 					<tr>
 					   <td>&nbsp;${u.replayer.userName }</td>
+					   <td>&nbsp;</td>
 					   <td>&nbsp;${u.replayContent }</td>
+					   <td>&nbsp;${u.createDate }</td>
+					   <td>&nbsp;${u.ipAddress }</td>
 				    </tr>
 				</c:forEach>
-				<tr><td colspan="16" style="text-align:center;"><%@ include file="../common/pager.jsp"%></td>
-				</tr>
+				<tr><td colspan="16" style="text-align:center;"><%@ include file="../common/pager.jsp"%></td></tr>
 			</table>
 	      </div>
 	      <div>

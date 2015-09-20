@@ -6,6 +6,7 @@
 <head>
 <%@ include file="../common/common.jsp"%>
 <%@ include file="../common/common_html_validator.jsp"%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/My97DatePicker/WdatePicker.js"></script>
 <title>添加投票主题</title>
 <style>
 	.td_right{text-align: right;}
@@ -18,32 +19,10 @@
 			window.location.replace("${ctx }/voteTopic/list");
 		});
 		
-		$('#displayPosition').change(function(){
-			if($(this).val()=='1'){
-				$('#remove_td').remove();
-				var html =	"<td id='remove_td' colspan='3'>"+
-							"<input type='text' name='optionContent' value='是'/></br>"+
-							"<input type='text' name='optionContent' value='否'/></br>"+
-				 			"<input type='text' name='optionContent' value='其他'/></br>"+
-				 			"</td>";
-				$('#append_tr').append(html);
-			}else if($(this).val()=='0'){
-				$('#remove_td').remove();
-		 		var html =	"<td id='remove_td' colspan='3'>"+
-		 					"<input type='text' name='optionContent'/></br>"+
-				 			"<input type='text' name='optionContent'/></br>"+
-				 			"<input type='text' name='optionContent'/></br>"+
-				 			"<input type='text' name='optionContent'/></br></td>";
-	 			$('#append_tr').append(html);
-			}
-		});
-		
-		$("input[name='startDate']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
+		$('#add_option').bind("click",function(event){
+			event.preventDefault();
+			var html =	"<input type='text' name='optionContent'/><a href='' onclik='event.preventDefault();deleteOption(this)'>删除</a></br>";
+			$('#append_td').append(html);
 		});
 		
 		$("button[name='postData_button']").bind("click",function(event){
@@ -52,8 +31,8 @@
  			if($('#startDate').val()==''){
  				$('#startDate').focus();return false;
  			}
- 			if($('#lastDays').val()==''){
- 				$('#lastDays').focus();return false;
+ 			if($('#endDate').val()==''){
+ 				$('#endDate').focus();return false;
  			}
  			if($('#titleContent').val()==''){
  				$('#titleContent').focus();return false;
@@ -61,8 +40,11 @@
  			if($('#displayPosition').val()==''){
  				$('#displayPosition').focus();return false;
  			}
- 			if($('#isDisplay').val()==''){
- 				$('#isDisplay').focus();return false;
+ 			if($('#displayType').val()==''){
+ 				$('#displayType').focus();return false;
+ 			}
+ 			if($('#isComment').val()==''){
+ 				$('#isComment').focus();return false;
  			}
  			var flagReturn = false;
 			$('input[name="optionContent"]').each(function(){
@@ -70,7 +52,6 @@
 					$(this).focus();
 					flagReturn = true;
 				}
-				
 			});
 			if(flagReturn){
 				return false;
@@ -97,6 +78,11 @@
  		});
 		
 	});
+	
+	function deleteOption(obj){
+		alert(obj);
+		$(obj).parent().remove();
+	}
 
 </script>
 </head>
@@ -126,46 +112,57 @@
 			<tr>
 				<th class="td_right">开始日期：</th>
 				<td style="text-align: left;">
-		  			<input type="text" name="startDate" data-rule="开始日期:required;startDate;"  id="startDate" 
-		  					value="<fmt:formatDate value='${voteTopic.startDate}' type='both' pattern='yyyy-MM-dd'/>"/>
+		  			<input type="text" name="startDate" data-rule="开始日期:required;startDate;"  id="startDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+		  					value="<fmt:formatDate value='${voteTopic.startDate}' type='both' pattern='yyyy-MM-dd HH:mm:ss'/>"/>
 				</td>
-				<th class="td_right">投票天数：</th>
+				<th class="td_right">结束日期：</th>
 				<td style="text-align: left;">
-		  			<input type="text" name="lastDays" data-rule="投票天数:required;lastDays;"  id="lastDays" value="${voteTopic.lastDays}"/>
+		  			<input type="text" name="endDate" data-rule="结束日期:required;endDate;"  id="endDate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+		  					value="<fmt:formatDate value='${voteTopic.endDate}' type='both' pattern='yyyy-MM-dd HH:mm:ss'/>"/>
 				</td>
 		 	</tr>
 			<tr>
 				<th class="td_right">显示位置：</th>
 				<td>
-					<%-- <input type="hidden" name="displayPosition" /> --%>
 			        <select id="displayPosition" name="displayPosition" data-rule="显示位置:required;displayPosition;">
 						<option value="">--请选择--</option>
-						<option value="0" <c:if test="${'0' == voteTopic.displayPosition }">selected</c:if>>副</option>
-						<option value="1" <c:if test="${'1' == voteTopic.displayPosition }">selected</c:if>>主</option>
+						<option value="0" <c:if test="${'0' == voteTopic.displayPosition }">selected</c:if>>用户中心</option>
+						<option value="1" <c:if test="${'1' == voteTopic.displayPosition }">selected</c:if>>网页</option>
+						<option value="2" <c:if test="${'2' == voteTopic.displayPosition }">selected</c:if>>用户中心+网页</option>
 					</select>
 				</td>
-				<th class="td_right">显示功能：</th>
+				<th class="td_right">评论功能：</th>
 				<td>
-					<select id="isDisplay" name="isDisplay" data-rule="显示功能:required;isDisplay;">
+					<select id="isComment" name="isComment" data-rule="评论功能:required;isComment;">
 						<option value="">--请选择--</option>
-						<option value="0" <c:if test="${'0' == voteTopic.isDisplay }">selected</c:if>>关</option>
-						<option value="1" <c:if test="${'1' == voteTopic.isDisplay }">selected</c:if>>开</option>
+						<option value="0" <c:if test="${'0' == voteTopic.isComment }">selected</c:if>>关闭</option>
+						<option value="1" <c:if test="${'1' == voteTopic.isComment }">selected</c:if>>开启</option>
 					</select>
 				</td>
 			</tr>
-			
+		 	<tr>
+		 		<th>显示模式：</th>
+		 		<td>
+					<select id="displayType" name="displayType" data-rule="显示模式:required;displayType;">
+						<option value="">--请选择--</option>
+						<option value="0" <c:if test="${'0' == voteTopic.displayType }">selected</c:if>>百分比</option>
+						<option value="1" <c:if test="${'1' == voteTopic.displayType }">selected</c:if>>实数</option>
+					</select>
+		 		</td>
+		 		<th></th><td></td>
+		 	</tr>
 			<tr>
 				<th>题目内容：</th>
 				<td colspan="3">
-		  			<input type="text" name="titleContent" data-rule="题目内容:required;titleContent;"  id="titleContent" value="${voteTopic.titleContent}"/>
-		   			<br>
+		  			<input type="text" name="titleContent" data-rule="题目内容:required;titleContent;"  
+		  				id="titleContent" value="${voteTopic.titleContent}"/>
 				</td>
-		 	</tr>
-		 	<tr id="append_tr">
-				<th class="td_right">选项：</th>
-				<td id="remove_td" colspan="3">
+		 	</tr>		 	
+		 	<tr>
+				<th class="td_right">选项：<a href="" id="add_option">增加选项</a></th>
+				<td id="append_td" colspan="3">
 					<c:forEach items="${voteTopic.options }" var="option">
-						<input type="text" name="optionContent" value="${option.optionContent}"/></br>
+						<input type="text" name="optionContent" value="${option.optionContent}"/><a href='' onclik="deleteOption(this)">删除</a></br>
 					</c:forEach>
 				</td>
 		 	</tr>

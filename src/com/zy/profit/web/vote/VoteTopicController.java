@@ -1,5 +1,7 @@
 package com.zy.profit.web.vote;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zy.common.entity.ResultDto;
+import com.zy.common.util.UserDto;
+import com.zy.common.util.UserSessionUtil;
 import com.zy.vote.dto.VoteTopicDto;
 import com.zy.vote.entity.VoteTopic;
 import com.zy.vote.service.VoteTopicOptionService;
@@ -48,10 +52,13 @@ public class VoteTopicController {
 	
 	@RequestMapping("/save")
 	@ResponseBody
-	public ResultDto<VoteTopic> save(VoteTopic dto){
+	public ResultDto<VoteTopic> save(VoteTopic dto,HttpServletRequest request){
 		
 		ResultDto<VoteTopic> result = new ResultDto<VoteTopic>();
 		try {
+			UserDto userDto = UserSessionUtil.getSessionUser(request.getSession());
+			if(userDto!=null)
+				dto.setCreateName(userDto.getUsername());
 			if(StringUtils.isNotBlank(dto.getId())){
 				voteTopicService.updateTopicAndOptions(dto);
 			}else{

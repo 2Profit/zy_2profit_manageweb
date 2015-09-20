@@ -9,6 +9,7 @@
 <title>投票结果列表</title>
 <%@ include file="../common/common.jsp"%>
 <script type="text/javascript" src="${ctx }/static/js/manage-web-common.js"/></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$('#fresh_button').bind("click",function(){
@@ -18,21 +19,6 @@
 			$("#isDisplay").val("");
 			$("input[name='startDateBegin']").val("");
 			$("input[name='startDateEnd']").val("");
-		});
-		
-		$("input[name='startDateBegin']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
-		});
-		$("input[name='startDateEnd']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
 		});
 		
 		$('#myPageModal').modal({
@@ -46,68 +32,83 @@
 	        }
 	    });
 		
-		$("a[name='voteResult_href']").bind("click",function(){
-			showVoteResult();
+		$('#post_button').bind('click',function(){
+			if(!confirm("是否确认进行修改操作？")){return;}
+			
+			var ids = [];
+			$('input[name="adjustNum"]').each(function(){
+				if($(this).val()!=''){
+					ids.push($(this).children().val()+'~'+$(this).val());
+				}
+			});
+			$.ajax({
+				type: "POST",
+	           	url:"${ctx }/voteResult/editOptionCount",
+	        	data:JSON.stringify({'idsAdjust':ids}),
+	        	contentType: "application/json",
+	        	success:function(json) {
+	           		if(json.success){
+	           			alert('成功');
+	           			window.location.replace("${ctx }/voteResult/list");
+	           		}else{
+	           			alert('失败');
+	           		}
+	           	}    
+			});
 		});
 		
-		$("a[name='report_href']").bind("click",function(){
-			showReport(this);
+		$("a[name='edit_href']").bind("click",function(){
+			editVoteResult(this);
 		});
+
 	});
 	
-	
-	function showReport(object){
-		myShowModalDialog("${ctx }/voteResult/postReplay/list?voteTopic.id="+$(object).children().val(), 600, 650, function (v) {
-			//do something
-		});
- 	}
- 	
- 	function myShowModalDialog(url, width, height, fn) {
- 	    if (navigator.userAgent.indexOf("Chrome") > 0) {
- 	        window.returnCallBackValue = fn;
- 	        var paramsChrome = 'height=' + height + ', width=' + width + ', top=' + (((window.screen.height - height) / 2) - 50) +
- 	            ',left=' + ((window.screen.width - width) / 2) + ',toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no';
- 	        window.open(url, "newwindow", paramsChrome);
- 	    }else {
- 	        var params = 'dialogWidth:' + width + 'px;dialogHeight:' + height + 'px;status:no;dialogLeft:'
- 	                    + ((window.screen.width - width) / 2) + 'px;dialogTop:' + (((window.screen.height - height) / 2) - 50) + 'px;';
- 	        var tempReturnValue = window.showModalDialog(url, "", params);
- 	        fn.call(window, tempReturnValue);
- 	    }
- 	}
-	
-	function showVoteResult(){
+	function editVoteResult(obj){
 		$.ajax({
 	        type: "POST",
 	        url: "${ctx }/voteResult/optionCount",
 	        async: false,
-	        data: {id:$(this).children().val()},
+	        data: {'id':$(obj).children().val()},
 	        success: function (json) {
 	        	if(json.success){
 					$("#append_table").empty();
-					$("#append_div").empty();
-					var voteTitleHtml = '';
                		$.each(json.list,function(index,element){
-               			if(voteTitleHtml == ''){
-               				voteTitleHtml = "<h4 class='modal-title'>"+element.voteTopic.titleContent+",投票结果:</h4>";
-               			}
                			var html = "<thead>"+
 										"<tr style='background-color: #dff0d8'>"+
 											"<th>选项</th>"+
-											"<th>投票数</th>"+
+											"<th>真实数据</th>"+
+											"<th>调整参数</th>"+
+											"<th>显示结果</th>"+
 										"</tr>"+
 									"</thead>"+
 					        		"<tr><td>"+element.optionContent+"</td>"+
-										"<td>"+element.voteCount+"</td></tr>";
+										"<td>"+element.voteCount+"</td>"+
+										"<td><input type='text' name='adjustNum' onblur='adjustVoteCount(this)'>"+
+												"<input type='hidden' value='"+element.id+"'/>"+
+											"</input></td>"+
+										"<td>&nbsp;</td>"+
+									"</tr>";
                			$("#append_table").append(html);	
                		});
-               		$("#append_div").append(voteTitleHtml);
 	        	}else{
 	        		alert('查询失败！');
 	        	}
 	        }
 	    });
 		$('#myPageModal').modal('show');
+	}
+	
+	function adjustVoteCount(obj){
+		var newNumb = parseInt($(obj).val());
+		if($(obj).val() == ''){
+			newNumb = 0;
+		}
+		var prevNumb = parseInt($(obj).parent().prevAll().eq(0).text());
+		if(newNumb<0 && -newNumb>prevNumb){
+			alert('最多减少'+prevNumb);
+			$(obj).val(0);
+		}
+		$(obj).parent().nextAll().eq(0).text(prevNumb + newNumb);
 	}
 
 </script>
@@ -117,38 +118,54 @@
 <form action="" name="form" id="form" method="post" theme="simple">
 	<table class="table table-bordered table-condensed">
 		<tr>
-			<th class="td_right">ID：</th>
-			<td>
-				<input type="text" name="id" value="${queryDto.id }">
-			</td>
 			<th class="td_right">题目内容：</th>
 			<td>
 				<input type="text" name="titleContent" value="${queryDto.titleContent }">
 			</td>
+			<th class="td_right">评论功能：</th>
+			<td>
+				<select id="isComment" name="isComment">
+					<option value="">--请选择--</option>
+					<option value="0" <c:if test="${'0' == queryDto.isComment }">selected</c:if>>开启</option>
+					<option value="1" <c:if test="${'1' == queryDto.isComment }">selected</c:if>>关闭</option>
+				</select>
+			</td>			
 		</tr>
 		<tr>
 			<th class="td_right">显示位置：</th>
 			<td>
 				<select id="displayPosition" name="displayPosition">
 					<option value="">--请选择--</option>
-					<option value="0" <c:if test="${'0' == queryDto.displayPosition }">selected</c:if>>副</option>
-					<option value="1" <c:if test="${'1' == queryDto.displayPosition }">selected</c:if>>主</option>
+					<option value="0" <c:if test="${'0' == queryDto.displayPosition }">selected</c:if>>用户中心</option>
+					<option value="1" <c:if test="${'1' == queryDto.displayPosition }">selected</c:if>>网页</option>
+					<option value="2" <c:if test="${'2' == queryDto.displayPosition }">selected</c:if>>用户中心+网页</option>
 				</select>
 			</td>
-			<th class="td_right">显示功能：</th>
+			<th class="td_right">显示模式：</th>
 			<td>
-				<select id="isDisplay" name="isDisplay">
+				<select id="displayType" name="displayType">
 					<option value="">--请选择--</option>
-					<option value="0" <c:if test="${'0' == queryDto.isDisplay }">selected</c:if>>关</option>
-					<option value="1" <c:if test="${'1' == queryDto.isDisplay }">selected</c:if>>开</option>
+					<option value="0" <c:if test="${'0' == queryDto.displayType }">selected</c:if>>百分比</option>
+					<option value="1" <c:if test="${'1' == queryDto.displayType }">selected</c:if>>实数</option>
 				</select>
 			</td>
 		</tr>
 		<tr>	
 			<th class="td_right">开始时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="startDateBegin" value="<fmt:formatDate value='${queryDto.startDateBegin}' pattern='yyyy-MM-dd'/>">到：
-				<input type="text" name="startDateEnd" value="<fmt:formatDate value='${queryDto.startDateEnd}' pattern='yyyy-MM-dd'/>">
+				从：<input type="text" name="startDateBegin" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+						value="<fmt:formatDate value='${queryDto.startDateBegin}' pattern='yyyy-MM-dd HH:mm:ss'/>">到：
+				<input type="text" name="startDateEnd" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+						value="<fmt:formatDate value='${queryDto.startDateEnd}' pattern='yyyy-MM-dd HH:mm:ss'/>">
+			</td>
+		</tr>
+		<tr>	
+			<th class="td_right">结束时间：</th>
+			<td colspan="3">
+				从：<input type="text" name="toDateBegin" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+						value="<fmt:formatDate value='${queryDto.toDateBegin}' pattern='yyyy-MM-dd HH:mm:ss'/>">到：
+				<input type="text" name="toDateEnd" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+						value="<fmt:formatDate value='${queryDto.toDateEnd}' pattern='yyyy-MM-dd HH:mm:ss'/>">
 			</td>
 		</tr>
 		<tr>
@@ -170,41 +187,27 @@
 		<thead>
 			<tr style="background-color: #dff0d8">
 				<th width="20"><input type="checkbox" id="firstCheckbox"/></th>
-				<th>ID</th>
-				<th>开始日期</th>
-				<th>投票天数</th>
-				<th>题目内容</th>
+				<th>投票标题</th>
 				<th>投票结果</th>
-				<th>显示位置</th>
-				<th>显示功能</th>
-				<th>评论记录</th>
-				<th>评论举报次数</th>
+				<th>评论结果</th>
+				<th>显示结果</th>
+				<th>开始日期</th>
+				<th>结束日期</th>
+				<th>发布者</th>
+				<th>举报次数</th>
 				<th>点赞次数</th>
 			</tr>
 		</thead>
 		<c:forEach items="${page.list }" var="u">
 			<tr >
 			   <td><input type="checkbox" name="ids" value="${u.id }"/></td>
-			   <td>&nbsp;${u.id }</td>
-			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd"/></td>
-			   <td>&nbsp;${u.lastDays }</td>
 			   <td>&nbsp;${u.titleContent }</td>
-			   <td><a name="voteResult_href"><input type="hidden" value="${u.id }">查看详情</a></td>
-			   <td>
-			   		<c:choose>
-			   			<c:when test="${u.displayPosition == '1' }"><font color="green">主</font></c:when>
-			   			<c:when test="${u.displayPosition == '0' }"><font color="blue">副</font></c:when>
-			   			<c:otherwise>&nbsp;</c:otherwise>
-			   		</c:choose>
-			   </td>
-			   <td>
-			   		<c:choose>
-			   			<c:when test="${u.isDisplay == '1' }"><font color="green">开</font></c:when>
-			   			<c:when test="${u.isDisplay == '0' }"><font color="red">关</font></c:when>
-			   			<c:otherwise>&nbsp;</c:otherwise>
-			   		</c:choose>
-			   </td>
-			   <td><a name="report_href"><input type="hidden" value="${u.id }">查看详情</a></td>
+			   <td><a href="${ctx}/voteResult/detail/list?voteTopic.id=${u.id}">投票详情</td>
+			   <td><a href="${ctx}/voteTopicReplay/list?voteTopic.id=${u.id}">修改评论</td>
+			   <td><a name="edit_href"><input type="hidden" value="${u.id }">修改结果</a></td>
+			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+			   <td><fmt:formatDate value="${u.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+			   <td>&nbsp;${u.createName }</td>
 			   <td>&nbsp;${u.reportCount }</td>
 			   <td>&nbsp;${u.praiseCount }</td>
 		    </tr>
@@ -217,15 +220,16 @@
 	   <div class="modal-dialog">
 	      <div class="modal-content">
 	         <div class="modal-header" id="append_div">
-	            <h4 class="modal-title" id="myModalLabel">投票结果</h4>
+	            <h4 class="modal-title" id="myModalLabel">修改结果</h4>
 	         </div>
 	         <div class="modal-body">
 	           	<table class="table table-bordered table-hover" id="append_table">
-					
+	           	
 				</table>
 	         </div>
 	         <div class="modal-footer">
 	            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            	<button type="button" id="post_button" class="btn btn-primary">确认</button>	            
 	         </div>
 	      </div>
 		</div>
