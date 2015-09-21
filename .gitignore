@@ -6,3 +6,7 @@ logs/*
 /target/
 .classpath
 .project
+/*.project
+/*.classpath
+/.settings/org.eclipse.wst.common.component
+/.settings/org.eclipse.wst.common.project.facet.core.xml
