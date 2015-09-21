@@ -38,7 +38,7 @@
 			var ids = [];
 			$('input[name="adjustNum"]').each(function(){
 				if($(this).val()!=''){
-					ids.push($(this).children().val()+'~'+$(this).val());
+					ids.push($(this).siblings('input').val()+'~'+$(this).val());
 				}
 			});
 			$.ajax({
@@ -83,9 +83,8 @@
 									"</thead>"+
 					        		"<tr><td>"+element.optionContent+"</td>"+
 										"<td>"+element.voteCount+"</td>"+
-										"<td><input type='text' name='adjustNum' onblur='adjustVoteCount(this)'>"+
-												"<input type='hidden' value='"+element.id+"'/>"+
-											"</input></td>"+
+										"<td><input type='text' name='adjustNum' onblur='adjustVoteCount(this)'/>"+
+												"<input type='hidden' value='"+element.id+"'/></td>"+
 										"<td>&nbsp;</td>"+
 									"</tr>";
                			$("#append_table").append(html);	
@@ -176,9 +175,6 @@
 				<button class="btn btn-info" id="fresh_button">
 					<i class="icon-repeat icon-white"></i> 刷新
 				</button>				
-				<button class="btn btn-success" onclick="return toAdd();">
-					<i class="icon-plus-sign icon-white"></i> 添加
-				</button>	
 			</td>
 		</tr>
 	</table>

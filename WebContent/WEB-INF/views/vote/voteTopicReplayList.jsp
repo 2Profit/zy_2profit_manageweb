@@ -12,6 +12,14 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	$(function(){
+		$(function(){
+			$("#return_button").bind("click",function(event){
+				event.preventDefault();
+				window.location.replace("${ctx }/voteResult/list");
+			});
+		});
+		
+		
 		$('#editReplay').bind("click",function(event){
 			event.preventDefault();
 			$('#replayId').val($(this).children().val());
@@ -153,8 +161,18 @@ function updateDeleteFlag(ids,deleteFlag){
 				<button id="revert_button" class="btn btn-warning"><i class="icon-repeat icon-white"></i>恢复</button>
 			</td>
 		</tr>		
-		<tr><td colspan="16" style="text-align:center;"><%@ include file="../common/pager.jsp"%></td>
+		<tr>
+			<td colspan="16" style="text-align:center;"><%@ include file="../common/pager.jsp"%></td>
 		</tr>
+	      <div>
+	      	<tr>
+	      		<td colspan="16" style="text-align: left;">
+		      	    <button class="btn btn-inverse" id="return_button">
+			   			 <i class="icon-arrow-left icon-white"></i> 返回
+					</button>
+		        </td>
+	      	</tr>
+	      </div>		
 	</table>
 	<!-- 模态框（Modal） -->
 	<div class="modal fade" id="myPageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

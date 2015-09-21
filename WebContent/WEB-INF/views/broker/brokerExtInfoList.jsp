@@ -45,16 +45,36 @@ function updateDeleteFlag(ids,deleteFlag){
 		<tr>
 			<th>监管机构授权编号：</th>
 			<td><input type="text" name="exchangeNo" value="${queryDto.exchangeNo }"></td>
-			<th>经纪商名称：</th>
-			<td><input type="text" name="name" value="${queryDto.name }"></td>		
+			<th>中文名称：</th>
+			<td><input type="text" name="cnName" value="${queryDto.cnName }"></td>		
 			<th>状态：</th>
+			<th>英文名称：</th>
+			<td><input type="text" name="enName" value="${queryDto.enName }"></td>		
+		</tr>
+		<tr>
+			<th>监管机构类型：</th>
 			<td>
-				<select id="deleteFlag" name="deleteFlag">
+				<select id="exchangeType" name="exchangeType">
 					<option value="">--请选择--</option>
-					<option value="0" <c:if test="${'0' == queryDto.deleteFlag }">selected="true"</c:if>>待审核</option>
-					<option value="2" <c:if test="${'2' == queryDto.deleteFlag }">selected="true"</c:if>>正常</option>
-					<option value="1" <c:if test="${'1' == queryDto.deleteFlag }">selected="true"</c:if>>删除</option>
-					<option value="3" <c:if test="${'3' == queryDto.deleteFlag }">selected="true"</c:if>>停课</option>
+					<option value="0" <c:if test="${'0' == queryDto.exchangeType }">selected</c:if>>金银业贸易场</option>
+					<option value="1" <c:if test="${'1' == queryDto.exchangeType }">selected</c:if>>证监会</option>
+					<option value="2" <c:if test="${'2' == queryDto.exchangeType }">selected</c:if>>不设</option>
+				</select>
+			</td>
+			<th>是否网页显示：</th>
+			<td>
+				<select id="isShowUrl" name="isShowUrl">
+					<option value="">--请选择--</option>
+					<option value="0" <c:if test="${'0' == queryDto.isShowUrl }">selected</c:if>>不显示</option>
+					<option value="1" <c:if test="${'1' == queryDto.isShowUrl }">selected</c:if>>显示</option>
+				</select>
+			</td>
+			<th>是否EA支持：</th>
+			<td>
+				<select id="isEaSupport" name="isEaSupport">
+					<option value="">--请选择--</option>
+					<option value="0" <c:if test="${'0' == queryDto.isEaSupport }">selected</c:if>>不支持</option>
+					<option value="1" <c:if test="${'1' == queryDto.isEaSupport }">selected</c:if>>支持</option>
 				</select>
 			</td>
 		</tr>
@@ -63,21 +83,30 @@ function updateDeleteFlag(ids,deleteFlag){
 			<td>
 				<select id=companyArea name="companyArea">
 					<option value="">--请选择--</option>
-				    <option value="0" <c:if test="${'0' == queryDto.companyArea }">selected="true"</c:if>>香港</option>
-				    <option value="1" <c:if test="${'1' == queryDto.companyArea }">selected="true"</c:if>>中国</option>
-				    <option value="2" <c:if test="${'2' == queryDto.companyArea }">selected="true"</c:if>>台湾</option>
-				    <option value="3" <c:if test="${'3' == queryDto.companyArea }">selected="true"</c:if>>其他</option>
+				    <option value="0" <c:if test="${'0' == queryDto.companyArea }">selected</c:if>>香港</option>
+				    <option value="1" <c:if test="${'1' == queryDto.companyArea }">selected</c:if>>中国</option>
+				    <option value="2" <c:if test="${'2' == queryDto.companyArea }">selected</c:if>>台湾</option>
+				    <option value="3" <c:if test="${'3' == queryDto.companyArea }">selected</c:if>>其他</option>
 				</select>
 			</td>
 			<th>公司类型：</th>
-			<td style="text-align: left;" colspan="3">
+			<td style="text-align: left;">
 				<select id="companyType" name="companyType">
 					<option value="">--请选择--</option>
-				    <option value="0" <c:if test="${queryDto.companyType == '0'}">selected="true"</c:if>>黄金</option>
-				    <option value="1" <c:if test="${queryDto.companyType == '1'}">selected="true"</c:if>>外汇</option>
-				    <option value="2" <c:if test="${queryDto.companyType == '2'}">selected="true"</c:if>>中国A股</option>
+				    <option value="0" <c:if test="${queryDto.companyType == '0'}">selected</c:if>>黄金</option>
+				    <option value="1" <c:if test="${queryDto.companyType == '1'}">selected</c:if>>外汇</option>
+				    <option value="2" <c:if test="${queryDto.companyType == '2'}">selected</c:if>>中国A股</option>
 				</select>
-			</td>				
+			</td>
+			<th>状态：</th>
+			<td>
+				<select id="deleteFlag" name="deleteFlag">
+					<option value="">--请选择--</option>
+					<option value="0" <c:if test="${'0' == queryDto.deleteFlag }">selected</c:if>>待审核</option>
+					<option value="2" <c:if test="${'2' == queryDto.deleteFlag }">selected</c:if>>正常</option>
+					<option value="1" <c:if test="${'1' == queryDto.deleteFlag }">selected</c:if>>删除</option>
+				</select>
+			</td>
 		</tr>
 	
 		<tr>
@@ -100,10 +129,11 @@ function updateDeleteFlag(ids,deleteFlag){
 		<thead>
 			<tr style="background-color: #dff0d8">
 				<th width="10"><input type="checkbox" id="firstCheckbox"/></th>
-				<th nowrap="nowrap">操作</th>
-				<th>名称</th>
+				<th>中文名称</th>
+				<th>英文名称</th>
 				<th>官方网站</th>
-				<th>网页显示</th>
+				<th>链接显示</th>
+				<th>监管机构</th>
 				<th>监管机构授权编号</th>
 				<th>公司属地</th>
 				<th>交易平台</th>
@@ -125,28 +155,34 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>长仓利息</th>
 				<th>短仓利息</th>
 				<th>开仓保证金</th>
-				<th>维持保证金</th>
-				<th>锁仓保证金</th>
 				<th>杠杆比例</th>
 				<th>强平百分比_平日</th>
 				<th>强平百分比_周末/假期</th>
+				<th>EA支援</th>
+				<th>推荐值</th>
+				<th>最后更新时间</th>
+				<th nowrap="nowrap">操作</th>
 			</tr>
 		</thead>
 		<c:forEach items="${page.list }" var="u">
 			<tr>
 				<td><input type="checkbox" name="ids" value="${u.id }"/></td>			
-			   <td>
-			      <a href="${ctx }/boss/brokerExtInfo/edit?id=${u.id}">编辑</a>			      <c:choose>
-			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
-			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
-			      </c:choose>
-			   </td>
-			   <td>&nbsp;${u.name }</td>
-			   <td>&nbsp;${u.url }</td>
+			   
+			   <td>&nbsp;${u.cnName }</td>
+			   <td>&nbsp;${u.enName }</td>
+			   <td>&nbsp;${u.websiteUrl }</td>
 			   <td>
 			   		<c:choose>
 			   			<c:when test="${u.isShowUrl == '0' }">关闭</c:when>
 			   			<c:when test="${u.isShowUrl == '1' }">开启</c:when>
+			   			<c:otherwise>&nbsp;</c:otherwise>
+			   		</c:choose>
+			   </td>
+			   <td>
+			   		<c:choose>
+			   			<c:when test="${u.exchangeType == '0' }">金银业贸易场</c:when>
+			   			<c:when test="${u.exchangeType == '1' }">证监会</c:when>
+			   			<c:when test="${u.exchangeType == '2' }">不设</c:when>
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>
 			   </td>
@@ -195,10 +231,10 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		<c:if test="${fn:contains(u.companyType, '2')}">中国A股,</c:if>
 			   </td>
 			   <td>
-			   		<c:if test="${fn:contains(u.productType, '0')}">LLG,</c:if>
-			   		<c:if test="${fn:contains(u.productType, '1')}">LLS,</c:if>
-			   		<c:if test="${fn:contains(u.productType, '2')}">HKG,</c:if>
-			   		<c:if test="${fn:contains(u.productType, '3')}">LKG,</c:if>
+			   		<c:if test="${fn:contains(u.productType, '0')}">伦敦金,</c:if>
+			   		<c:if test="${fn:contains(u.productType, '1')}">伦敦银,</c:if>
+			   		<c:if test="${fn:contains(u.productType, '2')}">港金,</c:if>
+			   		<c:if test="${fn:contains(u.productType, '3')}">人民币公斤条,</c:if>
 			   </td>
 			   <td>
 			   		<c:choose>
@@ -217,22 +253,22 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		</c:choose>
 			   </td>			   
 			   <td>
-			   		<c:if test="${u.pointDiffMaxLlg != '' }">LLG:${u.pointDiffMaxLlg}<br/></c:if>
-			   		<c:if test="${u.pointDiffMaxLls != '' }">LLS:${u.pointDiffMaxLls}<br/></c:if>
-			   		<c:if test="${u.pointDiffMaxHkg != '' }">HKG:${u.pointDiffMaxHkg}<br/></c:if>
-			   		<c:if test="${u.pointDiffMaxLkg != '' }">LKG:${u.pointDiffMaxLkg}</c:if>
+			   		<c:if test="${u.pointDiffMaxLlg != '' }">伦敦金:${u.pointDiffMaxLlg}<br/></c:if>
+			   		<c:if test="${u.pointDiffMaxLls != '' }">伦敦银:${u.pointDiffMaxLls}<br/></c:if>
+			   		<c:if test="${u.pointDiffMaxHkg != '' }">港金:${u.pointDiffMaxHkg}<br/></c:if>
+			   		<c:if test="${u.pointDiffMaxLkg != '' }">人民币公斤条:${u.pointDiffMaxLkg}</c:if>
 			   </td>			   
 			   <td>
-			   		<c:if test="${u.pointDiffMinLlg != '' }">LLG:${u.pointDiffMinLlg}<br/></c:if>
-			   		<c:if test="${u.pointDiffMinLls != '' }">LLS:${u.pointDiffMinLls}<br/></c:if>
-			   		<c:if test="${u.pointDiffMinHkg != '' }">HKG:${u.pointDiffMinHkg}<br/></c:if>
-			   		<c:if test="${u.pointDiffMinLkg != '' }">LKG:${u.pointDiffMinLkg}</c:if>
+			   		<c:if test="${u.pointDiffMinLlg != '' }">伦敦金:${u.pointDiffMinLlg}<br/></c:if>
+			   		<c:if test="${u.pointDiffMinLls != '' }">伦敦银:${u.pointDiffMinLls}<br/></c:if>
+			   		<c:if test="${u.pointDiffMinHkg != '' }">港金:${u.pointDiffMinHkg}<br/></c:if>
+			   		<c:if test="${u.pointDiffMinLkg != '' }">人民币公斤条:${u.pointDiffMinLkg}</c:if>
 			   </td>			   
 			   <td>
-			   		<c:if test="${u.maxTradeNumLlg != '' }">LLG:${u.maxTradeNumLlg}<br/></c:if>
-			   		<c:if test="${u.maxTradeNumLls != '' }">LLS:${u.maxTradeNumLls}<br/></c:if>
-			   		<c:if test="${u.maxTradeNumHkg != '' }">HKG:${u.maxTradeNumHkg}<br/></c:if>
-			   		<c:if test="${u.maxTradeNumLkg != '' }">LKG:${u.maxTradeNumLkg}</c:if>
+			   		<c:if test="${u.maxTradeNumLlg != '' }">伦敦金:${u.maxTradeNumLlg}<br/></c:if>
+			   		<c:if test="${u.maxTradeNumLls != '' }">伦敦银:${u.maxTradeNumLls}<br/></c:if>
+			   		<c:if test="${u.maxTradeNumHkg != '' }">港金:${u.maxTradeNumHkg}<br/></c:if>
+			   		<c:if test="${u.maxTradeNumLkg != '' }">人民币公斤条:${u.maxTradeNumLkg}</c:if>
 			   </td>			   
 			   	<td>&nbsp;${u.maxHoldNum }</td>
 			   	<td>
@@ -266,26 +302,28 @@ function updateDeleteFlag(ids,deleteFlag){
 			   <td>&nbsp;${u.longRate }</td>   
 			   <td>&nbsp;${u.shortRate }</td>   
 			   <td>
-			   		<c:if test="${u.openMoneyLlg != '' }">LLG:${u.openMoneyLlg}<br/></c:if>
-			   		<c:if test="${u.openMoneyLls != '' }">LLS:${u.openMoneyLls}<br/></c:if>
-			   		<c:if test="${u.openMoneyHkg != '' }">HKG:${u.openMoneyHkg}<br/></c:if>
-			   		<c:if test="${u.openMoneyLkg != '' }">LKG:${u.openMoneyLkg}</c:if>
-			   </td>			   
-			   <td>
-			   		<c:if test="${u.holdMoneyLlg != '' }">LLG:${u.holdMoneyLlg}<br/></c:if>
-			   		<c:if test="${u.holdMoneyLls != '' }">LLS:${u.holdMoneyLls}<br/></c:if>
-			   		<c:if test="${u.holdMoneyLlg != '' }">HKG:${u.holdMoneyHkg}<br/></c:if>
-			   		<c:if test="${u.holdMoneyLkg != '' }">LKG:${u.holdMoneyLkg}</c:if>
-			   </td>			   
-			   <td>
-			   		<c:if test="${u.closeMoneyLlg != '' }">LLG:${u.closeMoneyLlg}<br/></c:if>
-			   		<c:if test="${u.closeMoneyLls != '' }">LLS:${u.closeMoneyLls}<br/></c:if>
-			   		<c:if test="${u.closeMoneyHkg != '' }">HKG:${u.closeMoneyHkg}<br/></c:if>
-			   		<c:if test="${u.closeMoneyLkg != '' }">LKG:${u.closeMoneyLkg}</c:if>
+			   		<c:if test="${u.openMoneyLlg != '' }">伦敦金:${u.openMoneyLlg}<br/></c:if>
+			   		<c:if test="${u.openMoneyLls != '' }">伦敦银:${u.openMoneyLls}<br/></c:if>
+			   		<c:if test="${u.openMoneyHkg != '' }">港金:${u.openMoneyHkg}<br/></c:if>
+			   		<c:if test="${u.openMoneyLkg != '' }">人民币公斤条:${u.openMoneyLkg}</c:if>
 			   </td>			   
 			   <td>&nbsp;${u.leverRate }</td>
 			   <td>&nbsp;${u.closeRate }</td>
 			   <td>&nbsp;${u.closeRateExt }</td>
+			   	<td>
+			   		<c:choose>
+			   			<c:when test="${u.isEaSupport == '0' }">不提供</c:when>
+			   			<c:when test="${u.isEaSupport == '1' }">提供</c:when>
+			   			<c:otherwise>&nbsp;</c:otherwise>
+			   		</c:choose>
+			   </td>
+			   <td>&nbsp;${u.companyIndex }</td>
+				<td>
+			      <a href="${ctx }/boss/brokerExtInfo/edit?id=${u.id}">编辑</a>			      <c:choose>
+			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
+			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
+			      </c:choose>
+			   </td>			   
 		    </tr>
 		</c:forEach>
 		<tr>

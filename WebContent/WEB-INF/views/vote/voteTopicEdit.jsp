@@ -21,7 +21,7 @@
 		
 		$('#add_option').bind("click",function(event){
 			event.preventDefault();
-			var html =	"<input type='text' name='optionContent'/><a href='' onclik='event.preventDefault();deleteOption(this)'>删除</a></br>";
+			var html =	"<div><input type='text' name='optionContent'>&nbsp;<a href='' onclick='event.preventDefault();deleteOption(this)'>删除</a></div>";
 			$('#append_td').append(html);
 		});
 		
@@ -58,6 +58,8 @@
 			}
 			
  			var formData = new FormData($('#form')[0]);
+ 			alert($('#form')[0]);
+ 			alert(formData);
  			$.ajax({
  		        type: "POST",
  		        url: "${ctx }/voteTopic/save",
@@ -66,6 +68,7 @@
  		        contentType: false,
  		        processData: false,
  		        data:formData,
+ 		        dataType:"json",
  		        success: function (json) {
  		        	if(json.success){
  		        		alert('保存成功！');
@@ -76,14 +79,14 @@
  		        }
  		    });
  		});
-		
 	});
 	
+	//删除选项
 	function deleteOption(obj){
-		alert(obj);
-		$(obj).parent().remove();
+		$(obj).closest('div').remove();
 	}
 
+	
 </script>
 </head>
 
@@ -135,8 +138,8 @@
 				<td>
 					<select id="isComment" name="isComment" data-rule="评论功能:required;isComment;">
 						<option value="">--请选择--</option>
-						<option value="0" <c:if test="${'0' == voteTopic.isComment }">selected</c:if>>关闭</option>
-						<option value="1" <c:if test="${'1' == voteTopic.isComment }">selected</c:if>>开启</option>
+						<option value="0" <c:if test="${!voteTopic.isComment }">selected</c:if>>关闭</option>
+						<option value="1" <c:if test="${voteTopic.isComment }">selected</c:if>>开启</option>
 					</select>
 				</td>
 			</tr>
@@ -162,7 +165,8 @@
 				<th class="td_right">选项：<a href="" id="add_option">增加选项</a></th>
 				<td id="append_td" colspan="3">
 					<c:forEach items="${voteTopic.options }" var="option">
-						<input type="text" name="optionContent" value="${option.optionContent}"/><a href='' onclik="deleteOption(this)">删除</a></br>
+						<div><input type="text" name="optionContent" value="${option.optionContent}"/>
+								<a href='' onclik="event.preventDefault();deleteOption(this)">删除</a></br></div>
 					</c:forEach>
 				</td>
 		 	</tr>
