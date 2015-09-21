@@ -9,6 +9,7 @@
 <title>公告列表</title>
 <%@ include file="../common/common.jsp"%>
 <script type="text/javascript" src="${ctx }/static/js/manage-web-common.js"/></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	$(function(){
 		$('#fresh_button').bind("click",function(){
@@ -20,35 +21,6 @@
 			$("input[name='startDateTo']").val("");
 			$("input[name='endDateFrom']").val("");
 			$("input[name='endDateTo']").val("");
-		});
-		
-		$("input[name='startDateFrom']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
-		});
-		$("input[name='startDateTo']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
-		});
-		$("input[name='endDateFrom']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
-		});
-		$("input[name='endDateTo']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
 		});
 	});
 
@@ -105,15 +77,19 @@ function updateDeleteFlag(ids,deleteFlag){
 		<tr>	
 			<th class="td_right">有效期开始时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="startDateFrom" value="<fmt:formatDate value='${queryDto.startDateFrom}' pattern='yyyy-MM-dd'/>">到：
-				<input type="text" name="startDateTo" value="<fmt:formatDate value='${queryDto.startDateTo}' pattern='yyyy-MM-dd'/>">
+				从：<input type="text" name="startDateFrom" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+						value="<fmt:formatDate value='${queryDto.startDateFrom}' pattern='yyyy-MM-dd HH:mm:ss'/>">到：
+				<input type="text" name="startDateTo" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+						value="<fmt:formatDate value='${queryDto.startDateTo}' pattern='yyyy-MM-dd HH:mm:ss'/>">
 			</td>
 		</tr>
 		<tr>	
 			<th class="td_right">有效期截止时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="endDateFrom" value="<fmt:formatDate value='${queryDto.endDateFrom}' pattern='yyyy-MM-dd'/>">到：
-				<input type="text" name="endDateTo" value="<fmt:formatDate value='${queryDto.endDateTo}' pattern='yyyy-MM-dd'/>">
+				从：<input type="text" name="endDateFrom" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+						value="<fmt:formatDate value='${queryDto.endDateFrom}' pattern='yyyy-MM-dd HH:mm:ss'/>">到：
+				<input type="text" name="endDateTo" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+						value="<fmt:formatDate value='${queryDto.endDateTo}' pattern='yyyy-MM-dd HH:mm:ss'/>">
 			</td>
 		</tr>
 		<tr>
@@ -182,8 +158,8 @@ function updateDeleteFlag(ids,deleteFlag){
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>
 			   </td>			   
-			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd"/></td>
-			   <td><fmt:formatDate value="${u.endDate}" type="both" pattern="yyyy-MM-dd"/></td>
+			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+			   <td><fmt:formatDate value="${u.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			   <td>
 			   		<c:choose>
 			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">正常</font></c:when>
@@ -192,7 +168,7 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		</c:choose>
 			   </td>			   
 			   <td>
-			      <a href="${ctx }/voteTopic/edit?id=${u.id}">编辑</a>
+			      <a href="${ctx }/notice/edit?id=${u.id}">编辑</a>
 			      <c:choose>
 			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
 			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>

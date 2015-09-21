@@ -6,6 +6,7 @@
 <head>
 <%@ include file="../common/common.jsp"%>
 <%@ include file="../common/common_html_validator.jsp"%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/My97DatePicker/WdatePicker.js"></script>
 <title>公告编辑</title>
 <style>
 	.td_right{text-align: right;}
@@ -22,19 +23,15 @@
 			window.location.replace("${ctx }/notice/list");
 		});
 		
-		$("input[name='startDate']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
-		});
-		$("input[name='endDate']").datepicker({
-		  	format: 'yyyy-mm-dd',
-	        weekStart: 1,
-	        autoclose: true,
-	        todayBtn: 'linked',
-	        language: 'cn'
+		//图片修改后预览
+		$('#image').change(function(){
+			if (this.files && this.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $('#blah').attr('src', e.target.result);
+		        }
+		        reader.readAsDataURL(this.files[0]);
+		    }
 		});
 		
 		$("button[name='postData_button']").bind("click",function(event){
@@ -114,6 +111,21 @@
 				<td>
 		  			<input type="text" name="title" data-rule="公告标题:required;title;" id="title" value="${notice.title}"/>
 				</td>
+				<th class="td_right">是否有效：</th>
+				<td>
+					<select id="status" name="status">
+						<option value="">--请选择--</option>
+						<option value="0" <c:if test="${'0' == notice.status }">selected</c:if>>无效</option>
+						<option value="1" <c:if test="${'1' == notice.status }">selected</c:if>>有效</option>
+					</select>
+				</td>				
+		 	</tr>
+			<tr>
+				<th>公告内容：</th>
+				<td>
+		  			<textarea rows="5" cols="10" name="content" id="content" 
+							data-rule="公告内容:required;content;">${notice.content }</textarea>
+				</td>
 				<th>公告图片：</th>
 				<td style="text-align: left;">
 					<input type='file' id="image" name="file"/><br>
@@ -123,24 +135,17 @@
 				</td>					
 				</td>				
 		 	</tr>
-			<tr>
-				<th>公告内容：</th>
-				<td colspan="3">
-		  			<textarea rows="5" cols="10" name="content" id="content" 
-							data-rule="公告内容:required;content;">${notice.content }</textarea>
-				</td>
-		 	</tr>
 			
 			<tr>
 				<th class="td_right">有效期开始日期：</th>
 				<td style="text-align: left;">
-		  			<input type="text" name="startDate" data-rule="有效期开始日期:required;startDate;"  id="startDate" 
-		  					value="<fmt:formatDate value='${notice.startDate}' type='both' pattern='yyyy-MM-dd'/>"/>
+		  			<input type="text" name="startDate" data-rule="有效期开始日期:required;startDate;" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" 
+		  					id="startDate" value="<fmt:formatDate value='${notice.startDate}' type='both' pattern='yyyy-MM-dd HH:mm:ss'/>"/>
 				</td>
 				<th class="td_right">有效期截止日期：</th>
 				<td style="text-align: left;">
-		  			<input type="text" name="endDate" data-rule="有效期截止日期:required;endDate;"  id="endDate" 
-		  					value="<fmt:formatDate value='${notice.endDate}' type='both' pattern='yyyy-MM-dd'/>"/>
+		  			<input type="text" name="endDate" data-rule="有效期截止日期:required;endDate;" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"
+		  				id="endDate" value="<fmt:formatDate value='${notice.endDate}' type='both' pattern='yyyy-MM-dd HH:mm:ss'/>"/>
 				</td>
 		 	</tr>
 			<tr>
@@ -160,17 +165,6 @@
 						<option value="0" <c:if test="${'0' == notice.displayType }">selected</c:if>>弹窗</option>
 						<option value="1" <c:if test="${'1' == notice.displayType }">selected</c:if>>通知栏</option>
 						<option value="2" <c:if test="${'2' == notice.displayType }">selected</c:if>>通用</option>
-					</select>
-				</td>
-			</tr>
-			
-			<tr>
-				<th class="td_right">是否有效：</th>
-				<td>
-					<select id="status" name="status">
-						<option value="">--请选择--</option>
-						<option value="0" <c:if test="${'0' == notice.status }">selected</c:if>>无效</option>
-						<option value="1" <c:if test="${'1' == notice.status }">selected</c:if>>有效</option>
 					</select>
 				</td>
 			</tr>
