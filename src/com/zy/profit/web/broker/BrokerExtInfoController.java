@@ -1,4 +1,4 @@
-package com.zy.profit.web;
+package com.zy.profit.web.broker;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +28,7 @@ import com.zy.common.util.UserSessionUtil;
  */
 
 @Controller
-@RequestMapping("/boss/brokerExtInfo")
+@RequestMapping("/brokerExtInfo")
 public class BrokerExtInfoController {
 
 	@Autowired
@@ -79,6 +79,9 @@ public class BrokerExtInfoController {
 				brokerInfoService.update(dto);
 			}else{
 				BrokerInfo brokerInfo = new BrokerInfo();
+				brokerInfo.setEnName(dto.getEnName());
+				brokerInfo.setCnName(dto.getCnName());
+				brokerInfo.setExchangeType(dto.getExchangeType());
 				brokerInfo.setExchangeNo(dto.getExchangeNo());
 				brokerInfo.setCreateId(userDto.getId());
 				brokerInfo.setCreateName(userDto.getUsername());
