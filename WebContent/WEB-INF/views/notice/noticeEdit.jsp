@@ -56,6 +56,9 @@
  			if($('#applyType').val()==''){
  				$('#applyType').focus();return false;
  			}
+ 			if($('#noticeType').val()==''){
+ 				$('#noticeType').focus();return false;
+ 			}
  			
  			var formData = new FormData($('#form')[0]);
  			$.ajax({
@@ -167,6 +170,19 @@
 						<option value="2" <c:if test="${'2' == notice.displayType }">selected</c:if>>通用</option>
 					</select>
 				</td>
+			</tr>
+			<tr>
+				<th class="td_right">公告类型：</th>
+				<td>
+					<select id="noticeType" name="noticeType" data-rule="公告类型:required;noticeType;">
+						<option value="">--请选择--</option>
+						<option value="0" <c:if test="${'0' == notice.noticeType }">selected</c:if>>重要公告</option>
+						<option value="1" <c:if test="${'1' == notice.noticeType }">selected</c:if>>休市安排</option>
+						<option value="2" <c:if test="${'2' == notice.noticeType }">selected</c:if>>维护通知</option>
+					</select>
+				</td>
+				<th></th>
+				<td></td>
 			</tr>
 			
 			<tr>

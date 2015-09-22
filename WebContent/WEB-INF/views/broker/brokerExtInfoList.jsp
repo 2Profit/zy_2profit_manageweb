@@ -23,13 +23,13 @@ $(function(){
 function updateDeleteFlag(ids,deleteFlag){
 	$.ajax({
 		type: "POST",
-       	url:"${ctx }/product/courseType/deleteFlag",
+       	url:"${ctx }/brokerExtInfo/deleteFlag",
     	data:JSON.stringify({'ids':ids,'deleteFlag':deleteFlag}),
     	contentType: "application/json",
     	success:function(json) {
        		if(json.success){
        			alert('成功');
-       			window.location.replace("${ctx }/product/courseType/list");
+       			window.location.replace("${ctx }/brokerExtInfo/list");
        		}else{
        			alert('失败');
        		}
@@ -47,7 +47,6 @@ function updateDeleteFlag(ids,deleteFlag){
 			<td><input type="text" name="exchangeNo" value="${queryDto.exchangeNo }"></td>
 			<th>中文名称：</th>
 			<td><input type="text" name="cnName" value="${queryDto.cnName }"></td>		
-			<th>状态：</th>
 			<th>英文名称：</th>
 			<td><input type="text" name="enName" value="${queryDto.enName }"></td>		
 		</tr>
@@ -144,9 +143,9 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>产品</th>
 				<th>结算币值</th>
 				<th>产品点差</th>
-				<th>产品点差(最低)</th>
-				<th>单次最低交易手数</th>
-				<th>单次最高交易手数</th>
+				<th width="8%">产品点差(最低)</th>
+				<th width="8%">单次最低交易手数</th>
+				<th width="8%">单次最高交易手数</th>
 				<th>持仓手数上限</th>
 				<th>客户回佣</th>
 				<th>交易编号</th>
@@ -154,7 +153,7 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>平仓手续费</th>
 				<th>长仓利息</th>
 				<th>短仓利息</th>
-				<th>开仓保证金</th>
+				<th width="8%">开仓保证金</th>
 				<th>杠杆比例</th>
 				<th>强平百分比_平日</th>
 				<th>强平百分比_周末/假期</th>
@@ -253,16 +252,16 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		</c:choose>
 			   </td>			   
 			   <td>
-			   		<c:if test="${u.pointDiffMaxLlg != '' }">伦敦金:${u.pointDiffMaxLlg}<br/></c:if>
-			   		<c:if test="${u.pointDiffMaxLls != '' }">伦敦银:${u.pointDiffMaxLls}<br/></c:if>
-			   		<c:if test="${u.pointDiffMaxHkg != '' }">港金:${u.pointDiffMaxHkg}<br/></c:if>
-			   		<c:if test="${u.pointDiffMaxLkg != '' }">人民币公斤条:${u.pointDiffMaxLkg}</c:if>
-			   </td>			   
-			   <td>
 			   		<c:if test="${u.pointDiffMinLlg != '' }">伦敦金:${u.pointDiffMinLlg}<br/></c:if>
 			   		<c:if test="${u.pointDiffMinLls != '' }">伦敦银:${u.pointDiffMinLls}<br/></c:if>
 			   		<c:if test="${u.pointDiffMinHkg != '' }">港金:${u.pointDiffMinHkg}<br/></c:if>
 			   		<c:if test="${u.pointDiffMinLkg != '' }">人民币公斤条:${u.pointDiffMinLkg}</c:if>
+			   </td>			   
+			   <td>
+			   		<c:if test="${u.minTradeNumLlg != '' }">伦敦金:${u.minTradeNumLlg}<br/></c:if>
+			   		<c:if test="${u.minTradeNumLls != '' }">伦敦银:${u.minTradeNumLls}<br/></c:if>
+			   		<c:if test="${u.minTradeNumHkg != '' }">港金:${u.minTradeNumHkg}<br/></c:if>
+			   		<c:if test="${u.minTradeNumLkg != '' }">人民币公斤条:${u.minTradeNumLkg}</c:if>
 			   </td>			   
 			   <td>
 			   		<c:if test="${u.maxTradeNumLlg != '' }">伦敦金:${u.maxTradeNumLlg}<br/></c:if>
@@ -318,8 +317,10 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		</c:choose>
 			   </td>
 			   <td>&nbsp;${u.companyIndex }</td>
+			   <td><fmt:formatDate value="${u.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td>
-			      <a href="${ctx }/boss/brokerExtInfo/edit?id=${u.id}">编辑</a>			      <c:choose>
+			      <a href="${ctx }/brokerExtInfo/edit?id=${u.id}">编辑</a>			      
+			      <c:choose>
 			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
 			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
 			      </c:choose>
@@ -339,7 +340,7 @@ function updateDeleteFlag(ids,deleteFlag){
 </form>
  <script type="text/javascript">
 	function toAdd(){
-		var _url = "${ctx }/boss/brokerExtInfo/edit";
+		var _url = "${ctx }/brokerExtInfo/edit";
         var _form = $("#form");
 		_form.attr("action",_url);
 		_form.submit();

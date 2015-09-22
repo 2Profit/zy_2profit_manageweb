@@ -190,8 +190,6 @@
 				<th>开始日期</th>
 				<th>结束日期</th>
 				<th>发布者</th>
-				<th>举报次数</th>
-				<th>点赞次数</th>
 			</tr>
 		</thead>
 		<c:forEach items="${page.list }" var="u">
@@ -204,8 +202,6 @@
 			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			   <td><fmt:formatDate value="${u.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			   <td>&nbsp;${u.createName }</td>
-			   <td>&nbsp;${u.reportCount }</td>
-			   <td>&nbsp;${u.praiseCount }</td>
 		    </tr>
 		</c:forEach>
 		<tr><td colspan="16" style="text-align:center;"><%@ include file="../common/pager.jsp"%></td>

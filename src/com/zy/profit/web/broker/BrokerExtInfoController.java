@@ -51,7 +51,6 @@ public class BrokerExtInfoController {
 		ResultDto<BrokerExtInfo> result = new ResultDto<BrokerExtInfo>();
 		try {
 			brokerExtInfoService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
-			result.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);
@@ -76,7 +75,7 @@ public class BrokerExtInfoController {
 		try {
 			UserDto userDto = UserSessionUtil.getSessionUser(request.getSession());
 			if(StringUtils.isNoneBlank(dto.getId())){
-				brokerInfoService.update(dto);
+				brokerExtInfoService.update(dto);
 			}else{
 				BrokerInfo brokerInfo = new BrokerInfo();
 				brokerInfo.setEnName(dto.getEnName());
@@ -89,7 +88,7 @@ public class BrokerExtInfoController {
 				
 				dto.setCreateId(userDto.getId());
 				dto.setCreateName(userDto.getUsername());
-				brokerInfoService.save(dto);
+				brokerExtInfoService.save(dto);
 			}
 			result.setSuccess(true);
 		} catch (Exception e) {

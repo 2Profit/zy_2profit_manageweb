@@ -47,14 +47,18 @@ function updateDeleteFlag(ids,deleteFlag){
 <form action="" name="form" id="form" method="post" theme="simple">
 	<table class="table table-bordered table-condensed">
 		<tr>
-			<th class="td_right">ID：</th>
-			<td>
-				<input type="text" name="id" value="${queryDto.id }">
-			</td>
 			<th class="td_right">标题：</th>
 			<td>
 				<input type="text" name="titleContent" value="${queryDto.title }">
 			</td>
+			<th class="td_right">数据状态：</th>
+			<td>
+				<select id="deleteFlag" name="deleteFlag">
+					<option value="">--请选择--</option>
+					<option value="0" <c:if test="${'0' == queryDto.deleteFlag }">selected</c:if>>正常</option>
+					<option value="1" <c:if test="${'1' == queryDto.deleteFlag }">selected</c:if>>删除</option>
+				</select>
+			</td>			
 		</tr>
 		<tr>
 			<th class="td_right">公告类型：</th>
@@ -62,7 +66,8 @@ function updateDeleteFlag(ids,deleteFlag){
 				<select id="noticeType" name="noticeType">
 					<option value="">--请选择--</option>
 					<option value="0" <c:if test="${'0' == queryDto.noticeType }">selected</c:if>>重要公告</option>
-					<option value="1" <c:if test="${'1' == queryDto.noticeType }">selected</c:if>>优惠通知</option>
+					<option value="1" <c:if test="${'1' == queryDto.noticeType }">selected</c:if>>休市安排</option>
+					<option value="2" <c:if test="${'2' == queryDto.noticeType }">selected</c:if>>维护通知</option>
 				</select>
 			</td>
 			<th class="td_right">是否有效：</th>
@@ -111,7 +116,6 @@ function updateDeleteFlag(ids,deleteFlag){
 		<thead>
 			<tr style="background-color: #dff0d8">
 				<th width="20"><input type="checkbox" id="firstCheckbox"/></th>
-				<th>ID</th>
 				<th>标题</th>
 				<th>应用平台</th>
 				<th>显示类型</th>
@@ -126,7 +130,6 @@ function updateDeleteFlag(ids,deleteFlag){
 		<c:forEach items="${page.list }" var="u">
 			<tr >
 			   <td><input type="checkbox" name="ids" value="${u.id }"/></td>
-			   <td>&nbsp;${u.id }</td>
 			   <td>&nbsp;${u.title }</td>
 			   <td>
 			   		<c:choose>
@@ -146,15 +149,16 @@ function updateDeleteFlag(ids,deleteFlag){
 			   </td>			   
 			   <td>
 			   		<c:choose>
-			   			<c:when test="${u.noticeType == '0' }"><font color="green">重要公告</font></c:when>
-			   			<c:when test="${u.noticeType == '1' }"><font color="red">优惠通知</font></c:when>
+			   			<c:when test="${u.noticeType == '0' }"><font color="red">重要公告</font></c:when>
+			   			<c:when test="${u.noticeType == '1' }"><font color="orange">休市安排</font></c:when>
+			   			<c:when test="${u.noticeType == '2' }"><font color="green">维护通知</font></c:when>
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>
 			   </td>			   
 			   <td>
 			   		<c:choose>
-			   			<c:when test="${u.status == '1' }"><font color="green">有效</font></c:when>
-			   			<c:when test="${u.status == '0' }"><font color="red">无效</font></c:when>
+			   			<c:when test="${u.status}"><font color="green">有效</font></c:when>
+			   			<c:when test="${u.status == false }"><font color="red">无效</font></c:when>
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>
 			   </td>			   
