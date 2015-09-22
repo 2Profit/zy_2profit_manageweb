@@ -27,8 +27,8 @@ import com.zy.common.util.UserSessionUtil;
  * @since  2015年9月1日
  */
 
-@Controller
-@RequestMapping("/boss/brokerExtInfo")
+//@Controller
+//@RequestMapping("/boss/brokerExtInfo")
 public class BrokerExtInfoController {
 
 	@Autowired

@@ -6,9 +6,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zy.base.entity.Notice;
 import com.zy.common.entity.ResultDto;
 import com.zy.common.util.UserDto;
 import com.zy.common.util.UserSessionUtil;
@@ -72,5 +74,17 @@ public class VoteTopicController {
 		return result;
 	}
 	
+	@ResponseBody
+	@RequestMapping("/deleteFlag")
+	public ResultDto<Notice> deleteFlag(@RequestBody VoteTopicDto queryDto){
+		ResultDto<Notice> result = new ResultDto<Notice>();
+		try {
+			voteTopicService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setSuccess(false);
+		}
+		return result;
+	}
 	
 }

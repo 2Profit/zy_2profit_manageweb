@@ -25,13 +25,13 @@
 function updateDeleteFlag(ids,deleteFlag){
 	$.ajax({
 		type: "POST",
-       	url:"${ctx }/product/courseType/deleteFlag",
+       	url:"${ctx }/voteTopic/deleteFlag",
     	data:JSON.stringify({'ids':ids,'deleteFlag':deleteFlag}),
     	contentType: "application/json",
     	success:function(json) {
        		if(json.success){
        			alert('成功');
-       			window.location.replace("${ctx }/product/courseType/list");
+       			window.location.replace("${ctx }/voteTopic/list");
        		}else{
        			alert('失败');
        		}
@@ -118,6 +118,7 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>结束日期</th>
 				<th>发布者</th>
 				<th>提案状态</th>
+				<th>数据状态</th>
 				<th nowrap="nowrap">操作</th>
 			</tr>
 		</thead>
@@ -156,7 +157,14 @@ function updateDeleteFlag(ids,deleteFlag){
 			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">初始</font></c:when>
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>
-			   </td>			   
+			   </td>
+			   <td>
+			   		<c:choose>
+			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">正常</font></c:when>
+			   			<c:when test="${u.deleteFlag == '1' }"><font color="red">删除</font></c:when>
+			   			<c:otherwise>&nbsp;</c:otherwise>
+			   		</c:choose>
+			   </td>			   		   
 			   <td>
 			      <a href="${ctx }/voteTopic/edit?id=${u.id}">编辑</a>
 			      <c:choose>
