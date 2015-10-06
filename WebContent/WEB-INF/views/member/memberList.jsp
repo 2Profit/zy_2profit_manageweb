@@ -43,17 +43,15 @@ function updateDeleteFlag(ids,deleteFlag){
 <form action="" name="form" id="form" method="post" theme="simple">
 	<table class="table table-bordered table-condensed">
 		<tr>
-			<th>ID：</th>
-			<td><input type="text" name="id" value="${queryDto.id }"></td>
-			<th>交易账号：</th>
+			<th>账号类型：</th>
 			<td><input type="text" name="userName" value="${queryDto.userName }"></td>		
 			<th>账户类别：</th>
 			<td>
 				<select id="accountCategory" name="accountCategory">
 					<option value="">--请选择--</option>
-					<option value="0" <c:if test="${'0' == queryDto.accountCategory }">selected="true"</c:if>>全部</option>
-					<option value="1" <c:if test="${'1' == queryDto.accountCategory }">selected="true"</c:if>>客户</option>
-					<option value="2" <c:if test="${'2' == queryDto.accountCategory }">selected="true"</c:if>>老师</option>
+					<option value="0" <c:if test="${'0' == queryDto.accountCategory }">selected</c:if>>全部</option>
+					<option value="1" <c:if test="${'1' == queryDto.accountCategory }">selected</c:if>>客户</option>
+					<option value="2" <c:if test="${'2' == queryDto.accountCategory }">selected</c:if>>老师</option>
 				</select>
 			</td>
 			<th></th>
@@ -65,7 +63,7 @@ function updateDeleteFlag(ids,deleteFlag){
 			<th>英文名称：</th>
 			<td><input type="text" name="enName" value="${queryDto.enName }"></td>		
 			<th>电话号码：</th>
-			<td><input type="text" name="cellphone" value="${queryDto.cellphone }"></td>
+			<td><input type="text" name="mobile" value="${queryDto.mobile }"></td>
 			<th>手机号码：</th>
 			<td><input type="text" name="telephone" value="${queryDto.telephone }"></td>		
 		</tr>
@@ -90,7 +88,6 @@ function updateDeleteFlag(ids,deleteFlag){
 		<thead>
 			<tr style="background-color: #dff0d8">
 				<th width="10"><input type="checkbox" id="firstCheckbox"/></th>
-				<th nowrap="nowrap">操作</th>
 				<th>账号</th>
 				<th>账号类别</th>
 				<th>账号类型</th>
@@ -101,68 +98,57 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>银行账号</th>
 				<th>银行地址</th>
 				<th>手机号码</th>
-				<th>电话</th>
 				<th>开户日期</th>
 				<th>weChat绑定状态</th>
 				<th>投票权限</th>
 				<th>评论权限</th>
 				<th>状态</th>
+				<th nowrap="nowrap">操作</th>
 			</tr>
 		</thead>
 		<c:forEach items="${page.list }" var="u">
 			<tr>
 				<td><input type="checkbox" name="ids" value="${u.id }"/></td>			
-			   <td>
-			      <a href="${ctx }/boss/member/edit?id=${u.id}">编辑</a>
-			      <c:choose>
-			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
-			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
-			      </c:choose>
-			   </td>
 			   <td>&nbsp;${u.userName }</td>
 			   <td>
 					<c:choose>
-			   			<c:when test="${u.accountCategory == '0' }">全部</c:when>
-			   			<c:when test="${u.accountCategory == '1' }">客户</c:when>
-			   			<c:when test="${u.accountCategory == '2' }">老师</c:when>
+			   			<c:when test="${u.accountCategory == '0' }">客户</c:when>
+			   			<c:when test="${u.accountCategory == '1' }">老师</c:when>
 			   		</c:choose>			   
 			   </td>
 			   <td>
 					<c:choose>
-			   			<c:when test="${u.accountType == '0' }">全部</c:when>
-			   			<c:when test="${u.accountType == '1' }">真实</c:when>
-			   			<c:when test="${u.accountType == '2' }">测试</c:when>
+			   			<c:when test="${u.accountType == '0' }">真实</c:when>
+			   			<c:when test="${u.accountType == '1' }">测试</c:when>
 			   		</c:choose>			   
 			   </td>
 			   <td>
 		   			<c:choose>
 				   		<c:when test="${s.brokerInfos!=null}">
 							<c:forEach items="${s.brokerInfos }" var="brokerInfo" varStatus="status">
-								<c:set var="userNames" value="${userNames}${status.first ? '' : ','}${brokerInfo.userName}"/>
+								<c:set var="brokerNames" value="${userNames}${status.first ? '' : ','}${brokerInfo.cnName}"/>
 							</c:forEach>
 				   		</c:when>
 				   		<c:otherwise>&nbsp;
-				   			<c:set var="userNames" value=""/>
+				   			<c:set var="brokerNames" value=""/>
 				   		</c:otherwise>
-			   		</c:choose>${userNames }
-			   		<c:set var="userNames" value=""/>
+			   		</c:choose>${brokerNames }
+			   		<c:set var="brokerNames" value=""/>
 			   </td>
 			   <td>&nbsp;${u.cnName }</td>
 			   <td>&nbsp;${u.enName }</td>
-			   <td>&nbsp;${u.bankAccount }</td>
-			   <td>&nbsp;${u.bankCardNum }</td>
-			   <td>&nbsp;${u.bankAddress }</td>
-			   <td>&nbsp;${u.telephone }</td>
-			   <td>&nbsp;${u.cellphone }</td>
+			   <td>&nbsp;${u.memBankInfo.bankAccount }</td>
+			   <td>&nbsp;${u.memBankInfo.bankCardNum }</td>
+			   <td>&nbsp;${u.memBankInfo.bankAddress }</td>
+			   <td>&nbsp;${u.mobile }</td>
 			   <td>&nbsp;${u.createAccountDate }</td>
 				<td>
 					<c:choose>
-			   			<c:when test="${u.isVoteAuth == '0' }">全部</c:when>
-			   			<c:when test="${u.isVoteAuth == '1' }">已绑定</c:when>
-			   			<c:when test="${u.isVoteAuth == '2' }">未绑定</c:when>
+			   			<c:when test="${u.isBindWeChat == '1' }">已绑定</c:when>
+			   			<c:when test="${u.isBindWeChat == '0' }">未绑定</c:when>
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>			   
-			   </td>
+			    </td>
 				<td>
 					<c:choose>
 			   			<c:when test="${u.isVoteAuth == '0' }">关</c:when>
@@ -186,6 +172,13 @@ function updateDeleteFlag(ids,deleteFlag){
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>			   
 			   </td>
+				<td>
+			      <a href="${ctx }/member/edit?id=${u.id}">编辑</a>
+			      <c:choose>
+			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
+			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
+			      </c:choose>
+			   </td>			   
 		    </tr>
 		</c:forEach>
 		<tr>
@@ -201,7 +194,7 @@ function updateDeleteFlag(ids,deleteFlag){
 </form>
  <script type="text/javascript">
 	function toAdd(){
-		var _url = "${ctx }/boss/member/edit";
+		var _url = "${ctx }/member/edit";
         var _form = $("#form");
 		_form.attr("action",_url);
 		_form.submit();
