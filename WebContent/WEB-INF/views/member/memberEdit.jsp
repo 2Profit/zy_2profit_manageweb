@@ -24,12 +24,12 @@ $(function(){
 		event.preventDefault();
 		$.ajax({
 		    type:'POST',
-		    url:'${ctx }/boss/memberUser/save',
+		    url:'${ctx }/member/save',
 		    data:$("#form").serialize(),
 		    success:function(json){
 		    	if(json.success){
 	        		alert('保存成功！');
-	        		window.location.replace("${ctx }/boss/member/list");
+	        		window.location.replace("${ctx }/member/list");
 	        	}else{
 	        		alert('保存失败！');
 	        	} 
@@ -62,38 +62,38 @@ $(function(){
 				<td><input type="hidden" name="deleteFlag" value="${member.deleteFlag }" /></td>
 				<td><input type="hidden" name="createId" value="${member.createId }" /></td>
 				<td><input type="hidden" name="createName" value="${member.createName }" /></td>
-				<td><input type="hidden" name="memBankInfo.id" value="${member.memBankInfo.id }" /></td>
+				
+				<td><input type="hidden" name="nickName" value="${member.nickName }" /></td>
+				<td><input type="hidden" name="pwd" value="${member.pwd }" /></td>
 			</tr>
 			
 			<tr>
 				<th class="td_right"><em>*</em>账号：</th>
 				<td style="text-align: left;">
-					<input type="text" name="userName" data-rule="名称:required;userName;length[1~64];" id="userName"  value="${member.userName }"/>
+					<input type="text" name="userName" data-rule="账号:required;userName;length[1~64];" id="userName"  value="${member.userName }"/>
 				</td>
-				<th class="td_right">账号类别：</th>
+				<th class="td_right"><em>*</em>账号类别：</th>
 				<td style="text-align: left;">
-					<select id="accountCategory" name="accountCategory">
+					<select id="accountCategory" name="accountCategory" data-rule="账号类别:required;accountCategory;">
 						<option value="">--请选择--</option>
-					    <option value="0" <c:if test="${'0' == member.accountCategory }">selected="true"</c:if>>全部</option>
-					    <option value="1" <c:if test="${'1' == member.accountCategory }">selected="true"</c:if>>客户</option>
-					    <option value="2" <c:if test="${'2' == member.accountCategory }">selected="true"</c:if>>老师</option>
+					    <option value="0" <c:if test="${'0' == member.accountCategory }">selected</c:if>>客户</option>
+					    <option value="1" <c:if test="${'1' == member.accountCategory }">selected</c:if>>老师</option>
 					</select>
 				</td>				
 			</tr>
 			
 			<tr>
-				<th class="td_right">账号类型：</th>
+				<th class="td_right"><em>*</em>账号类型：</th>
 				<td style="text-align: left;">
-					<select id="accountType" name="accountType">
+					<select id="accountType" name="accountType" data-rule="账号类型:required;accountType;">
 						<option value="">--请选择--</option>
-					    <option value="0" <c:if test="${'0' == member.accountType }">selected="true"</c:if>>全部</option>
-					    <option value="1" <c:if test="${'1' == member.accountType }">selected="true"</c:if>>真实</option>
-					    <option value="2" <c:if test="${'2' == member.accountType }">selected="true"</c:if>>测试</option>
+					    <option value="0" <c:if test="${'0' == member.accountType }">selected</c:if>>真实</option>
+					    <option value="1" <c:if test="${'1' == member.accountType }">selected</c:if>>测试</option>
 					</select>
 				</td>			
 				<th class="td_right">经纪商：</th>
 				<td style="text-align: left;">
-					<select id="brokerInfos" name="brokerInfos">
+					<select id="brokerInfos">
 						<option value="">--请选择--</option>
 						<c:forEach items="${brokerInfos }" var="r">
 						    <option value="${r.id }" 
@@ -108,13 +108,27 @@ $(function(){
 			</tr>
 			
 			<tr>
-				<th class="td_right">中文名称：</th>
+				<th class="td_right"><em>*</em>中文名称：</th>
 				<td style="text-align: left;">
-					<input type="text" name="cnName" id="cnName"  value="${member.cnName }"/>
+					<input type="text" name="cnName" id="cnName" value="${member.cnName }" data-rule="中文名称:required;cnName;"/>
 				</td>
-				<th class="td_right">英文名称：</th>
+				<th class="td_right"><em>*</em>英文名称：</th>
 				<td style="text-align: left;">
-					<input type="text" name="enName" id="enName"  value="${member.enName }"/>
+					<input type="text" name="enName" id="enName" value="${member.enName }" data-rule="英文名称:required;enName;"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="td_right"><em>*</em>证件类型：</th>
+				<td style="text-align: left;">
+					<select name="cardType" data-rule="证件类型:required;cardType;">
+                        <option value="0" <c:if test="${member.cardType=='0'}">selected</c:if>>身份证</option>
+                        <option value="1" <c:if test="${member.cardType=='1'}">selected</c:if>>护照</option>
+                    </select>					
+				</td>
+				<th class="td_right"><em>*</em>证件编号：</th>
+				<td style="text-align: left;">
+					<input type="text" name="cardNo" id="cardNo" value="${member.cardNo }" data-rule="证件编号:required;cardNo;"/>
 				</td>
 			</tr>
 			
@@ -137,13 +151,40 @@ $(function(){
 			</tr>
 
 			<tr>
-				<th class="td_right">电话号码：</th>
-				<td style="text-align: left;">
-					<input type="text" name="telephone" id="telephone"  value="${member.telephone }"/>
-				</td>
 				<th class="td_right">手机号码：</th>
 				<td style="text-align: left;">
-					<input type="text" name="cellphone" id="cellphone"  value="${member.cellphone }"/>
+					<input type="text" name="mobile" id="mobile" value="${member.mobile }" data-rule="手机号码:required;mobile;"/>
+				</td>			
+				<th class="td_right">电话号码：</th>
+				<td style="text-align: left;">
+					<input type="text" name="telephone" id="telephone" value="${member.telephone }"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="td_right">电子邮箱：</th>
+				<td style="text-align: left;">
+					<input type="text" name="email" id="email"  value="${member.email }"/>
+				</td>
+				<th class="td_right">联系地址：</th>
+				<td style="text-align: left;">
+					<input type="text" name="address" id="address"  value="${member.address }"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="td_right">性别：</th>
+				<td style="text-align: left;">
+                     <label><input type="radio" name="sex" value="0" <c:if test="${member.sex=='0'}">checked</c:if> />男</label>
+                     <label><input type="radio" name="sex" value="1" <c:if test="${member.sex=='1'}">checked</c:if>/>女</label>					
+				</td>
+				<th class="td_right">国籍：</th>
+				<td style="text-align: left;">
+					<select name="nation">
+                        <option <c:if test="${member.nation=='0'}">selected</c:if>>中国</option>
+                        <option <c:if test="${member.nation=='1'}">selected</c:if>>香港</option>
+                        <option <c:if test="${member.nation=='2'}">selected</c:if>>澳门</option>
+                    </select>
 				</td>
 			</tr>
 			
@@ -177,9 +218,8 @@ $(function(){
 				<td>
 					<select id="isBindWeChat" name="isBindWeChat">
 						<option value="">--请选择--</option>
-					    <option value="0" <c:if test="${'0' == member.isBindWeChat }">selected</c:if>>全部</option>
 					    <option value="1" <c:if test="${'1' == member.isBindWeChat }">selected</c:if>>绑定</option>
-					    <option value="2" <c:if test="${'2' == member.isBindWeChat }">selected</c:if>>未绑定</option>
+					    <option value="0" <c:if test="${'0' == member.isBindWeChat }">selected</c:if>>未绑定</option>
 					</select>
 				</td>			
 			</tr>

@@ -1,5 +1,8 @@
 package com.zy.profit.web.vote;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,12 +11,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zy.base.entity.Notice;
 import com.zy.common.entity.ResultDto;
 import com.zy.common.util.UserDto;
 import com.zy.common.util.UserSessionUtil;
+import com.zy.util.ImageUploadUtil;
 import com.zy.vote.dto.VoteTopicDto;
 import com.zy.vote.entity.VoteTopic;
 import com.zy.vote.service.VoteTopicOptionService;
@@ -52,12 +58,29 @@ public class VoteTopicController {
 		return "vote/voteTopicEdit";
 	}
 	
+	private String uploadFile(MultipartFile multipart,VoteTopic entity) throws IllegalStateException, IOException{
+		String originalFileName = multipart.getOriginalFilename();
+		File convFile = new File(originalFileName);
+        multipart.transferTo(convFile);
+		return ImageUploadUtil.uploadFileHandler(convFile,VoteTopic.class.getSimpleName(),originalFileName,
+				entity.getImageWidth(),entity.getImageHeight());
+	}
+	
 	@RequestMapping("/save")
 	@ResponseBody
-	public ResultDto<VoteTopic> save(VoteTopic dto,HttpServletRequest request){
+	public ResultDto<VoteTopic> save(VoteTopic dto,HttpServletRequest request,
+			@RequestParam("file") MultipartFile file){
 		
 		ResultDto<VoteTopic> result = new ResultDto<VoteTopic>();
 		try {
+			//上传图片到服务器
+			if(file!=null && !file.isEmpty()){
+				String returnCode = uploadFile(file, dto);
+				if(!"400".equals(returnCode)){
+					dto.setImageUrl(returnCode);
+				}
+			}
+			
 			UserDto userDto = UserSessionUtil.getSessionUser(request.getSession());
 			if(userDto!=null)
 				dto.setCreateName(userDto.getUsername());

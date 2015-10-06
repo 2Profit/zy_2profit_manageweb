@@ -3,8 +3,6 @@ package com.zy.profit.web.vote;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zy.common.entity.PageModel;
 import com.zy.common.entity.ResultDto;
-import com.zy.common.util.UserDto;
-import com.zy.common.util.UserSessionUtil;
 import com.zy.vote.dto.VoteTopicDto;
 import com.zy.vote.entity.VoteMemberLog;
+import com.zy.vote.entity.VoteTopic;
 import com.zy.vote.entity.VoteTopicOption;
 import com.zy.vote.service.VoteMemberLogService;
 import com.zy.vote.service.VoteTopicOptionService;
@@ -70,13 +67,19 @@ public class VoteResultController {
 	public ResultDto<VoteTopicOption> resultEdit(@RequestBody VoteTopicOption queryDto){
 		ResultDto<VoteTopicOption> result = new ResultDto<VoteTopicOption>();
 		try {
+			int totalChangeNumb = 0;
+			VoteTopic voteTopic = null;
 			for(String idNumer: new HashSet<String>(Arrays.asList(queryDto.getIdsAdjust()))){
 				if(idNumer.split("~").length==2){
+					totalChangeNumb += new Integer(idNumer.split("~")[1]);
 					VoteTopicOption optionEntity = voteTopicOptionService.get(idNumer.split("~")[0]);
+					voteTopic = optionEntity.getVoteTopic();
 					optionEntity.setVoteCount(optionEntity.getVoteCount() + new Integer(idNumer.split("~")[1]));
 					voteTopicOptionService.update(optionEntity);
 				}
 			}
+			voteTopic.setVoteCount(voteTopic.getVoteCount() + totalChangeNumb);
+			voteTopicService.update(voteTopic);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);

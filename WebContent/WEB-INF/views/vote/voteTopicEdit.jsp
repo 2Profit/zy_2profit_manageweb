@@ -11,9 +11,22 @@
 <style>
 	.td_right{text-align: right;}
 	em {font-style: normal;color:red;}
+	img {height: auto;width:auto;}
 </style>
 <script type="text/javascript">
 	$(function(){
+		
+		//图片修改后预览
+		$('#image').change(function(){
+			if (this.files && this.files[0]) {
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            $('#blah').attr('src', e.target.result);
+		        }
+		        reader.readAsDataURL(this.files[0]);
+		    }
+		});
+		
 		$("#return_button").bind("click",function(event){
 			event.preventDefault();
 			window.location.replace("${ctx }/voteTopic/list");
@@ -46,6 +59,9 @@
  			if($('#isComment').val()==''){
  				$('#isComment').focus();return false;
  			}
+ 			if($('#schedule').val()==''){
+ 				$('#schedule').focus();return false;
+ 			}
  			var flagReturn = false;
 			$('input[name="optionContent"]').each(function(){
 				if($(this).val()==''){
@@ -58,8 +74,6 @@
 			}
 			
  			var formData = new FormData($('#form')[0]);
- 			alert($('#form')[0]);
- 			alert(formData);
  			$.ajax({
  		        type: "POST",
  		        url: "${ctx }/voteTopic/save",
@@ -111,6 +125,7 @@
 				<td><input type="hidden" name="deleteFlag" value="${voteTopic.deleteFlag }" /></td>
 				<td><input type="hidden" name="createId" value="${voteTopic.createId }" /></td>
 				<td><input type="hidden" name="createName" value="${voteTopic.createName }" /></td>
+				<td><input type="hidden" name="imageUrl" value="${lecturer.imageUrl }" /></td>
 			</tr>
 			<tr>
 				<th class="td_right">开始日期：</th>
@@ -152,14 +167,29 @@
 						<option value="1" <c:if test="${'1' == voteTopic.displayType }">selected</c:if>>实数</option>
 					</select>
 		 		</td>
-		 		<th></th><td></td>
+		 		<th>主题排期：</th>
+		 		<td>
+					<select id="schedule" name="schedule" data-rule="主题排期:required;schedule;">
+						<option value="">--请选择--</option>
+						<option value="1" <c:if test="${'1' == voteTopic.schedule }">selected</c:if>>当前期</option>
+						<option value="2" <c:if test="${'2' == voteTopic.schedule }">selected</c:if>></option>
+					</select>
+		 		</td>
+
 		 	</tr>
 			<tr>
 				<th>题目内容：</th>
-				<td colspan="3">
+				<td>
 		  			<input type="text" name="titleContent" data-rule="题目内容:required;titleContent;"  
 		  				id="titleContent" value="${voteTopic.titleContent}"/>
 				</td>
+		 		<th>主题图片</th>
+				<td style="text-align: left;">
+					<input type='file' id="image" name="file"/><br>
+					宽：<input type="text" name="imageWidth" value="300"> <br/>
+					高：<input type="text" name="imageHeight" value="300"> <br>
+   					<img id="blah" src="${ctx}/${voteTopic.imageUrl}" alt="图片预览" />						
+				</td>				
 		 	</tr>		 	
 		 	<tr>
 				<th class="td_right">选项：<a href="" id="add_option">增加选项</a></th>

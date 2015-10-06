@@ -18,6 +18,16 @@ $(function(){
 		$("#companyType").val("");
 		$("#deleteFlag").val("");
 	});
+	
+	$('#copy_button').click(function(event){
+		event.preventDefault();
+		if($("input[name='ids']:checked").length!=1){
+			alert('请勾选一条记录');return;
+		}
+		if(!confirm("是否确认对选择的信息进行操作？")){return;}
+		window.location.href = "${ctx }/brokerExtInfo/brokerCopy?id="+$("input[name='ids']:checked").val();
+	});
+	
 });
 
 function updateDeleteFlag(ids,deleteFlag){
@@ -143,9 +153,9 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>产品</th>
 				<th>结算币值</th>
 				<th>产品点差</th>
-				<th width="8%">产品点差(最低)</th>
-				<th width="8%">单次最低交易手数</th>
-				<th width="8%">单次最高交易手数</th>
+				<th width="10%">产品点差(最低)</th>
+				<th width="10%">单次最低交易手数</th>
+				<th width="10%">单次最高交易手数</th>
 				<th>持仓手数上限</th>
 				<th>客户回佣</th>
 				<th>交易编号</th>
@@ -331,7 +341,8 @@ function updateDeleteFlag(ids,deleteFlag){
 			<td width="50"><input type="checkbox" id="checkAll"/></td>
 			<td colspan="50">
 				<button id="delete_button" class="btn btn-danger"><i class="icon-remove icon-white"></i>删除</button>&nbsp;
-				<button id="revert_button" class="btn btn-warning"><i class="icon-repeat icon-white"></i>恢复</button>
+				<button id="revert_button" class="btn btn-warning"><i class="icon-repeat icon-white"></i>恢复</button>&nbsp;
+				<button id="copy_button" class="btn btn-success"><i class="icon-repeat icon-white"></i>复制</button>
 			</td>
 		</tr>		
 		<tr><td colspan="50" style="text-align:center;"><%@ include file="../common/pager.jsp"%></td>

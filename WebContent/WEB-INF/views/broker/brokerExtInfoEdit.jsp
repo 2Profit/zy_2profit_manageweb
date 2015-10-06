@@ -11,9 +11,22 @@
 <style>
 	.td_right{text-align: right;}
 	em {font-style: normal;color:red;}
+	img {height: auto;width:auto;}
 </style>
 <script type="text/javascript">
 $(function(){
+	//图片修改后预览
+	$('#image').change(function(){
+		if (this.files && this.files[0]) {
+	        var reader = new FileReader();
+	        reader.onload = function (e) {
+	            $('#blah').attr('src', e.target.result);
+	        }
+	        reader.readAsDataURL(this.files[0]);
+	    }
+	});
+	
+	
 	$("#return_button").bind("click",function(event){
 		event.preventDefault();
 		window.location.replace("${ctx }/brokerExtInfo/list");
@@ -22,13 +35,90 @@ $(function(){
 	$('#companyType').multiselect();
 	$('#platform').multiselect();
 	$('#productType').multiselect();
+	
+	$('input[name=cnName]').blur(function(){
+		if($('input[name=id]').val()!=''){return;}//新增的时候验证
+		$.post(
+	       	"${ctx }/brokerExtInfo/validate",
+	    	{'cnName':$('input[name=cnName]').val()},
+	    	function(json) {
+	       		if(!json.success){
+	       			alert("中文名称:"+$('input[name=cnName]').val()+"，已经存在！");
+	       			$('input[name=cnName]').focus();
+	       		}
+	       	}    
+		);
+	});
+	$('input[name=enName]').blur(function(){
+		if($('input[name=id]').val()!=''){return;}//新增的时候验证
+		$.post(
+	       	"${ctx }/brokerExtInfo/validate",
+	    	{'enName':$('input[name=enName]').val()},
+	    	function(json) {
+	       		if(!json.success){
+	       			alert("英文名称:"+$('input[name=enName]').val()+"，已经存在！");
+	       			$('input[name=enName]').focus();
+	       		}
+	       	}    
+		);
+	});
+	$('input[name=companyIndex]').blur(function(){
+		if($('input[name=id]').val()!=''){return;}//新增的时候验证
+		$.post(
+	       	"${ctx }/brokerExtInfo/validate",
+	    	{'companyIndex':$('input[name=companyIndex]').val()},
+	    	function(json) {
+	       		if(!json.success){
+	       			alert("公司推荐值:"+$('input[name=companyIndex]').val()+"，已经存在！");
+	       			$('input[name=companyIndex]').focus();
+	       		}
+	       	}    
+		);
+	});
+	$('input[name=exchangeNo]').blur(function(){
+		if($('input[name=id]').val()!=''){return;}//新增的时候验证
+		$.post(
+	       	"${ctx }/brokerExtInfo/validate",
+	    	{'exchangeNo':$('input[name=exchangeNo]').val()},
+	    	function(json) {
+	       		if(!json.success){
+	       			alert("交易编码:"+$('input[name=exchangeNo]').val()+"，已经存在！");
+	       			$('input[name=exchangeNo]').focus();
+	       		}
+	       	}    
+		);
+	});
+		
+	$('button[name=post_button]').click(function(){
+		var formData = new FormData($('#form')[0]);
+		$.ajax({
+	        type: "POST",
+	        url: "${ctx }/voteTopic/save",
+	        cache: false,
+	        async: false,
+	        contentType: false,
+	        processData: false,
+	        data:formData,
+	        dataType:"json",
+	        success: function (json) {
+	        	if(json.success){
+	        		alert('保存成功！');
+	        		window.location.replace("${ctx }/brokerExtInfo/list");
+	        	}else{
+	        		alert('保存失败！','');
+	        	}
+	        }
+	    });		
+	});
+		
 });
+
 
 </script>
 </head>
 
 <body>
-	<form action="" namespace="/" theme="simple" id="form" method = "POST">
+	<form action="" namespace="/" theme="simple" id="form" method = "POST" enctype="multipart/form-data">
 		<table class="table table-bordered">
 			<tr>
 				<td colspan="4" style="background-color: #dff0d8;text-align: center;">
@@ -249,6 +339,16 @@ $(function(){
 				</td>			
 			</tr>
 			
+			<tr>	
+				<th class="td_right"><em>*</em>返佣金额：</th>
+				<td style="text-align: left;" colspan="3">
+					欧美:<input type="text" name="commissionEurope"  id="commissionEurope" value="${brokerExtInfo.commissionEurope}"/>
+					黄金:<input type="text" name="commissionGold"  id="commissionGold" value="${brokerExtInfo.commissionGold}"/>
+					白银:<input type="text" name="commissionSilver"  id="commissionSilver" value="${brokerExtInfo.commissionSilver}"/>
+					原油:<input type="text" name="commissionOil"  id="commissionOil" value="${brokerExtInfo.commissionOil}"/>
+				</td>			
+			</tr>
+			
 			<tr>
 				<th class="td_right"><em>*</em>建仓手续费：</th>
 				<td style="text-align: left;">
@@ -315,16 +415,26 @@ $(function(){
 				</td>
 			</tr>
 			
+			<tr>
+		 		<th>LOGO图片</th>
+				<td style="text-align: left;" colspan="3">
+					<input type='file' id="image" name="file"/><br>
+					宽：<input type="text" name="imageWidth" value="300"> <br/>
+					高：<input type="text" name="imageHeight" value="300"> <br>
+   					<img id="blah" src="${ctx}/${brokerExtInfo.imageUrl}" alt="图片预览" />						
+				</td>			
+			</tr>
+			
 			<tr >
 				<td colspan="4" style="text-align: center;">
 				   <c:choose>
 				     <c:when test="${brokerExtInfo.id == null || brokerExtInfo.id == '' }">
-				        <button method="save" class="btn btn-success">
+				        <button name="post_button" class="btn btn-success">
 							<i class="icon-ok icon-white"></i> 新增
 						</button>
 				     </c:when>
 				     <c:otherwise>
-				        <button method="save" class="btn btn-success" name="postData_button">
+				        <button name="post_button" class="btn btn-success" name="postData_button">
 							<i class="icon-ok icon-white"></i> 保存
 						</button>
 				     </c:otherwise>
