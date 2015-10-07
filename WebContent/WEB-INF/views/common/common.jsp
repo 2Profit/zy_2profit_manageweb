@@ -3,6 +3,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+
 <link rel="stylesheet" href="<%=request.getContextPath()%>/static/bootstrap/css/bootstrap.min.css"  type="text/css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/base.css"  type="text/css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/static/css/bootstrap-multiselect.css"  type="text/css">
@@ -17,8 +19,9 @@
 <script type="text/javascript" src="<%=request.getContextPath() %>/static/js/bootstrap-multiselect.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/static/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/static/js/dialogCommon.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/static/js/jquery.form.js"></script>
+<script type="text/javascript" src="${ctx }/static/layer/layer.js"></script>
 
-<c:set var="ctx" value="${pageContext.request.contextPath}"/>
 
 <%
 String path = request.getContextPath();

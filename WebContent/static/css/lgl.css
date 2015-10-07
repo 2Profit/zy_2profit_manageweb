@@ -1,0 +1,128 @@
+@CHARSET "UTF-8";
+
+.wd200 {
+	width: 200px;
+}
+
+.l_main{
+	font-family: '\5FAE\8F6F\96C5\9ED1';
+}
+
+.l_main table{font-size: 12px;}
+.l_main table thead tr {
+	background-color: #dff0d8;
+}
+.l_main table thead th {
+	text-align: center;
+}
+
+.l_main table tbody td a.a_btn{
+	display: inline-block;
+	margin: 0 5px;
+}
+
+.l_toolBar{padding: 5px;}
+.l_toolBar span {
+	display: inline-block;
+	margin: 3px 10px;
+}
+.l_toolBar select {
+	width: auto;
+}
+.l_toolBar button {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.l_toolBar .form-inline {
+	margin: 0px;
+}
+
+.mgt20{
+	margin-top: 20px;
+}
+
+.l_border{
+	padding : 3px;
+	border:  1px solid #ddd;
+}
+
+.l_titlebar{
+	height: 36px;
+  	background: url(../images/dot_ddd2.png) 0 bottom repeat-x;
+}
+
+.l_titlebar .l_text {
+	float: left;
+  	height: 34px;
+  	line-height: 34px;
+  	font-size: 16px;
+  	color: #333;
+  	border-bottom: 2px solid #1cb177;
+}
+
+.l_form{}
+	.l_form table {
+		width: 100%;
+	}
+		.l_form table td {
+			line-height: 50px;
+			color: #333;
+			border-bottom: 1px dashed #ddd;
+		}
+		.l_form table .f_title {
+			text-align: right;
+	  		font-size: 14px;
+		}
+		.l_form table .f_content {
+			
+		}
+		.l_form table label {
+			margin-bottom: 0px;
+		}
+		.l_form table input {
+			height: 30px;
+			margin-bottom: 0px;
+		}
+		.l_form table select {
+			width: auto;
+			margin-bottom: 0px;
+		}
+		
+a{
+	text-decoration: none;
+}
+a:link{
+	text-decoration:none;
+}
+a:visited{text-decoration:none; 
+}
+a:hover{text-decoration:none;}
+a:active{
+	text-decoration:none; 
+}
+		
+.l_btnGrounp {
+	text-align: center;
+}
+	.l_btnGrounp .b_btn {
+		display: inline-block;
+		  padding: 0 40px;
+		  margin: 0 10px;
+		  height: 40px;
+		  line-height: 40px;
+		  color: #fff;
+		  font-size: 18px;
+		  background-color: #1cb177;
+		  border-radius: 3px;
+	}
+	.l_btnGrounp .b_btn:hover { background-color: #1ba26d; }
+        .l_btnGrounp .b_btn.orange { background-color: #f60; }
+            .l_btnGrounp .b_btn.orange:hover { background-color: #e45d03; }
+        .l_btnGrounp .b_btn.gray { background-color: #d3d1d1; }
+            .l_btnGrounp .b_btn.gray:hover { background-color: #adadad; }
+        .l_btnGrounp .b_btn.red { background-color: #dd514c; }
+            .Jg_btnGrounp .b_btn.red:hover { background-color: #c44641; }
+        .l_btnGrounp .b_btn.blue { background-color: #3bb4f2; }
+            .l_btnGrounp .b_btn.blue:hover { background-color: #359fd6; }
+            
+            
