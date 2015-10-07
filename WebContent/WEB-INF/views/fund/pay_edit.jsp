@@ -23,7 +23,7 @@ $(function(){
 		fields : {
 			tradeId : 'required',
 			account : 'required',
-			amount : 'required;integer[+]',
+			amount : 'required;money',
 			payType : 'required',
 			curType : 'required',
 			applierId : 'required'
@@ -54,6 +54,10 @@ $(function(){
 		}
 	});
 	
+	//set值
+	$('#myForm select[name="payType"]').val('${trade.payType}');
+	$('#myForm select[name="curType"]').val('${trade.curType}');
+	
 });
 
 function mySubmit(){
@@ -68,39 +72,49 @@ function mySubmit(){
 	<div class="l_main">
 		<div class="l_titleBar">
 			<div class="l_text">
-				添加付款
+				<c:choose>
+				<c:when test="${type eq 'add' }">
+					添加存款
+				</c:when>
+				<c:when test="${type eq 'update' }">
+					修改存款
+				</c:when>
+				<c:otherwise>
+					预览存款
+				</c:otherwise>
+			</c:choose>
 			</div>
 		</div>
 		<form id="myForm" method="post">
 		<div class="l_form mgt20">
 			<input type="hidden" name="type" value="${type }"/>
-			<input type="hidden" name="id" value=""/>
+			<input type="hidden" name="id" value="${trade.id }"/>
 			<table>
 				<tbody>
 					<c:if test="${type ne 'add' }">
 						<tr>
 							<td class="f_title wd200">提案号：</td>
 							<td class="f_content">
-								<label>123</label>
+								<label>${trade.proposalNo }</label>
 							</td>
 						</tr>
 					</c:if>
 					<tr>
 						<td class="f_title wd200">交易号：</td>
 						<td class="f_content">
-							<input type="text" name="tradeId"/>
+							<input type="text" name="tradeId" value="${trade.tradeId }"/>
 						</td>
 					</tr>
 					<tr>
 						<td class="f_title">账号：</td>
 						<td class="f_content">
-							<input type="text" name="account">
+							<input type="text" name="account" value="${trade.account }">
 						</td>
 					</tr>
 					<tr>
 						<td class="f_title">存款金额：</td>
 						<td class="f_content">
-							<input type="text" name="amount"/>
+							<input type="text" name="amount" value="${trade.amount }"/>
 						</td>
 					</tr>
 					<tr>
@@ -130,7 +144,7 @@ function mySubmit(){
 							<select name="applierId">
 								<option value="">请选择</option>
 								<c:forEach items="${users }" var="u">
-									<option value="${u.id }">${u.realName }</option>
+									<option value="${u.id }" <c:if test="${u.id eq trade.applier.id }">selected="selected"</c:if>>${u.realName }</option>
 								</c:forEach>
 							</select>
 						</td>
@@ -141,7 +155,15 @@ function mySubmit(){
 		</form>
 		
 		<div class="l_btnGrounp mgt20">
-			<a class="b_btn" href="javascript:mySubmit();">保存</a>
+			<c:choose>
+				<c:when test="${type eq 'add' }">
+					<a class="b_btn" href="javascript:mySubmit();">保存</a>
+				</c:when>
+				<c:when test="${type eq 'update' }">
+					<a class="b_btn" href="javascript:mySubmit();">修改</a>
+				</c:when>
+			</c:choose>
+			
 			<a class="b_btn gray" href="${ctx }/fund/pay/list">返回</a>
 		</div>
 		

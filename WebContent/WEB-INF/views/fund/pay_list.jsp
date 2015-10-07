@@ -17,6 +17,18 @@ function myEdit(id){
 	window.location.href = '${ctx}/fund/pay/edit?type=add';
 }
 
+function myRefresh(){
+	window.location.reload();
+}
+
+$(function(){
+	
+	$('select[name="curType"]').val('${curType}');
+	$('select[name="payType"]').val('${payType}');
+	$('select[name="status"]').val('${status}');
+	
+});
+
 </script>
 
 </head>
@@ -25,7 +37,7 @@ function myEdit(id){
 	<div class="l_main">
 		<div class="l_titleBar">
 			<div class="l_text">
-				付款
+				在线充值
 			</div>
 		</div>
 		<div class="">
@@ -33,7 +45,7 @@ function myEdit(id){
 				<div class="form-inline">
 					<span>
 						<label>提案号：</label>
-						<input type="text" class="input-small" style="height: auto;" name="proposalNo"/>
+						<input type="text" class="input-small" style="height: auto;" name="proposalNo" value="${ proposalNo}"/>
 					</span>
 					<span>
 						<label>账户货币：</label>
@@ -48,8 +60,10 @@ function myEdit(id){
 						<label>存款途经：</label>
 						<select name="payType">
 							<option value="">全部</option>
+							<option value="3">人工添加</option>
 							<option value="0">支付宝</option>
 							<option value="1">微信</option>
+							<option value="2">银行</option>
 						</select>
 					</span>
 					
@@ -65,15 +79,17 @@ function myEdit(id){
 			</div>
 			
 			<div class="l_toolbar">
-				<button class="btn btn-primary">
+				<button class="btn btn-primary" method="list">
 					<i class="icon-search icon-white"></i> 查询
 				</button>
-				<button class="btn btn-info" id="fresh_button">
+				<a class="btn btn-info" id="fresh_button" onclick="myRefresh()">
 					<i class="icon-repeat icon-white"></i> 刷新
-				</button>				
-				<button class="btn btn-success" onclick="myEdit()">
+				</a>
+				<a class="btn btn-success" href="javascript:void(0);" onclick="myEdit()">
 					<i class="icon-plus-sign icon-white"></i> 添加
-				</button>
+				</a>
+				<!-- <a class="btn btn-success" href="javascript:void(0);">审批提案</a>
+				<a class="btn btn-danger" href="javascript:void(0);">取消提案</a> -->
 			</div>
 		</div>
 	
@@ -82,7 +98,7 @@ function myEdit(id){
 				<thead>
 					<tr>
 						<th>
-							<input type="checkbox"/>
+							<!-- <input type="checkbox"/> -->
 						</th>
 						<th>操作</th>
 						<th>提案号</th>
@@ -104,9 +120,10 @@ function myEdit(id){
 				<tbody>
 					<c:forEach items="${page.list }" var="trade">
 						<tr>
-							<td><input type="checkbox"/></td>
+							<td><input type="checkbox" name="chk" value="${trade.id }"/></td>
 							<td>
-								<a class="a_btn">修改</a><a class="a_btn">查看</a>
+								<a class="a_btn" href="${ctx }/fund/pay/edit?type=update&id=${trade.id}">修改</a>
+								<a class="a_btn" href="${ctx }/fund/pay/edit?type=view&id=${trade.id}">查看</a>
 							</td>
 							<td>${trade.proposalNo }</td>
 							<td>${trade.tradeId }</td>

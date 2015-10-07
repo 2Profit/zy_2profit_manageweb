@@ -14,7 +14,7 @@
 	<frame src="${pageContext.request.contextPath}/boss/top" name="topFrame">
 	<frameset border="0" cols="200,*">
 		<frame src="${pageContext.request.contextPath}/boss/menu" name="leftFrame">
-		<frame src="${pageContext.request.contextPath}/boss/resource/list" name="rightFrame">
+		<frame src="${pageContext.request.contextPath}/boss/background" name="rightFrame">
 	</frameset>
 </frameset>
 </html>

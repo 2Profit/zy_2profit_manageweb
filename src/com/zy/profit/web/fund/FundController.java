@@ -41,18 +41,23 @@ public class FundController {
 		String payType = request.getParameter("payType");
 		String status = request.getParameter("status");
 		
+		model.addAttribute("proposalNo", proposalNo);
+		model.addAttribute("curType", curType);
+		model.addAttribute("payType", payType);
+		model.addAttribute("status", status);
+		
 		Map<String, Object> params = new HashMap<String, Object>();
-		if(StringUtils.isNotBlank(proposalNo)){
-			params.put("proposalNo", proposalNo.trim());
+		if(StringUtils.isNotBlank(proposalNo) && StringUtils.isNumeric(proposalNo.trim())){
+			params.put("proposalNo", Integer.parseInt(proposalNo.trim()));
 		}
 		if(StringUtils.isNotBlank(curType)){
-			params.put("curType", curType.trim());
+			params.put("curType", Integer.parseInt(curType.trim()));
 		}
 		if(StringUtils.isNotBlank(payType)){
-			params.put("payType", payType.trim());
+			params.put("payType", Integer.parseInt(payType.trim()));
 		}
 		if(StringUtils.isNotBlank(status)){
-			params.put("status", status.trim());
+			params.put("status", Integer.parseInt(status.trim()));
 		}
 		
 		Integer pageSize = HttpUtils.getPageSize(request);

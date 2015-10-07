@@ -42,6 +42,11 @@ public class IndexController {
 	// 登陆错误信息
 	public final static String LOGIN_ERROR_INFO = "login_error_info";
 
+	@RequestMapping("/background")
+	public String background(){
+		return "/background";
+	}
+	
 	@RequestMapping("/login")
 	public String login() {
 		return "login";
