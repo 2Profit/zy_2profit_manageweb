@@ -59,9 +59,6 @@ $(function(){
 			</tr>
 			<tr style="display:none;">
 				<td><input type="hidden" name="id" value="${member.id }" /></td>
-				<td><input type="hidden" name="deleteFlag" value="${member.deleteFlag }" /></td>
-				<td><input type="hidden" name="createId" value="${member.createId }" /></td>
-				<td><input type="hidden" name="createName" value="${member.createName }" /></td>
 				
 				<td><input type="hidden" name="nickName" value="${member.nickName }" /></td>
 				<td><input type="hidden" name="pwd" value="${member.pwd }" /></td>
@@ -128,25 +125,25 @@ $(function(){
 				</td>
 				<th class="td_right"><em>*</em>证件编号：</th>
 				<td style="text-align: left;">
-					<input type="text" name="cardNo" id="cardNo" value="${member.cardNo }" data-rule="证件编号:required;cardNo;"/>
+					<input type="text" name="card" id="cardNo" value="${member.card }" data-rule="证件编号:required;cardNo;"/>
 				</td>
 			</tr>
 			
 			<tr>
 				<th class="td_right">银行账户：</th>
 				<td style="text-align: left;">
-					<input type="text" name="memBankInfo.bankAccount" id="bankAccount"  value="${member.memBankInfo.bankAccount }"/>
+					<input type="text" name="bankAccount" id="bankAccount"  value="${member.memBankInfo.bankAccount }"/>
 				</td>
 				<th class="td_right">银行账号：</th>
 				<td style="text-align: left;">
-					<input type="text" name="memBankInfo.bankCardNum" id="bankCardNum"  value="${member.memBankInfo.bankCardNum }"/>
+					<input type="text" name="bankCardNum" id="bankCardNum"  value="${member.memBankInfo.bankCardNum }"/>
 				</td>
 			</tr>
 			
 			<tr>
 				<th class="td_right">银行地址：</th>
 				<td colspan="3">
-					<input type="text" name="memBankInfo.bankAddress" id="bankAddress"  value="${member.memBankInfo.bankAddress }"/>
+					<input type="text" name="bankAddress" id="bankAddress"  value="${member.memBankInfo.bankAddress }"/>
 				</td>				
 			</tr>
 
@@ -181,9 +178,9 @@ $(function(){
 				<th class="td_right">国籍：</th>
 				<td style="text-align: left;">
 					<select name="nation">
-                        <option <c:if test="${member.nation=='0'}">selected</c:if>>中国</option>
-                        <option <c:if test="${member.nation=='1'}">selected</c:if>>香港</option>
-                        <option <c:if test="${member.nation=='2'}">selected</c:if>>澳门</option>
+						<c:forEach items="${nationalities }" var="n">
+							<option value="${n.id }" <c:if test="${member.nationality.id eq n.id}">selected</c:if>>${n.name }</option>
+						</c:forEach>
                     </select>
 				</td>
 			</tr>
@@ -211,7 +208,7 @@ $(function(){
 			<tr>
 				<th>开户日期：</th>
 				<td>
-					<input type="text" name="createAccountDate" id="createAccountDate" onClick="WdatePicker();"
+					<input type="text" name="createAccountDateStr" id="createAccountDate" onClick="WdatePicker();"
 						value="<fmt:formatDate value='${member.createAccountDate}' pattern='yyyy-MM-dd'/>"/>
 				</td>			
 				<th>Wechat绑定状态：</th>
@@ -254,9 +251,9 @@ $(function(){
 				     </c:otherwise>
 				   </c:choose>
 					
-					<button class="btn btn-inverse" id="return_button">
+					<a class="btn btn-inverse" href="${ctx }/member/list">
 			   			 <i class="icon-arrow-left icon-white"></i> 返回
-					</button>
+					</a>
 				</td>
 			</tr>
 		</table>
