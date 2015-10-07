@@ -128,7 +128,7 @@ $(function(){
 				</td>
 				<th class="td_right"><em>*</em>证件编号：</th>
 				<td style="text-align: left;">
-					<input type="text" name="cardNo" id="cardNo" value="${member.cardNo }" data-rule="证件编号:required;cardNo;"/>
+					<input type="text" name="card" id="card" value="${member.card }" data-rule="证件编号:required;card;"/>
 				</td>
 			</tr>
 			
@@ -174,18 +174,18 @@ $(function(){
 			
 			<tr>
 				<th class="td_right">性别：</th>
-				<td style="text-align: left;">
+				<td style="text-align: left;" colspan="3">
                      <label><input type="radio" name="sex" value="0" <c:if test="${member.sex=='0'}">checked</c:if> />男</label>
                      <label><input type="radio" name="sex" value="1" <c:if test="${member.sex=='1'}">checked</c:if>/>女</label>					
 				</td>
-				<th class="td_right">国籍：</th>
+				<%-- <th class="td_right">国籍：</th>
 				<td style="text-align: left;">
 					<select name="nation">
                         <option <c:if test="${member.nation=='0'}">selected</c:if>>中国</option>
                         <option <c:if test="${member.nation=='1'}">selected</c:if>>香港</option>
                         <option <c:if test="${member.nation=='2'}">selected</c:if>>澳门</option>
                     </select>
-				</td>
+				</td> --%>
 			</tr>
 			
 			<tr>

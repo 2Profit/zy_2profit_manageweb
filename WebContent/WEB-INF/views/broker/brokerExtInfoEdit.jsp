@@ -89,11 +89,12 @@ $(function(){
 		);
 	});
 		
-	$('button[name=post_button]').click(function(){
+	$('button[name=post_button]').click(function(event){
+		event.preventDefault();
 		var formData = new FormData($('#form')[0]);
 		$.ajax({
 	        type: "POST",
-	        url: "${ctx }/voteTopic/save",
+	        url: "${ctx }/brokerExtInfo/save",
 	        cache: false,
 	        async: false,
 	        contentType: false,
@@ -138,6 +139,7 @@ $(function(){
 				<td><input type="hidden" name="deleteFlag" value="${brokerExtInfo.deleteFlag }" /></td>
 				<td><input type="hidden" name="createId" value="${brokerExtInfo.createId }" /></td>
 				<td><input type="hidden" name="createName" value="${brokerExtInfo.createName }" /></td>
+				<td><input type="hidden" name="imageUrl" value="${brokerExtInfo.imageUrl }" /></td>
 			</tr>
 			
 			<tr>
@@ -419,8 +421,8 @@ $(function(){
 		 		<th>LOGO图片</th>
 				<td style="text-align: left;" colspan="3">
 					<input type='file' id="image" name="file"/><br>
-					宽：<input type="text" name="imageWidth" value="300"> <br/>
-					高：<input type="text" name="imageHeight" value="300"> <br>
+					宽：<input type="text" name="imageWidth" value="120"> <br/>
+					高：<input type="text" name="imageHeight" value="58"> <br>
    					<img id="blah" src="${ctx}/${brokerExtInfo.imageUrl}" alt="图片预览" />						
 				</td>			
 			</tr>

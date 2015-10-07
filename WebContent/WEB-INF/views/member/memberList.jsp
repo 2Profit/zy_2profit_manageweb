@@ -140,12 +140,7 @@ function updateDeleteFlag(ids,deleteFlag){
 			   <td>&nbsp;${u.memBankInfo.bankAccount }</td>
 			   <td>&nbsp;${u.memBankInfo.bankCardNum }</td>
 			   <td>&nbsp;${u.memBankInfo.bankAddress }</td>
-<<<<<<< HEAD
 			   <td>&nbsp;${u.mobile }</td>
-=======
-			   <td>&nbsp;${u.telephone }</td>
-			   <td>&nbsp;${u.cellphone }</td>
->>>>>>> 4b58b753278442a732a50173fcce6ad97531c039
 			   <td>&nbsp;${u.createAccountDate }</td>
 				<td>
 					<c:choose>
