@@ -125,7 +125,8 @@
 				<td><input type="hidden" name="deleteFlag" value="${voteTopic.deleteFlag }" /></td>
 				<td><input type="hidden" name="createId" value="${voteTopic.createId }" /></td>
 				<td><input type="hidden" name="createName" value="${voteTopic.createName }" /></td>
-				<td><input type="hidden" name="imageUrl" value="${lecturer.imageUrl }" /></td>
+				<td><input type="hidden" name="imageUrl" value="${voteTopic.imageUrl }" /></td>
+				<td><input type="hidden" name="voteCount" value="${voteTopic.voteCount }" /></td>
 			</tr>
 			<tr>
 				<th class="td_right">开始日期：</th>
@@ -172,7 +173,7 @@
 					<select id="schedule" name="schedule" data-rule="主题排期:required;schedule;">
 						<option value="">--请选择--</option>
 						<option value="1" <c:if test="${'1' == voteTopic.schedule }">selected</c:if>>当前期</option>
-						<option value="2" <c:if test="${'2' == voteTopic.schedule }">selected</c:if>></option>
+						<option value="2" <c:if test="${'2' == voteTopic.schedule }">selected</c:if>>下期</option>
 					</select>
 		 		</td>
 
@@ -186,8 +187,8 @@
 		 		<th>主题图片</th>
 				<td style="text-align: left;">
 					<input type='file' id="image" name="file"/><br>
-					宽：<input type="text" name="imageWidth" value="300"> <br/>
-					高：<input type="text" name="imageHeight" value="300"> <br>
+					宽：<input type="text" name="imageWidth" value="230"> <br/>
+					高：<input type="text" name="imageHeight" value="130"> <br>
    					<img id="blah" src="${ctx}/${voteTopic.imageUrl}" alt="图片预览" />						
 				</td>				
 		 	</tr>		 	

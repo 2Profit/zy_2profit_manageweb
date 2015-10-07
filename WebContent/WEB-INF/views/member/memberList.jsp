@@ -141,8 +141,11 @@ function updateDeleteFlag(ids,deleteFlag){
 			   <td>&nbsp;${u.memBankInfo.bankCardNum }</td>
 			   <td>&nbsp;${u.memBankInfo.bankAddress }</td>
 			   <td>&nbsp;${u.mobile }</td>
+<<<<<<< HEAD
 			   <%-- <td>&nbsp;${u.telephone }</td>
 			   <td>&nbsp;${u.cellphone }</td> --%>
+=======
+>>>>>>> branch 'master' of git@github.com:2Profit/zy_2profit_manageweb.git
 			   <td>&nbsp;${u.createAccountDate }</td>
 				<td>
 					<c:choose>

@@ -125,7 +125,11 @@ $(function(){
 				</td>
 				<th class="td_right"><em>*</em>证件编号：</th>
 				<td style="text-align: left;">
+<<<<<<< HEAD
 					<input type="text" name="card" id="cardNo" value="${member.card }" data-rule="证件编号:required;cardNo;"/>
+=======
+					<input type="text" name="card" id="card" value="${member.card }" data-rule="证件编号:required;card;"/>
+>>>>>>> branch 'master' of git@github.com:2Profit/zy_2profit_manageweb.git
 				</td>
 			</tr>
 			
@@ -171,18 +175,18 @@ $(function(){
 			
 			<tr>
 				<th class="td_right">性别：</th>
-				<td style="text-align: left;">
+				<td style="text-align: left;" colspan="3">
                      <label><input type="radio" name="sex" value="0" <c:if test="${member.sex=='0'}">checked</c:if> />男</label>
                      <label><input type="radio" name="sex" value="1" <c:if test="${member.sex=='1'}">checked</c:if>/>女</label>					
 				</td>
-				<th class="td_right">国籍：</th>
+				<%-- <th class="td_right">国籍：</th>
 				<td style="text-align: left;">
 					<select name="nation">
 						<c:forEach items="${nationalities }" var="n">
 							<option value="${n.id }" <c:if test="${member.nationality.id eq n.id}">selected</c:if>>${n.name }</option>
 						</c:forEach>
                     </select>
-				</td>
+				</td> --%>
 			</tr>
 			
 			<tr>
