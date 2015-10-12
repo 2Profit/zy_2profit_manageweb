@@ -9,19 +9,17 @@
 <title>评论列表</title>
 <%@ include file="../common/common.jsp"%>
 <script type="text/javascript" src="${ctx }/static/js/manage-web-common.js"/></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
 	$(function(){
-		
 		$("#return_button").bind("click",function(event){
 			event.preventDefault();
 			window.location.replace("${ctx }/voteResult/list");
 		});
 		
-		
-		$('#editReplay').bind("click",function(event){
+		$('#editPost').bind("click",function(event){
 			event.preventDefault();
-			$('#replayId').val($(this).children().val());
+			$('#postId').val($(this).children().val());
 			$('#myPageModal').modal('show');
 		});
 		
@@ -29,14 +27,13 @@
 			$('#myPageModal').modal('hide');
 			$.ajax({
 		        type: "POST",
-		        url: "${ctx }/voteTopicReplay/reply",
+		        url: "${ctx }/voteTopicPost/editPost",
 		        async: false,
-		        data: {id:$('#replayId').val(),replayContent:$('#msgReply').val()},
+		        data: {id:$('#postId').val(),postContent:$('#msgPost').val()},
 		        success: function (json) {
 		        	if(json.success){
 		        		alert('保存成功！');
-		        		var param = "voteTopic.titleContent="+$("#titleContent").val();
-		        		window.location.replace("${ctx }/voteTopicReplay/list?"+param);
+		        		$('#myPageModal').modal('hidden');
 		        	}else{
 		        		alert('保存失败！');
 		        	}
@@ -58,8 +55,8 @@
 		
 		$('#fresh_button').bind("click",function(){
 			$("#titleContent").val("");
-			$("#userName").val("");
-			$("#replayContent").val("");
+			$("#mobile").val("");
+			$("#postContent").val("");
 			$("input[name='createDateFrom']").val("");
 			$("input[name='createDateTo']").val("");
 		});
@@ -68,13 +65,13 @@
 function updateDeleteFlag(ids,deleteFlag){
 	$.ajax({
 		type: "POST",
-       	url:"${ctx }/product/courseType/deleteFlag",
+       	url:"${ctx }/voteTopicPost/deleteFlag",
     	data:JSON.stringify({'ids':ids,'deleteFlag':deleteFlag}),
     	contentType: "application/json",
     	success:function(json) {
        		if(json.success){
        			alert('成功');
-       			window.location.replace("${ctx }/product/courseType/list");
+       			window.location.replace("${ctx }/voteTopicPost/list");
        		}else{
        			alert('失败');
        		}
@@ -94,13 +91,13 @@ function updateDeleteFlag(ids,deleteFlag){
 			</td>
 		</tr>
     	<tr>
-			<th class="td_right">交易账号：</th>
+			<th class="td_right">用户手机：</th>
 			<td style="text-align: left;">
-			  	<input type="text" name="replayer.userName" id="userName" value="${queryDto.replayer.userName }"/>
+			  	<input type="text" name="publisher.mobile" id="mobile" value="${queryDto.publisher.mobile }"/>
 			</td>
 			<th class="td_right">评论内容：</th>
 			<td style="text-align: left;">
-			  	<input type="text" name="replayContent" id="replayContent" value="${queryDto.replayContent }"/>
+			  	<input type="text" name="postContent" id="postContent" value="${queryDto.postContent }"/>
 			</td>
 		</tr>			
 		<tr>	
@@ -128,8 +125,10 @@ function updateDeleteFlag(ids,deleteFlag){
 		<thead>
 			<tr style="background-color: #dff0d8">
 				<th width="20"><input type="checkbox" id="firstCheckbox"/></th>
-				<th>交易账号</th>
-				<th>会员类型</th>
+				<th>用户手机</th>
+				<th>用户邮箱</th>
+				<th>点赞详情</th>
+				<th>举报详情</th>
 				<th>评论内容</th>
 				<th>评论日期</th>
 				<th>评论者IP</th>
@@ -139,13 +138,16 @@ function updateDeleteFlag(ids,deleteFlag){
 		<c:forEach items="${page.list }" var="u">
 			<tr>
 			   <td><input type="checkbox" name="ids" value="${u.id }"/></td>
-			   <td>&nbsp;${u.replayer.userName }</td>
-			   <td>&nbsp;</td>
-			   <td>&nbsp;${u.replayContent }</td>
-			   <td>&nbsp;${u.createDate }</td>
+			   <td>&nbsp;${u.publisher.mobile }</td>
+			   <td>&nbsp;${u.publisher.email }</td>
+			   <td>&nbsp;<a href="${ctx}/voteTopicPost/praise/list?voteTopicPost.id=${u.id }">点赞详情</a></td>
+			   <td>&nbsp;<a href="${ctx}/voteTopicPost/report/list?voteTopicPost.id=${u.id }">举报详情</a></td>
+			   <td>&nbsp;${u.publisher.email }</td>
+			   <td>&nbsp;${u.postContent }</td>
+			   <td><fmt:formatDate value='${u.createDate}' pattern='yyyy-MM-dd HH:mm:ss'/></td>
 			   <td>&nbsp;${u.ipAddress }</td>
 			   <td>
-			      <a href="" id="editReplay"><input type="hidden" value="${u.id}">修改评论</a>
+			      <a href="" id="editPost"><input type="hidden" value="${u.id}">修改评论</a>
 			      <c:choose>
 			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
 			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
@@ -188,9 +190,9 @@ function updateDeleteFlag(ids,deleteFlag){
 					<tr style="background-color: #dff0d8">
 						<th class="td_right">评论内容：</th>
 						<td>
-							<input type="hidden" name="replayId" id="replayId">
-							<textarea id="msgReply" rows="3" cols="6"></textarea>
-						</td>	
+							<input type="hidden" name="postId" id="postId">
+							<textarea id="msgPost" rows="3" cols="6"></textarea>
+						</td>
 					</tr>
 				</table>
 	         </div>

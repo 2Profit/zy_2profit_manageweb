@@ -59,7 +59,13 @@
 					<tr>
 					   <td><fmt:formatDate value="${u.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 					   <td>&nbsp;${u.member.userName }</td>
-					   <td>&nbsp;</td>
+					   <td>
+					   		<c:choose>
+					   			<c:when test="${u.member!=null && u.member.id!='' }">会员</c:when>
+					   			<c:when test="${u.member==null || u.member.id==null || u.member.id=='' }">游客</c:when>
+					   			<c:otherwise>&nbsp;</c:otherwise>
+					   		</c:choose>
+					   </td>
 					   <td>&nbsp;${u.voteTopicOption.optionContent }</td>
 					   <td>&nbsp;${u.ipAddress }</td>
 				    </tr>
