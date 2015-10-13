@@ -103,13 +103,13 @@ public class BrokerExtInfoController {
 					return result;
 				}
 			}
-			if(StringUtils.isNoneBlank(dto.getExchangeNo())){
+			/*if(StringUtils.isNoneBlank(dto.getExchangeNo())){
 				int countNumb = brokerExtInfoService.findByExchangeNo(dto.getExchangeNo());
 				if(countNumb>0){
 					result.setSuccess(false);
 					return result;
 				}
-			}
+			}*/
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);
@@ -164,7 +164,7 @@ public class BrokerExtInfoController {
 			brokerCopy.setId(StringUtils.EMPTY);
 			brokerCopy.setCnName(StringUtils.EMPTY);
 			brokerCopy.setEnName(StringUtils.EMPTY);
-			brokerCopy.setExchangeNo(StringUtils.EMPTY);
+			//brokerCopy.setExchangeNo(StringUtils.EMPTY);
 			brokerCopy.setCompanyIndex(null);
 			model.addAttribute("brokerExtInfo", brokerCopy);
 		}

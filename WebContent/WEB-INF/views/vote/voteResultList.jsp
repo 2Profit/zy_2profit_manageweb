@@ -184,9 +184,9 @@
 			<tr style="background-color: #dff0d8">
 				<th width="20"><input type="checkbox" id="firstCheckbox"/></th>
 				<th>投票标题</th>
+				<th>投票详情</th>
+				<th>评论详情</th>
 				<th>投票结果</th>
-				<th>评论结果</th>
-				<th>显示结果</th>
 				<th>开始日期</th>
 				<th>结束日期</th>
 				<th>发布者</th>
@@ -197,7 +197,7 @@
 			   <td><input type="checkbox" name="ids" value="${u.id }"/></td>
 			   <td>&nbsp;${u.titleContent }</td>
 			   <td><a href="${ctx}/voteResult/detail/list?voteTopic.id=${u.id}">投票详情</td>
-			   <td><a href="${ctx}/voteTopicReplay/list?voteTopic.id=${u.id}">修改评论</td>
+			   <td><a href="${ctx}/voteTopicPost/list?voteTopic.id=${u.id}">评论详情</td>
 			   <td><a name="edit_href"><input type="hidden" value="${u.id }">修改结果</a></td>
 			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			   <td><fmt:formatDate value="${u.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>

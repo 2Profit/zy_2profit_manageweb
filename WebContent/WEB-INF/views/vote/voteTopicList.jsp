@@ -80,15 +80,19 @@ function updateDeleteFlag(ids,deleteFlag){
 		<tr>	
 			<th class="td_right">开始时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="startDateBegin" value='${queryDto.startDateBegin}' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">到：
-				<input type="text" name="startDateEnd" value='${queryDto.startDateEnd}' onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+				从：<input type="text" name="startDateBegin" value="<fmt:formatDate value='${queryDto.startDateBegin}' pattern='yyyy-MM-dd HH:mm:ss'/>"
+						onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">到：
+				<input type="text" name="startDateEnd" value="<fmt:formatDate value='${queryDto.startDateEnd}' pattern='yyyy-MM-dd HH:mm:ss'/>"
+						onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
 			</td>
 		</tr>
 		<tr>	
 			<th class="td_right">结束时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="toDateBegin" value='${queryDto.toDateBegin}' onClick='WdatePicker();'/>到：
-				<input type="text" name="toDateEnd" value='${queryDto.toDateEnd}' onClick='WdatePicker();'/>
+				从：<input type="text" name="toDateBegin" value="<fmt:formatDate value='${queryDto.toDateBegin}' pattern='yyyy-MM-dd HH:mm:ss'/>"
+						onClick='WdatePicker();'/>到：
+				<input type="text" name="toDateEnd" value="<fmt:formatDate value='${queryDto.toDateEnd}' pattern='yyyy-MM-dd HH:mm:ss'/>"
+						onClick='WdatePicker();'/>
 			</td>
 		</tr>
 		<tr>

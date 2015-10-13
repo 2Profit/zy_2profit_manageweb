@@ -8,6 +8,7 @@
 <head>
 <title>评论列表</title>
 <%@ include file="../common/common.jsp"%>
+<link rel="stylesheet" href="${ctx }/static/css/lgl.css"  type="text/css">
 <script type="text/javascript" src="${ctx }/static/js/manage-web-common.js"/></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript">
@@ -31,6 +32,9 @@
 <body>
 <form action="" name="form" id="form" method="post" theme="simple">
 	<table class="table table-bordered table-condensed">
+		<tr>
+			<td colspan="4" style="background-color: #dff0d8;text-align: center;"><strong>点赞详情列表</strong></td>
+		</tr>
     	<tr>
 			<th class="td_right">用户手机：</th>
 			<td style="text-align: left;">
@@ -44,9 +48,9 @@
 		<tr>	
 			<th class="td_right">点赞时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="createDateFrom" value='${queryDto.createDateFrom}' 
+				从：<input type="text" name="createDateFrom" value="<fmt:formatDate value='${queryDto.createDateFrom}' pattern='yyyy-MM-dd HH:mm:ss'/>"
 						onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">到：
-				<input type="text" name="createDateTo" value='${queryDto.createDateTo}' 
+				<input type="text" name="createDateTo" value="<fmt:formatDate value='${queryDto.createDateTo}' pattern='yyyy-MM-dd HH:mm:ss'/>"
 						onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
 			</td>
 		</tr>
@@ -96,7 +100,6 @@
 	      	</tr>
 	      </div>		
 	</table>
-
 </form>
 </body>
 </html>

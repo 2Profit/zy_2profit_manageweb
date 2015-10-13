@@ -23,6 +23,9 @@
 	<form action="" name="form" id="form" method="post" theme="simple">
 		<div>
 	      	<table class="table table-bordered table-condensed">
+				<tr>
+					<td colspan="4" style="background-color: #dff0d8;text-align: center;"><strong>投票详情列表</strong></td>
+				</tr>	      	
 	     		<tr>
 					<th class="td_right">账号：</th>
 					<td style="text-align: left;">

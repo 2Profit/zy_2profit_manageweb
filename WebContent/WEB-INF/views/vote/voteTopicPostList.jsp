@@ -24,6 +24,9 @@
 		});
 		
 		$("#modalConfirm").bind("click",function(){
+			if($('#msgPost').val()==''){
+				alert('修改内容不能为空');return false;
+			}
 			$('#myPageModal').modal('hide');
 			$.ajax({
 		        type: "POST",
@@ -33,7 +36,7 @@
 		        success: function (json) {
 		        	if(json.success){
 		        		alert('保存成功！');
-		        		$('#myPageModal').modal('hidden');
+		        		window.location.replace("${ctx }/voteTopicPost/list");
 		        	}else{
 		        		alert('保存失败！');
 		        	}
@@ -85,7 +88,10 @@ function updateDeleteFlag(ids,deleteFlag){
 <form action="" name="form" id="form" method="post" theme="simple">
 	<table class="table table-bordered table-condensed">
 		<tr>
-			<th class="td_right">投票题目：</th>
+			<td colspan="4" style="background-color: #dff0d8;text-align: center;"><strong>评论详情列表</strong></td>
+		</tr>	
+		<tr>
+			<th class="td_right">投票主题：</th>
 			<td colspan="3">
 			  	<input type="text" name="voteTopic.titleContent" id="titleContent" value="${queryDto.voteTopic.titleContent }"/>
 			</td>
@@ -103,9 +109,9 @@ function updateDeleteFlag(ids,deleteFlag){
 		<tr>	
 			<th class="td_right">评论时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="createDateFrom" value='${queryDto.createDateFrom}' 
+				从：<input type="text" name="createDateFrom" value="<fmt:formatDate value='${queryDto.createDateFrom}' pattern='yyyy-MM-dd HH:mm:ss'/>"
 						onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">到：
-				<input type="text" name="createDateTo" value='${queryDto.createDateTo}' 
+				<input type="text" name="createDateTo" value="<fmt:formatDate value='${queryDto.createDateTo}' pattern='yyyy-MM-dd HH:mm:ss'/>"
 						onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
 			</td>
 		</tr>
@@ -129,9 +135,11 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>用户邮箱</th>
 				<th>点赞详情</th>
 				<th>举报详情</th>
+				<th>投票主题</th>
 				<th>评论内容</th>
 				<th>评论日期</th>
 				<th>评论者IP</th>
+				<th>数据状态</th>
 				<th>操作</th>
 			</tr>
 		</thead>
@@ -142,10 +150,17 @@ function updateDeleteFlag(ids,deleteFlag){
 			   <td>&nbsp;${u.publisher.email }</td>
 			   <td>&nbsp;<a href="${ctx}/voteTopicPost/praise/list?voteTopicPost.id=${u.id }">点赞详情</a></td>
 			   <td>&nbsp;<a href="${ctx}/voteTopicPost/report/list?voteTopicPost.id=${u.id }">举报详情</a></td>
-			   <td>&nbsp;${u.publisher.email }</td>
+			   <td>&nbsp;${u.voteTopic.titleContent }</td>
 			   <td>&nbsp;${u.postContent }</td>
 			   <td><fmt:formatDate value='${u.createDate}' pattern='yyyy-MM-dd HH:mm:ss'/></td>
 			   <td>&nbsp;${u.ipAddress }</td>
+			   <td>
+			   		<c:choose>
+			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">正常</font></c:when>
+			   			<c:when test="${u.deleteFlag == '1' }"><font color="red">删除</font></c:when>
+			   			<c:otherwise>&nbsp;</c:otherwise>
+			   		</c:choose>
+			   </td>			   
 			   <td>
 			      <a href="" id="editPost"><input type="hidden" value="${u.id}">修改评论</a>
 			      <c:choose>

@@ -31,6 +31,9 @@
 <body>
 <form action="" name="form" id="form" method="post" theme="simple">
 	<table class="table table-bordered table-condensed">
+		<tr>
+			<td colspan="4" style="background-color: #dff0d8;text-align: center;"><strong>举报详情列表</strong></td>
+		</tr>	
     	<tr>
 			<th class="td_right">用户手机：</th>
 			<td style="text-align: left;">
@@ -44,9 +47,9 @@
 		<tr>	
 			<th class="td_right">点赞时间：</th>
 			<td colspan="3">
-				从：<input type="text" name="createDateFrom" value='${queryDto.createDateFrom}' 
+				从：<input type="text" name="createDateFrom" value="<fmt:formatDate value='${queryDto.createDateFrom}' pattern='yyyy-MM-dd HH:mm:ss'/>"
 						onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">到：
-				<input type="text" name="createDateTo" value='${queryDto.createDateTo}' 
+				<input type="text" name="createDateTo" value="<fmt:formatDate value='${queryDto.createDateTo}' pattern='yyyy-MM-dd HH:mm:ss'/>"
 						onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})">
 			</td>
 		</tr>

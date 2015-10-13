@@ -38,6 +38,8 @@
 			$('#append_td').append(html);
 		});
 		
+		$('#startDate').blur
+		
 		$("button[name='postData_button']").bind("click",function(event){
  			event.preventDefault();
  			

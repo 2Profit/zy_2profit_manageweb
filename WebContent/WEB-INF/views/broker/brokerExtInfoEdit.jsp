@@ -12,6 +12,10 @@
 	.td_right{text-align: right;}
 	em {font-style: normal;color:red;}
 	img {height: auto;width:auto;}
+	textarea {
+	   height: auto;
+	   width:80%;
+	}
 </style>
 <script type="text/javascript">
 $(function(){
@@ -153,21 +157,48 @@ $(function(){
 					<input type="text" name="enName" data-rule="名称:required;enName;length[1~64];" 
 							id="enName"  value="${brokerExtInfo.enName }"/>
 				</td>
-			</tr>	
-				<th class="td_right"><em>*</em>监管机构类型：</th>
+			</tr>
+			
+			<tr>	
+				<th class="td_right"><em>*</em>贸易场授予编号：</th>
 				<td style="text-align: left;">
-					<select id="exchangeType" name="exchangeType" data-rule="监管机构类型:required;exchangeType;" >
-						<option value="">--请选择--</option>
-					    <option value="0" <c:if test="${brokerExtInfo.id == null || '0' == brokerExtInfo.exchangeType }">selected</c:if>>银行业贸易场</option>
-					    <option value="1" <c:if test="${'1' == brokerExtInfo.exchangeType }">selected</c:if>>证监会</option>
-					    <option value="2" <c:if test="${'2' == brokerExtInfo.exchangeType }">selected</c:if>>不设</option>
-					</select>						
+					<input type="text" name="exchangeNo1" id="exchangeNo1"  value="${brokerExtInfo.exchangeNo1 }"/>
 				</td>
-				<th class="td_right"><em>*</em>监管机构授予编号：</th>
+				<th class="td_right"><em>*</em>证监会授予编号：</th>
 				<td style="text-align: left;">
-					<input type="text" name="exchangeNo" data-rule="监管机构授予编号:required;exchangeNo;length[1~64];" 
-						id="exchangeNo"  value="${brokerExtInfo.exchangeNo }"/>
+					<input type="text" name="exchangeNo2" id="exchangeNo2"  value="${brokerExtInfo.exchangeNo2 }"/>
 				</td>
+			</tr>
+			
+			<tr>	
+				<th class="td_right"><em>*</em>英国FCA授予编号：</th>
+				<td style="text-align: left;">
+					<input type="text" name="exchangeNo3" id="exchangeNo3"  value="${brokerExtInfo.exchangeNo3 }"/>
+				</td>
+				<th class="td_right"><em>*</em>日本FSA授予编号：</th>
+				<td style="text-align: left;">
+					<input type="text" name="exchangeNo4" id="exchangeNo4"  value="${brokerExtInfo.exchangeNo4 }"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="td_right"><em>*</em>牌照类型：</th>
+				<td style="text-align: left;">
+					<input type="text" name="licenseType" id="licenseType"  value="${brokerExtInfo.licenseType }"/>
+					<select id="licenseType" name="licenseType">
+					    <option value="AA" <c:if test="${brokerExtInfo.licenseType == null || 'AA' == brokerExtInfo.licenseType }">selected</c:if>>AA</option>
+					    <option value="A1" <c:if test="${'A1' == brokerExtInfo.licenseType }">selected</c:if>>A1</option>
+					    <option value="A2" <c:if test="${'A2' == brokerExtInfo.licenseType }">selected</c:if>>A2</option>
+					    <option value="B" <c:if test="${'B' == brokerExtInfo.licenseType }">selected</c:if>>B</option>
+					    <option value="C" <c:if test="${'C' == brokerExtInfo.licenseType }">selected</c:if>>C</option>
+					    <option value="D" <c:if test="${'D' == brokerExtInfo.licenseType }">selected</c:if>>D</option>
+					    <option value="S" <c:if test="${'S' == brokerExtInfo.licenseType }">selected</c:if>>S</option>
+					</select>					
+				</td>
+				<th class="td_right"><em>*</em>日本FSA授予编号：</th>
+				<td style="text-align: left;">
+					<input type="text" name="exchangeNo4" id="exchangeNo4"  value="${brokerExtInfo.exchangeNo4 }"/>
+				</td>			
 			</tr>
 			
 			<tr>
@@ -244,7 +275,9 @@ $(function(){
 						<option value="">--请选择--</option>
 					    <option value="0" <c:if test="${brokerExtInfo.id == null || fn:contains(brokerExtInfo.companyType, '0')}">selected</c:if>>黄金</option>
 					    <option value="1" <c:if test="${fn:contains(brokerExtInfo.companyType, '1')}">selected</c:if>>外汇</option>
-					    <option value="2" <c:if test="${fn:contains(brokerExtInfo.companyType, '2')}">selected</c:if>>中国A股</option>
+					    <option value="2" <c:if test="${fn:contains(brokerExtInfo.companyType, '2')}">selected</c:if>>二元期权</option>
+					    <option value="3" <c:if test="${fn:contains(brokerExtInfo.companyType, '3')}">selected</c:if>>国际现货金银</option>
+					    <option value="4" <c:if test="${fn:contains(brokerExtInfo.companyType, '4')}">selected</c:if>>混合</option>
 					</select>
 				</td>							
 			</tr>
@@ -258,6 +291,8 @@ $(function(){
 					    <option value="1" <c:if test="${brokerExtInfo.id == null || fn:contains(brokerExtInfo.productType, '1')}">selected</c:if>>伦敦银</option>
 					    <option value="2" <c:if test="${fn:contains(brokerExtInfo.productType, '2')}">selected</c:if>>港金</option>
 					    <option value="3" <c:if test="${fn:contains(brokerExtInfo.productType, '3')}">selected</c:if>>人民币公斤条</option>
+					    <option value="4" <c:if test="${fn:contains(brokerExtInfo.productType, '4')}">selected</c:if>>外汇</option>
+					    <option value="5" <c:if test="${fn:contains(brokerExtInfo.productType, '5')}">selected</c:if>>原油</option>
 					</select>
 				</td>			
 				
@@ -290,6 +325,8 @@ $(function(){
 					伦敦银:<input type="text" name="pointDiffMinLls"  id="pointDiffMinLls" value="${brokerExtInfo.pointDiffMinLls}"/>
 					港金:<input type="text" name="pointDiffMinHkg"  id="pointDiffMinHkg" value="${brokerExtInfo.pointDiffMinHkg}"/>
 					人民币公斤条:<input type="text" name="pointDiffMinLkg"  id="pointDiffMinLkg" value="${brokerExtInfo.pointDiffMinLkg}"/>
+					外汇:<input type="text" name="pointDiffMinWh"  id="pointDiffMinWh" value="${brokerExtInfo.pointDiffMinWh}"/>
+					原油:<input type="text" name="pointDiffMinYy"  id="pointDiffMinYy" value="${brokerExtInfo.pointDiffMinYy}"/>
 				</td>			
 			</tr>
 			<tr>	
@@ -299,6 +336,8 @@ $(function(){
 					伦敦银:<input type="text" name="minTradeNumLls"  id="minTradeNumLls" value="${brokerExtInfo.minTradeNumLls}"/>
 					港金:<input type="text" name="minTradeNumHkg"  id="minTradeNumHkg" value="${brokerExtInfo.minTradeNumHkg}"/>
 					人民币公斤条:<input type="text" name="minTradeNumLkg"  id="minTradeNumLkg" value="${brokerExtInfo.minTradeNumLkg}"/>
+					外汇:<input type="text" name="minTradeNumWh"  id="minTradeNumWh" value="${brokerExtInfo.minTradeNumWh}"/>
+					原油:<input type="text" name="minTradeNumYy"  id="minTradeNumYy" value="${brokerExtInfo.minTradeNumYy}"/>
 				</td>			
 			</tr>
 			<tr>	
@@ -308,6 +347,8 @@ $(function(){
 					伦敦银:<input type="text" name="maxTradeNumLls"  id="maxTradeNumLls" value="${brokerExtInfo.maxTradeNumLls}"/>
 					港金:<input type="text" name="maxTradeNumHkg"  id="maxTradeNumHkg" value="${brokerExtInfo.maxTradeNumHkg}"/>
 					人民币公斤条:<input type="text" name="maxTradeNumLkg"  id="maxTradeNumLkg" value="${brokerExtInfo.maxTradeNumLkg}"/>
+					外汇:<input type="text" name="maxTradeNumWh"  id="maxTradeNumWh" value="${brokerExtInfo.maxTradeNumWh}"/>
+					原油:<input type="text" name="maxTradeNumYy"  id="maxTradeNumYy" value="${brokerExtInfo.maxTradeNumYy}"/>
 				</td>			
 			</tr>
 
@@ -344,10 +385,12 @@ $(function(){
 			<tr>	
 				<th class="td_right"><em>*</em>返佣金额：</th>
 				<td style="text-align: left;" colspan="3">
-					欧美:<input type="text" name="commissionEurope"  id="commissionEurope" value="${brokerExtInfo.commissionEurope}"/>
-					黄金:<input type="text" name="commissionGold"  id="commissionGold" value="${brokerExtInfo.commissionGold}"/>
-					白银:<input type="text" name="commissionSilver"  id="commissionSilver" value="${brokerExtInfo.commissionSilver}"/>
-					原油:<input type="text" name="commissionOil"  id="commissionOil" value="${brokerExtInfo.commissionOil}"/>
+					伦敦金:<input type="text" name="commissionLlg"  id="commissionLlg" value="${brokerExtInfo.commissionLlg}"/>
+					伦敦银:<input type="text" name="commissionLls"  id="commissionLls" value="${brokerExtInfo.commissionLls}"/>
+					港金:<input type="text" name="commissionHkg"  id="commissionHkg" value="${brokerExtInfo.commissionHkg}"/>
+					人民币公斤条:<input type="text" name="commissionLkg"  id="commissionLkg" value="${brokerExtInfo.commissionLkg}"/>
+					外汇:<input type="text" name="commissionWh"  id="commissionWh" value="${brokerExtInfo.commissionWh}"/>
+					原油:<input type="text" name="commissionYy"  id="commissionYy" value="${brokerExtInfo.commissionYy}"/>
 				</td>			
 			</tr>
 			
@@ -388,6 +431,8 @@ $(function(){
 					伦敦银:<input type="text" name="openMoneyLls"  id="openMoneyLls" value="${brokerExtInfo.openMoneyLls}"/>
 					港金:<input type="text" name="openMoneyHkg"  id="openMoneyHkg" value="${brokerExtInfo.openMoneyHkg}"/>
 					人民币公斤条:<input type="text" name="openMoneyLkg"  id="openMoneyLkg" value="${brokerExtInfo.openMoneyLkg}"/>
+					外汇:<input type="text" name="openMoneyWh"  id="openMoneyWh" value="${brokerExtInfo.openMoneyWh}"/>
+					原油:<input type="text" name="openMoneyYy"  id="openMoneyYy" value="${brokerExtInfo.openMoneyYy}"/>
 				</td>			
 			</tr>
 			
@@ -411,9 +456,48 @@ $(function(){
 					    <option value="1" <c:if test="${'1' == brokerExtInfo.isEaSupport }">selected</c:if>>支援</option>
 					</select>					
 				</td>
-				<th class="td_right"><em>*</em>公司推荐值：</th>
+				<th class="td_right"><em>*</em>银联支持：</th>
 				<td style="text-align: left;">
+					<select id="isUnionpay" name="isUnionpay">
+						<option value="">--请选择--</option>
+					    <option value="0" <c:if test="${'0' == brokerExtInfo.isUnionpay }">selected</c:if>>不支持</option>
+					    <option value="1" <c:if test="${brokerExtInfo.id == null || '1' == brokerExtInfo.isUnionpay }">selected</c:if>>支持</option>
+					</select>	
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="td_right"><em>*</em>人民币入金：</th>
+				<td style="text-align: left;">
+					<select id="isRmbSupport" name="isRmbSupport">
+						<option value="">--请选择--</option>
+					    <option value="0" <c:if test="${'0' == brokerExtInfo.isRmbSupport }">selected</c:if>>不支持</option>
+					    <option value="1" <c:if test="${brokerExtInfo.id == null || '1' == brokerExtInfo.isRmbSupport }">selected</c:if>>支持</option>
+					</select>					
+				</td>
+				<th class="td_right"><em>*</em>出入金免手续费：</th>
+				<td style="text-align: left;">
+					<select id="isInOutFree" name="isInOutFree">
+						<option value="">--请选择--</option>
+					    <option value="0" <c:if test="${'0' == brokerExtInfo.isInOutFree }">selected</c:if>>不支持</option>
+					    <option value="1" <c:if test="${brokerExtInfo.id == null || '1' == brokerExtInfo.isInOutFree }">selected</c:if>>支持</option>
+					</select>	
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="td_right"><em>*</em>公司推荐值：</th>
+				<td style="text-align: left;" colspan="3">
 					<input type="text" name="companyIndex" id="companyIndex" value="${brokerExtInfo.companyIndex }"/>
+				</td>
+			</tr>
+			
+			<tr>
+				<th class="td_right"><em>*</em>优惠活动：</th>
+				<td style="text-align: left;" colspan="3">
+					<textarea rows="5" cols="20" name="noticeContent1" id="noticeContent1" >${brokerExtInfo.noticeContent1 }</textarea>
+					<textarea rows="5" cols="20" name="noticeContent2" id="noticeContent2" >${brokerExtInfo.noticeContent2 }</textarea>
+					<textarea rows="5" cols="20" name="noticeContent3" id="noticeContent3" >${brokerExtInfo.noticeContent3 }</textarea>
 				</td>
 			</tr>
 			
