@@ -24,6 +24,11 @@ $(function(){
 		window.location.href = "${ctx }/brokerExtInfo/export?"+$('#form').serialize();
 	});
 	
+	$('#export_button').click(function(event){
+		event.preventDefault();
+		window.location.href = "${ctx }/brokerExtInfo/export?"+$('#form').serialize();
+	});
+	
 });
 
 function updateDeleteFlag(ids,deleteFlag){
@@ -136,6 +141,9 @@ function updateDeleteFlag(ids,deleteFlag){
 				</button>				
 				<button class="btn btn-success" onclick="return toAdd();">
 					<i class="icon-plus-sign icon-white"></i> 添加
+				</button>	
+				<button class="btn btn-primary" id="export_button">
+					<i class="icon-download-alt icon-white"></i> 导出Excel
 				</button>	
 				<button class="btn btn-primary" id="export_button">
 					<i class="icon-download-alt icon-white"></i> 导出Excel
