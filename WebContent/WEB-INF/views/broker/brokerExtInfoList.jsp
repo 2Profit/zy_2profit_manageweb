@@ -28,6 +28,11 @@ $(function(){
 		window.location.href = "${ctx }/brokerExtInfo/brokerCopy?id="+$("input[name='ids']:checked").val();
 	});
 	
+	$('#export_button').click(function(event){
+		event.preventDefault();
+		window.location.href = "${ctx }/brokerExtInfo/export?"+$('#form').serialize();
+	});
+	
 });
 
 function updateDeleteFlag(ids,deleteFlag){
@@ -51,7 +56,7 @@ function updateDeleteFlag(ids,deleteFlag){
 
 <body>
 <form action="" name="form" id="form" method="post" theme="simple">
-	<table class="table table-bordered table-condensed">
+	<table class="table table-bordered table-hover">
 		<tr>
 			<th>中文名称：</th>
 			<td><input type="text" name="cnName" value="${queryDto.cnName }"></td>		
@@ -131,7 +136,7 @@ function updateDeleteFlag(ids,deleteFlag){
 		</tr>
 	
 		<tr>
-			<td colspan="50">
+			<td colspan="80">
 				<button method="list" class="btn btn-primary" onclick="selectList(this)">
 					<i class="icon-search icon-white"></i> 查询
 				</button>
@@ -140,6 +145,9 @@ function updateDeleteFlag(ids,deleteFlag){
 				</button>				
 				<button class="btn btn-success" onclick="return toAdd();">
 					<i class="icon-plus-sign icon-white"></i> 添加
+				</button>	
+				<button class="btn btn-primary" id="export_button">
+					<i class="icon-download-alt icon-white"></i> 导出Excel
 				</button>	
 			</td>
 		</tr>
@@ -282,7 +290,7 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		<c:if test="${u.pointDiffMinHkg != '' }">港金:${u.pointDiffMinHkg}<br/></c:if>
 			   		<c:if test="${u.pointDiffMinLkg != '' }">人民币公斤条:${u.pointDiffMinLkg}</c:if>
 			   		<c:if test="${u.pointDiffMinWh != '' }">外汇:${u.pointDiffMinWh}</c:if>
-			   		<c:if test="${u.pointDiffMinyy != '' }">原油:${u.pointDiffMinYy}</c:if>
+			   		<c:if test="${u.pointDiffMinYy != '' }">原油:${u.pointDiffMinYy}</c:if>
 			   </td>			   
 			   <td>
 			   		<c:if test="${u.minTradeNumLlg != '' }">伦敦金:${u.minTradeNumLlg}<br/></c:if>

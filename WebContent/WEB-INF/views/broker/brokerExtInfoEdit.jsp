@@ -79,15 +79,54 @@ $(function(){
 	       	}    
 		);
 	});
-	$('input[name=exchangeNo]').blur(function(){
+	$('input[name=exchangeNo1]').blur(function(){
 		if($('input[name=id]').val()!=''){return;}//新增的时候验证
 		$.post(
 	       	"${ctx }/brokerExtInfo/validate",
-	    	{'exchangeNo':$('input[name=exchangeNo]').val()},
+	    	{'exchangeNo1':$('input[name=exchangeNo1]').val()},
 	    	function(json) {
 	       		if(!json.success){
-	       			alert("交易编码:"+$('input[name=exchangeNo]').val()+"，已经存在！");
-	       			$('input[name=exchangeNo]').focus();
+	       			alert("交易编码:"+$('input[name=exchangeNo1]').val()+"，已经存在！");
+	       			$('input[name=exchangeNo1]').focus();
+	       		}
+	       	}    
+		);
+	});
+	$('input[name=exchangeNo2]').blur(function(){
+		if($('input[name=id]').val()!=''){return;}//新增的时候验证
+		$.post(
+	       	"${ctx }/brokerExtInfo/validate",
+	    	{'exchangeNo2':$('input[name=exchangeNo2]').val()},
+	    	function(json) {
+	       		if(!json.success){
+	       			alert("交易编码:"+$('input[name=exchangeNo2]').val()+"，已经存在！");
+	       			$('input[name=exchangeNo2]').focus();
+	       		}
+	       	}    
+		);
+	});
+	$('input[name=exchangeNo3]').blur(function(){
+		if($('input[name=id]').val()!=''){return;}//新增的时候验证
+		$.post(
+	       	"${ctx }/brokerExtInfo/validate",
+	    	{'exchangeNo3':$('input[name=exchangeNo3]').val()},
+	    	function(json) {
+	       		if(!json.success){
+	       			alert("交易编码:"+$('input[name=exchangeNo3]').val()+"，已经存在！");
+	       			$('input[name=exchangeNo3]').focus();
+	       		}
+	       	}    
+		);
+	});
+	$('input[name=exchangeNo4]').blur(function(){
+		if($('input[name=id]').val()!=''){return;}//新增的时候验证
+		$.post(
+	       	"${ctx }/brokerExtInfo/validate",
+	    	{'exchangeNo4':$('input[name=exchangeNo4]').val()},
+	    	function(json) {
+	       		if(!json.success){
+	       			alert("交易编码:"+$('input[name=exchangeNo4]').val()+"，已经存在！");
+	       			$('input[name=exchangeNo4]').focus();
 	       		}
 	       	}    
 		);
@@ -126,7 +165,7 @@ $(function(){
 	<form action="" namespace="/" theme="simple" id="form" method = "POST" enctype="multipart/form-data">
 		<table class="table table-bordered">
 			<tr>
-				<td colspan="4" style="background-color: #dff0d8;text-align: center;">
+				<td colspan="20" style="background-color: #dff0d8;text-align: center;">
 					<c:choose>
 					  <c:when test="${brokerExtInfo.id == null || brokerExtInfo.id == '' }">
 					    <strong>经纪商新增</strong>
@@ -184,7 +223,6 @@ $(function(){
 			<tr>
 				<th class="td_right"><em>*</em>牌照类型：</th>
 				<td style="text-align: left;">
-					<input type="text" name="licenseType" id="licenseType"  value="${brokerExtInfo.licenseType }"/>
 					<select id="licenseType" name="licenseType">
 					    <option value="AA" <c:if test="${brokerExtInfo.licenseType == null || 'AA' == brokerExtInfo.licenseType }">selected</c:if>>AA</option>
 					    <option value="A1" <c:if test="${'A1' == brokerExtInfo.licenseType }">selected</c:if>>A1</option>
@@ -195,10 +233,8 @@ $(function(){
 					    <option value="S" <c:if test="${'S' == brokerExtInfo.licenseType }">selected</c:if>>S</option>
 					</select>					
 				</td>
-				<th class="td_right"><em>*</em>日本FSA授予编号：</th>
-				<td style="text-align: left;">
-					<input type="text" name="exchangeNo4" id="exchangeNo4"  value="${brokerExtInfo.exchangeNo4 }"/>
-				</td>			
+				<th class="td_right"></th>
+				<td style="text-align: left;"></td>			
 			</tr>
 			
 			<tr>
@@ -212,7 +248,7 @@ $(function(){
 				</td>			
 				<th class="td_right"><em>*</em>官网链接：</th>
 				<td style="text-align: left;">
-					<input type="text" name="websiteUrl" data-rule="监管机构授予编号:required;websiteUrl;"
+					<input type="text" name="websiteUrl" data-rule="官网链接:required;websiteUrl;"
 						id="websiteUrl" value="${brokerExtInfo.websiteUrl }"/>
 				</td>			
 			</tr>
