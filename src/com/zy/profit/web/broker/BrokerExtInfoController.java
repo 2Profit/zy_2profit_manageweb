@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +13,8 @@ import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+import jxl.write.biff.RowsExceededException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,9 +33,10 @@ import com.zy.broker.service.BrokerExtInfoService;
 import com.zy.broker.service.BrokerInfoService;
 import com.zy.common.entity.PageModel;
 import com.zy.common.entity.ResultDto;
-import com.zy.common.util.ExportExcelUtil4Jxl;
 import com.zy.common.util.UserDto;
 import com.zy.common.util.UserSessionUtil;
+import com.zy.common.util.Util4Jxl;
+import com.zy.profit.web.util.BrokerExportUtil;
 import com.zy.util.ImageUploadUtil;
 
 /**
@@ -48,12 +50,7 @@ import com.zy.util.ImageUploadUtil;
 @RequestMapping("/brokerExtInfo")
 public class BrokerExtInfoController {
 	
-	public static String[] excelTitle = new String[] { 
-		"中文名称","英文名称","官网链接","链接是否显示",
-		"会员/监管机构1（编号）","会员/监管机构2（编号）","会员/监管机构3（编号）","会员/监管机构4（编号）",
-		"公司属地","交易平台","业务形式" ,"喊单服务","账户分成","公司类型","产品","结算币值","产品点差","产品点差（最低）",
-		"单次最低交易手数","单次最高交易手数","持仓手数上限","客户回佣交易编码","建仓手续费","平仓手续费","多仓利息","空仓利息","最低入金","开仓保证金", 
-		"杠杆比例","强平百分比","EA支持","银联入金","人民币入金","出入金免手续费","公司推荐值","优惠活动","最后更新时间"};
+	
 
 	@Autowired
 	private BrokerExtInfoService brokerExtInfoService;
@@ -122,13 +119,34 @@ public class BrokerExtInfoController {
 					return result;
 				}
 			}
-			/*if(StringUtils.isNoneBlank(dto.getExchangeNo())){
-				int countNumb = brokerExtInfoService.findByExchangeNo(dto.getExchangeNo());
+			if(StringUtils.isNoneBlank(dto.getExchangeNo1())){
+				int countNumb = brokerExtInfoService.findByExchangeNo1(dto.getExchangeNo1());
 				if(countNumb>0){
 					result.setSuccess(false);
 					return result;
 				}
-			}*/
+			}
+			if(StringUtils.isNoneBlank(dto.getExchangeNo2())){
+				int countNumb = brokerExtInfoService.findByExchangeNo2(dto.getExchangeNo2());
+				if(countNumb>0){
+					result.setSuccess(false);
+					return result;
+				}
+			}
+			if(StringUtils.isNoneBlank(dto.getExchangeNo3())){
+				int countNumb = brokerExtInfoService.findByExchangeNo3(dto.getExchangeNo3());
+				if(countNumb>0){
+					result.setSuccess(false);
+					return result;
+				}
+			}
+			if(StringUtils.isNoneBlank(dto.getExchangeNo4())){
+				int countNumb = brokerExtInfoService.findByExchangeNo4(dto.getExchangeNo4());
+				if(countNumb>0){
+					result.setSuccess(false);
+					return result;
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);
@@ -194,47 +212,33 @@ public class BrokerExtInfoController {
 	}
 	
 	@RequestMapping(value="/export")
-	public ResultDto<Object> exportExl(BrokerExtInfoDto queryDto,HttpServletResponse response){
-		ResultDto<Object> result = new ResultDto<Object>();
+	public void exportExl(BrokerExtInfoDto queryDto,HttpServletResponse response){
 		try {
-			//List<BrokerExtInfo> list = brokerExtInfoService.queryForPage(queryDto,new PageModel<BrokerExtInfo>(100)).getList();
-			List<Object[]> list = new ArrayList<Object[]>();
+			List<BrokerExtInfo> list = brokerExtInfoService.queryForPage(queryDto,new PageModel<BrokerExtInfo>(200)).getList();
 			if(CollectionUtils.isNotEmpty(list)){
 
-				// 组装excel
 				response.setContentType("application/msexcel");
 				OutputStream os = null;
 				WritableWorkbook wwb = null;
-				// 文件名称
-				String xlsName = URLDecoder.decode("经纪商导出Excel", "UTF-8");
+				String xlsName = URLDecoder.decode("经纪商导出.xls", "UTF-8");// 文件名称
 				try {
 					os = response.getOutputStream();
 					response.setHeader("Content-Disposition", "attachment; filename="+ new String(xlsName.getBytes("GBK"), "ISO-8859-1"));
 					wwb = Workbook.createWorkbook(os);
 					WritableSheet ws = wwb.createSheet("report1", 0);
 					// 合并单元格
-					ws.mergeCells(0, 0, 2, 0);
-					// 设置列宽
-					//ExportExcelUtil4Jxl.setColumnWidth(ws, 15, new int[] { 2, 4, 7 });
-					//ExportExcelUtil4Jxl.setColumnWidth(ws, 20, new int[] { 3, 5, 6, 8,13 });
+					ws.mergeCells(0, 0, 38, 0);
 					// 填充表头
-					Label sheetTitle = new Label(0, 0, "经纪商信息", ExportExcelUtil4Jxl.centerFormat);
+					Label sheetTitle = new Label(0, 0, "经纪商信息", Util4Jxl.centerFormat);
 					ws.addCell(sheetTitle);
-					ExportExcelUtil4Jxl.addLine(ws,new Object[] {excelTitle}, 0, 1,ExportExcelUtil4Jxl.centerFormat);
+					Util4Jxl.addLine(ws,BrokerExportUtil.excelTitle, 0, 1,Util4Jxl.centerFormat);
 					// 填充列表
-					int row = 2;
-					for (Object[] objects:list) {
-						int column = 0;
-						ws.addCell(ExportExcelUtil4Jxl.getWritableCell(column++, row,row - 1, ExportExcelUtil4Jxl.leftFormat));
-						for (Object object : objects) {
-							ws.addCell(ExportExcelUtil4Jxl.getWritableCell(column++, row,object, ExportExcelUtil4Jxl.leftFormat));
-						}
-						row++;
-					}
+					addBrokerToCell(list, ws);
 					wwb.write();
 
-				} catch (Exception e) {
+				} catch (IOException e) {
 					e.printStackTrace();
+					throw e;
 				} finally {
 					if (wwb != null) {
 						wwb.close();
@@ -243,12 +247,63 @@ public class BrokerExtInfoController {
 						os.close();
 					}
 				}
-			}				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			result.setSuccess(false);
 		}
-		return result;
 	}
+
+	private void addBrokerToCell(List<BrokerExtInfo> list, WritableSheet ws)
+			throws WriteException, RowsExceededException {
+		
+		int row = 2;
+		for (BrokerExtInfo broker:list) {
+			int column = 0;
+			ws.addCell(Util4Jxl.getCell(column++, row, row - 1, Util4Jxl.leftFormat));//excel第一列序号
+			
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getCnName(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getEnName(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getWebsiteUrl(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese(broker.getIsShowUrl(),"显示"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getExchangeNo1(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getExchangeNo2(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getExchangeNo3(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getExchangeNo4(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.companyArea(broker.getCompanyArea()), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.platForm(broker.getPlatform()), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.serviceShape(broker.getServiceShape()), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese(broker.getIsSingalService(),"提供"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese(broker.getIsAccountSeperate(),"提供"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.companyType(broker.getCompanyType()), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.productType(broker.getProductType()), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.moneyType(broker.getMoneyType()), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.joinPrice(broker,"PointDiffMin"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.joinPrice(broker,"MinTradeNum"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.joinPrice(broker,"MaxTradeNum"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getMaxHoldNum(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getCommissionCode(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese(broker.getIsOpenFee(),"收取"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese( broker.getIsCloseFee(),"收取"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getLongRate(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getShortRate(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getMinIncomeMoney(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.joinPrice(broker,"OpenMoney"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getLeverRate(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getCloseRate(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getCloseRateExt(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese(broker.getIsEaSupport(),"支持"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese(broker.getIsUnionpay(),"支持"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese(broker.getIsRmbSupport(),"支持"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.toChinese(broker.getIsInOutFree(),"支持"), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getCompanyIndex(), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, BrokerExportUtil.nullToEmptyString(broker.getNoticeContent1())+";"+
+					BrokerExportUtil.nullToEmptyString(broker.getNoticeContent2())+";"+
+					BrokerExportUtil.nullToEmptyString(broker.getNoticeContent3()), Util4Jxl.leftFormat));
+			ws.addCell(Util4Jxl.getCell(column++, row, broker.getUpdateDate(), Util4Jxl.leftFormat));
+			
+			row++;
+		}
+	}
+	
 	
 }

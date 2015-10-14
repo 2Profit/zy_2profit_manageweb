@@ -19,13 +19,9 @@ $(function(){
 		$("#deleteFlag").val("");
 	});
 	
-	$('#copy_button').click(function(event){
+	$('#export_button').click(function(event){
 		event.preventDefault();
-		if($("input[name='ids']:checked").length!=1){
-			alert('请勾选一条记录');return;
-		}
-		if(!confirm("是否确认对选择的信息进行操作？")){return;}
-		window.location.href = "${ctx }/brokerExtInfo/brokerCopy?id="+$("input[name='ids']:checked").val();
+		window.location.href = "${ctx }/brokerExtInfo/export?"+$('#form').serialize();
 	});
 	
 });
@@ -51,7 +47,7 @@ function updateDeleteFlag(ids,deleteFlag){
 
 <body>
 <form action="" name="form" id="form" method="post" theme="simple">
-	<table class="table table-bordered table-condensed">
+	<table class="table table-bordered table-hover">
 		<tr>
 			<th>中文名称：</th>
 			<td><input type="text" name="cnName" value="${queryDto.cnName }"></td>		
@@ -131,7 +127,7 @@ function updateDeleteFlag(ids,deleteFlag){
 		</tr>
 	
 		<tr>
-			<td colspan="50">
+			<td colspan="80">
 				<button method="list" class="btn btn-primary" onclick="selectList(this)">
 					<i class="icon-search icon-white"></i> 查询
 				</button>
@@ -141,14 +137,17 @@ function updateDeleteFlag(ids,deleteFlag){
 				<button class="btn btn-success" onclick="return toAdd();">
 					<i class="icon-plus-sign icon-white"></i> 添加
 				</button>	
+				<button class="btn btn-primary" id="export_button">
+					<i class="icon-download-alt icon-white"></i> 导出Excel
+				</button>	
 			</td>
 		</tr>
 	</table>
 	
-	<table class="table table-bordered table-hover">
+	<table class="table table-bordered table-hover table-condensed">
 		<thead>
 			<tr style="background-color: #dff0d8">
-				<th width="10"><input type="checkbox" id="firstCheckbox"/></th>
+				<th><input type="checkbox" id="firstCheckbox"/></th>
 				<th>中文名称</th>
 				<th>英文名称</th>
 				<th>官方网站</th>
@@ -163,9 +162,9 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>产品</th>
 				<th>结算币值</th>
 				<th>产品点差</th>
-				<th width="10%">产品点差(最低)</th>
-				<th width="10%">单次最低交易手数</th>
-				<th width="10%">单次最高交易手数</th>
+				<th>产品点差(最低)</th>
+				<th>单次最低交易手数</th>
+				<th>单次最高交易手数</th>
 				<th>持仓手数上限</th>
 				<th>客户回佣</th>
 				<th>交易编号</th>
@@ -173,7 +172,7 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>平仓手续费</th>
 				<th>长仓利息</th>
 				<th>短仓利息</th>
-				<th width="8%">开仓保证金</th>
+				<th>开仓保证金</th>
 				<th>杠杆比例</th>
 				<th>强平百分比_平日</th>
 				<th>强平百分比_周末/假期</th>
@@ -282,7 +281,7 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		<c:if test="${u.pointDiffMinHkg != '' }">港金:${u.pointDiffMinHkg}<br/></c:if>
 			   		<c:if test="${u.pointDiffMinLkg != '' }">人民币公斤条:${u.pointDiffMinLkg}</c:if>
 			   		<c:if test="${u.pointDiffMinWh != '' }">外汇:${u.pointDiffMinWh}</c:if>
-			   		<c:if test="${u.pointDiffMinyy != '' }">原油:${u.pointDiffMinYy}</c:if>
+			   		<c:if test="${u.pointDiffMinYy != '' }">原油:${u.pointDiffMinYy}</c:if>
 			   </td>			   
 			   <td>
 			   		<c:if test="${u.minTradeNumLlg != '' }">伦敦金:${u.minTradeNumLlg}<br/></c:if>
@@ -371,14 +370,15 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		</c:choose>
 			   </td>
 			   <td>&nbsp;${u.companyIndex }</td>
-			   <td>
+			   <td style="width:10px">
 			   		<c:if test="${u.noticeContent1 != '' }">${u.noticeContent1}<br/></c:if>
 			   		<c:if test="${u.noticeContent2 != '' }">${u.noticeContent2}<br/></c:if>
 			   		<c:if test="${u.noticeContent3 != '' }">${u.noticeContent3}<br/></c:if>
 			   </td>			   
 			   <td><fmt:formatDate value="${u.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td>
-			      <a href="${ctx }/brokerExtInfo/edit?id=${u.id}">编辑</a>			      
+			      <a href="${ctx }/brokerExtInfo/edit?id=${u.id}">编辑</a><br>
+			      <a href="${ctx }/brokerExtInfo/brokerCopy?id=${u.id}">复制</a><br>
 			      <c:choose>
 			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
 			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
@@ -391,7 +391,6 @@ function updateDeleteFlag(ids,deleteFlag){
 			<td colspan="50">
 				<button id="delete_button" class="btn btn-danger"><i class="icon-remove icon-white"></i>删除</button>&nbsp;
 				<button id="revert_button" class="btn btn-warning"><i class="icon-repeat icon-white"></i>恢复</button>&nbsp;
-				<button id="copy_button" class="btn btn-success"><i class="icon-repeat icon-white"></i>复制</button>
 			</td>
 		</tr>		
 		<tr><td colspan="50" style="text-align:center;"><%@ include file="../common/pager.jsp"%></td>
