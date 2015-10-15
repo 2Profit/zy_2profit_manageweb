@@ -38,7 +38,31 @@
 			$('#append_td').append(html);
 		});
 		
-		$('#startDate').blur
+		$('#startDate').blur(function(){
+			$.post(
+		       	"${ctx }/voteTopic/validate",
+		    	{'startDate':$('#startDate').val()},
+		    	function(json) {
+		       		if(!json.success){
+		       			alert("开始时间:"+$('#startDate').val()+"内，已经存在投票主题！");
+		       			$('#startDate').val('');
+		       		}
+		       	}    
+			);
+		});
+		$('#endDate').blur(function(){
+			$.post(
+		       	"${ctx }/voteTopic/validate",
+		    	{'endDate':$('#endDate').val()},
+		    	function(json) {
+		       		if(!json.success){
+		       			alert("结束时间:"+$('#endDate').val()+"内，已经存在投票主题！");
+		       			$('#endDate').val('');
+		       		}
+		       	}    
+			);
+		});
+		
 		
 		$("button[name='postData_button']").bind("click",function(event){
  			event.preventDefault();

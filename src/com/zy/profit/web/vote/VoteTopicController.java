@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.zy.base.entity.Notice;
 import com.zy.common.entity.ResultDto;
 import com.zy.common.util.UserDto;
 import com.zy.common.util.UserSessionUtil;
@@ -99,13 +98,40 @@ public class VoteTopicController {
 	
 	@ResponseBody
 	@RequestMapping("/deleteFlag")
-	public ResultDto<Notice> deleteFlag(@RequestBody VoteTopicDto queryDto){
-		ResultDto<Notice> result = new ResultDto<Notice>();
+	public ResultDto<VoteTopic> deleteFlag(@RequestBody VoteTopicDto queryDto){
+		ResultDto<VoteTopic> result = new ResultDto<VoteTopic>();
 		try {
 			voteTopicService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);
+		}
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/validate")
+	public ResultDto<VoteTopic> validate(VoteTopic dto){
+		ResultDto<VoteTopic> result = new ResultDto<VoteTopic>();
+		try {
+			if(dto.getStartDate()!=null){
+				int countNumb = voteTopicService.findTopicByStartDate(dto.getStartDate());
+				if(countNumb>0){
+					result.setSuccess(false);
+					return result;
+				}
+			}
+			if(dto.getStartDate()!=null){
+				int countNumb = voteTopicService.findTopicByEndDate(dto.getEndDate());
+				if(countNumb>0){
+					result.setSuccess(false);
+					return result;
+				}
+			}
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setCode(ResultDto.SERVER_ERROR_CODE);
+			e.printStackTrace();
 		}
 		return result;
 	}
