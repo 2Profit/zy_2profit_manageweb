@@ -21,6 +21,7 @@
 <script type="text/javascript" src="<%=request.getContextPath() %>/static/js/dialogCommon.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath() %>/static/js/jquery.form.js"></script>
 <script type="text/javascript" src="${ctx }/static/layer/layer.js"></script>
+<script type="text/javascript" src="${ctx }/static/js/base_util.js"></script>
 
 
 <%

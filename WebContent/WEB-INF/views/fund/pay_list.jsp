@@ -29,13 +29,17 @@ $(function(){
 	
 });
 
+function pass(){
+	
+}
+
 </script>
 
 </head>
 <body>
 <form action="">
 	<div class="l_main">
-		<div class="l_titleBar">
+		<div class="l_titlebar">
 			<div class="l_text">
 				在线充值
 			</div>
@@ -88,8 +92,8 @@ $(function(){
 				<a class="btn btn-success" href="javascript:void(0);" onclick="myEdit()">
 					<i class="icon-plus-sign icon-white"></i> 添加
 				</a>
-				<!-- <a class="btn btn-success" href="javascript:void(0);">审批提案</a>
-				<a class="btn btn-danger" href="javascript:void(0);">取消提案</a> -->
+				<a class="btn btn-success" href="javascript:void(0);">审批提案</a>
+				<a class="btn btn-danger" href="javascript:void(0);">取消提案</a>
 			</div>
 		</div>
 	
@@ -98,7 +102,7 @@ $(function(){
 				<thead>
 					<tr>
 						<th>
-							<!-- <input type="checkbox"/> -->
+							<input type="checkbox" name="checkAll" onclick="checkAllClick(this, 'chk')"/>
 						</th>
 						<th>操作</th>
 						<th>提案号</th>
@@ -122,7 +126,9 @@ $(function(){
 						<tr>
 							<td><input type="checkbox" name="chk" value="${trade.id }"/></td>
 							<td>
-								<a class="a_btn" href="${ctx }/fund/pay/edit?type=update&id=${trade.id}">修改</a>
+								<c:if test="${trade.status eq 0 }">
+									<a class="a_btn" href="${ctx }/fund/pay/edit?type=update&id=${trade.id}">修改</a>
+								</c:if>
 								<a class="a_btn" href="${ctx }/fund/pay/edit?type=view&id=${trade.id}">查看</a>
 							</td>
 							<td>${trade.proposalNo }</td>
@@ -143,7 +149,7 @@ $(function(){
 									<c:when test="${trade.curType eq 1 }">真实币</c:when>
 								</c:choose>
 							</td>
-							<td>
+							<td data-name="status" data-value="${trade.status }">
 								<c:choose>
 									<c:when test="${trade.status eq 0 }">未处理</c:when>
 									<c:when test="${trade.status eq 1 }">通过</c:when>

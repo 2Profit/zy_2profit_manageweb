@@ -70,7 +70,7 @@ function mySubmit(){
 <body>
 
 	<div class="l_main">
-		<div class="l_titleBar">
+		<div class="l_titlebar">
 			<div class="l_text">
 				<c:choose>
 				<c:when test="${type eq 'add' }">

@@ -1,7 +1,19 @@
 @CHARSET "UTF-8";
 
+.wd100 {
+	width: 100px;
+}
+
 .wd200 {
 	width: 200px;
+}
+
+.wd300 {
+	width: 300px;
+}
+
+.wd400 {
+	width: 400px;
 }
 
 .l_main{
@@ -29,10 +41,11 @@
 .l_toolBar select {
 	width: auto;
 }
-.l_toolBar button {
+.l_toolBar .btn {
 	margin-left: 5px;
 	margin-right: 5px;
 }
+
 .l_toolBar .form-inline {
 	margin: 0px;
 }
@@ -60,12 +73,30 @@
   	border-bottom: 2px solid #1cb177;
 }
 
+.l_toolbar .btn{
+	margin: 0 5px;
+}
+
 .l_form{}
+	.l_form div.t_check{
+		float: left;
+  		position: relative;
+  		line-height: 36px;
+	}
+	.l_form div.t_check label{
+		display: inline;
+		margin: 0px 5px;
+		line-height: 36px;
+	}
+	.l_form div.t_check input{
+		position: relative;
+	}
 	.l_form table {
 		width: 100%;
 	}
 		.l_form table td {
-			line-height: 50px;
+			/*line-height: 50px;*/
+			padding: 10px 0px;
 			color: #333;
 			border-bottom: 1px dashed #ddd;
 		}
@@ -100,7 +131,11 @@ a:hover{text-decoration:none;}
 a:active{
 	text-decoration:none; 
 }
-		
+
+a.abtn.orange { background-color: #f60; }
+    a.abtn.orange:hover { background-color: #f50; }
+a.abtn.red:hover { background-color: #f70; }
+
 .l_btnGrounp {
 	text-align: center;
 }
