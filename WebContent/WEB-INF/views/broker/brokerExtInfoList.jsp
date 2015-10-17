@@ -145,9 +145,6 @@ function updateDeleteFlag(ids,deleteFlag){
 				<button class="btn btn-primary" id="export_button">
 					<i class="icon-download-alt icon-white"></i> 导出Excel
 				</button>	
-				<button class="btn btn-primary" id="export_button">
-					<i class="icon-download-alt icon-white"></i> 导出Excel
-				</button>	
 			</td>
 		</tr>
 	</table>
@@ -158,7 +155,6 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th><input type="checkbox" id="firstCheckbox"/></th>
 				<th>中文名称</th>
 				<th>英文名称</th>
-				<th>官方网站</th>
 				<th>链接显示</th>
 				<th>监管机构(编号)</th>
 				<th>公司属地</th>
@@ -189,7 +185,7 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>人民币入金</th>
 				<th>出入金免手续费</th>
 				<th>推荐值</th>
-				<th>优惠活动</th>
+				<!-- <th>优惠活动</th> -->
 				<th>更新时间</th>
 				<th nowrap="nowrap">操作</th>
 			</tr>
@@ -200,7 +196,6 @@ function updateDeleteFlag(ids,deleteFlag){
 			   
 			   <td>&nbsp;${u.cnName }</td>
 			   <td>&nbsp;${u.enName }</td>
-			   <td>&nbsp;${u.websiteUrl }</td>
 			   <td>
 			   		<c:choose>
 			   			<c:when test="${u.isShowUrl == '0' }">关闭</c:when>
@@ -378,11 +373,13 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		</c:choose>
 			   </td>
 			   <td>&nbsp;${u.companyIndex }</td>
-			   <td style="width:10px">
-			   		<c:if test="${u.noticeContent1 != '' }">${u.noticeContent1}<br/></c:if>
-			   		<c:if test="${u.noticeContent2 != '' }">${u.noticeContent2}<br/></c:if>
-			   		<c:if test="${u.noticeContent3 != '' }">${u.noticeContent3}<br/></c:if>
-			   </td>			   
+			   <%-- <td>
+			   		<p>
+				   		<c:if test="${u.noticeContent1 != '' }">${u.noticeContent1}<br/></c:if>
+				   		<c:if test="${u.noticeContent2 != '' }">${u.noticeContent2}<br/></c:if>
+				   		<c:if test="${u.noticeContent3 != '' }">${u.noticeContent3}<br/></c:if>
+			   		</p>
+			   </td> --%>			   
 			   <td><fmt:formatDate value="${u.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td>
 			      <a href="${ctx }/brokerExtInfo/edit?id=${u.id}">编辑</a><br>
