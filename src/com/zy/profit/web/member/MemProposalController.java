@@ -17,6 +17,7 @@ import com.zy.common.entity.PageModel;
 import com.zy.common.util.AjaxResult;
 import com.zy.common.util.CommonConstants;
 import com.zy.common.util.ConstantEnity;
+import com.zy.org.entity.User;
 import com.zy.profit.web.util.HttpUtils;
 import com.zy.proposal.entity.ProposalMemModify;
 import com.zy.proposal.service.ProposalMemModifyService;
@@ -89,11 +90,13 @@ public class MemProposalController {
 		
 		try {
 			
+			User user = HttpUtils.getUser(request);
+			
 			String[] posIds = request.getParameterValues("posIds");
 			
 			String msg = request.getParameter("msg");
 			
-			proposalMemModifyService.updateBatchPosPass(posIds, msg);
+			proposalMemModifyService.updateBatchPosPass(posIds, msg, user);
 			
 			ajaxResult.setSuccess(true);
 			
@@ -113,11 +116,13 @@ public class MemProposalController {
 		
 		try {
 			
+			User user = HttpUtils.getUser(request);
+			
 			String[] posIds = request.getParameterValues("posIds");
 			
 			String msg = request.getParameter("msg");
 			
-			proposalMemModifyService.updateBatchPosCancel(posIds, msg);
+			proposalMemModifyService.updateBatchPosCancel(posIds, msg, user);
 			
 			ajaxResult.setSuccess(true);
 			
