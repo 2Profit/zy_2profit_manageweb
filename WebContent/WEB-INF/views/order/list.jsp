@@ -9,6 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>支付交易记录</title>
 
+<script type="text/javascript" src="${ctx }/static/js/My97DatePicker/WdatePicker.js"></script>
+
 <link rel="stylesheet" href="${ctx }/static/css/lgl.css"  type="text/css">
 
 </head>
@@ -21,6 +23,46 @@
 			</div>
 		</div>
 	
+		<div class="">
+			<div class="l_toolBar">
+				<div class="form-inline">
+					<span>
+						<label>订单号：</label>
+						<input type="text" class="wd100" style="height: auto;" name="orderId" value="${orderId }"/>
+					</span>
+					
+					<span>
+						<label>会员编号：</label>
+						<input type="text" class="input-small" style="height: auto;" name="memberNo" value="${memberNo }"/>
+					</span>
+					
+					<span>
+						<label>会员手机：</label>
+						<input type="text" class="wd100" style="height: auto;" name="mobile" value="${mobile }"/>
+					</span>
+					<span>
+						<label>会员姓名：</label>
+						<input type="text" class="wd100" style="height: auto;" name="name" value="${name }"/>
+					</span>
+					
+					<span>
+						<label>时间：</label>
+						<input type="text" class="wd100 Wdate" style="height: auto;" name="startDate" value='<fmt:formatDate value="${startDate }"/>' onclick="WdatePicker()"/>
+						<label>至</label>
+						<input type="text" class="wd100 Wdate" style="height: auto;" name="endDate" value='<fmt:formatDate value="${endDate }"/>' onclick="WdatePicker()"/>
+					</span>
+					
+				</div>
+			</div>
+			
+			<div class="l_toolbar">
+				<button class="btn btn-primary" method="list">
+					<i class="icon-search icon-white"></i> 查询
+				</button>
+			</div>
+			
+		</div>
+		
 		<div class="l_table mgt20">
 			<table class="table table-bordered table-hover">
 				<thead>
@@ -30,7 +72,8 @@
 						</th>
 						<!-- <th>操作</th> -->
 						<th>订单号</th>
-						<th>会员手机号</th>
+						<th>会员编号</th>
+						<th>会员手机</th>
 						<th>会员名称</th>
 						<th>金额</th>
 						<th>订单状态</th>
@@ -43,7 +86,8 @@
 						<tr>
 							<td><input type="checkbox" name="chk" value="${trade.id }"/></td>
 							<%-- <td>${order.id }</td> --%>
-							<td>${order.id }</td>
+							<td>${order.orderId }</td>
+							<td>${order.member.no }</td>
 							<td>${order.member.mobile }</td>
 							<td>${order.member.cnName }</td>
 							<td>${order.amount }</td>
