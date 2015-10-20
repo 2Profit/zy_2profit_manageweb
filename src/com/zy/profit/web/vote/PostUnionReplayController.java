@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zy.common.entity.PageModel;
 import com.zy.common.entity.ResultDto;
 import com.zy.vote.dto.PostUnionReplayDto;
+import com.zy.vote.dto.ReportUnionDto;
 import com.zy.vote.entity.VoteTopic;
+import com.zy.vote.service.VotePostReportService;
 import com.zy.vote.service.VoteTopicPostReplayService;
 import com.zy.vote.service.VoteTopicPostService;
 import com.zy.vote.service.VoteTopicService;
@@ -32,7 +34,19 @@ public class PostUnionReplayController {
 	private VoteTopicPostService voteTopicPostService;
 	@Autowired
 	private VoteTopicPostReplayService voteTopicPostReplayService;
+	@Autowired
+	private VotePostReportService votePostReportService;
 	
+	
+	
+	@RequestMapping("/report/list")
+	public String reportList(Model model, ReportUnionDto queryDto,PageModel<ReportUnionDto> pageModel){
+		
+		model.addAttribute("page", votePostReportService.queryPage(queryDto, pageModel));
+		model.addAttribute("queryDto", queryDto);
+		
+		return "vote/reportUnionList";
+	}
 	
 	@RequestMapping("/list")
 	public String list(Model model, PostUnionReplayDto queryDto,PageModel<PostUnionReplayDto> pageModel){

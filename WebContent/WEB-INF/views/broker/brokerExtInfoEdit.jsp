@@ -233,8 +233,11 @@ $(function(){
 					    <option value="S" <c:if test="${'S' == brokerExtInfo.licenseType }">selected</c:if>>S</option>
 					</select>					
 				</td>
-				<th class="td_right"></th>
-				<td style="text-align: left;"></td>			
+				<th class="td_right"><em>*</em>开户链接：</th>
+				<td style="text-align: left;">
+					<input type="text" name="commissionUrl" data-rule="开户链接:required;commissionUrl;"
+						id="commissionUrl" value="${brokerExtInfo.commissionUrl }"/>
+				</td>		
 			</tr>
 			
 			<tr>
@@ -346,12 +349,19 @@ $(function(){
 			
 			<tr>
 				<th class="td_right"><em>*</em>产品点差：</th>
-				<td style="text-align: left;" colspan="3">
+				<td style="text-align: left;">
 					<select id="pointDiff" name="pointDiff" data-rule="产品点差:required;pointDiff;">
 						<option value="">--请选择--</option>
 					    <option value="0" <c:if test="${'0' == brokerExtInfo.pointDiff }">selected</c:if>>固定</option>
 					    <option value="1" <c:if test="${brokerExtInfo.id == null || '1' == brokerExtInfo.pointDiff }">selected</c:if>>浮动</option>
 					</select>
+				</td>			
+				<th class="td_right"><em>*</em>是否推荐：</th>
+				<td style="text-align: left;">
+					<select id="isRecommet" name="isRecommet" data-rule="是否推荐:required;isRecommet;">
+					    <option value="0" <c:if test="${brokerExtInfo.id == null || '0' == brokerExtInfo.isRecommet }">selected</c:if>>不推荐</option>
+					    <option value="1" <c:if test="${ '1' == brokerExtInfo.isRecommet }">selected</c:if>>推荐</option>
+					</select>					
 				</td>			
 			</tr>
 			<tr>	
