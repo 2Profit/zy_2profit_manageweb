@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -154,26 +155,36 @@ public class BrokerExtInfoController {
 		return result;
 	}
 	
-	private String uploadFile(MultipartFile multipart,BrokerExtInfo entity) throws IllegalStateException, IOException{
-		String originalFileName = multipart.getOriginalFilename();
-		File convFile = new File(originalFileName);
-        multipart.transferTo(convFile);
-		return ImageUploadUtil.uploadFileHandler(convFile,BrokerExtInfo.class.getSimpleName(),originalFileName,
+	private String uploadFile(File file,BrokerExtInfo entity) throws IllegalStateException, IOException{
+		return ImageUploadUtil.uploadFileHandler(file,BrokerExtInfo.class.getSimpleName(),"hello.jpg",
 				entity.getImageWidth(),entity.getImageHeight());
+	}
+	
+	private String uploadFileH5(File file,BrokerExtInfo entity) throws IllegalStateException, IOException{
+		return ImageUploadUtil.uploadFileHandler(file,BrokerExtInfo.class.getSimpleName()+File.separator+"h5","hello.jpg",
+				entity.getImageWidthH5(),entity.getImageHeightH5());
 	}
 	
 	@RequestMapping(value="/save", produces = {"application/json;charset=utf-8"})
 	@ResponseBody
 	public ResultDto<BrokerExtInfo> save(BrokerExtInfo dto,HttpServletRequest request,
-			@RequestParam("file") MultipartFile file){
+			@RequestParam("file") MultipartFile multileFile){
 		
 		ResultDto<BrokerExtInfo> result = new ResultDto<BrokerExtInfo>();
 		try {
 			//上传图片到服务器
-			if(file!=null && !file.isEmpty()){
+			if(multileFile!=null && !multileFile.isEmpty()){
+				File file = new File(multileFile.getOriginalFilename());
+				FileCopyUtils.copy(multileFile.getBytes(),file);
+				
 				String returnCode = uploadFile(file, dto);
 				if(!"400".equals(returnCode)){
 					dto.setImageUrl(returnCode);
+				}
+				
+				String returnCodeH5 = uploadFileH5(file, dto);
+				if(!"400".equals(returnCodeH5)){
+					dto.setImageUrlH5(returnCodeH5);
 				}
 			}
 			
