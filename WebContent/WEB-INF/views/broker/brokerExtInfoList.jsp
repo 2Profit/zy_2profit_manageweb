@@ -185,7 +185,7 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>人民币入金</th>
 				<th>出入金免手续费</th>
 				<th>推荐值</th>
-				<!-- <th>优惠活动</th> -->
+				<th>数据状态</th>
 				<th>更新时间</th>
 				<th nowrap="nowrap">操作</th>
 			</tr>
@@ -379,7 +379,14 @@ function updateDeleteFlag(ids,deleteFlag){
 				   		<c:if test="${u.noticeContent2 != '' }">${u.noticeContent2}<br/></c:if>
 				   		<c:if test="${u.noticeContent3 != '' }">${u.noticeContent3}<br/></c:if>
 			   		</p>
-			   </td> --%>			   
+			   </td> --%>		
+			   <td>
+			   		<c:choose>
+			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">正常</font></c:when>
+			   			<c:when test="${u.deleteFlag == '1' }"><font color="red">删除</font></c:when>
+			   			<c:otherwise>&nbsp;</c:otherwise>
+			   		</c:choose>
+			   </td>			   	   
 			   <td><fmt:formatDate value="${u.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td>
 			      <a href="${ctx }/brokerExtInfo/edit?id=${u.id}">编辑</a><br>
