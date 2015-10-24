@@ -363,6 +363,13 @@ $(function(){
 					    <option value="1" <c:if test="${ '1' == brokerExtInfo.isRecommet }">selected</c:if>>推荐</option>
 					</select>					
 				</td>			
+				<th class="td_right"><em>*</em>是否推荐：</th>
+				<td style="text-align: left;">
+					<select id="isRecommet" name="isRecommet" data-rule="是否推荐:required;isRecommet;">
+					    <option value="0" <c:if test="${brokerExtInfo.id == null || '0' == brokerExtInfo.isRecommet }">selected</c:if>>不推荐</option>
+					    <option value="1" <c:if test="${ '1' == brokerExtInfo.isRecommet }">selected</c:if>>推荐</option>
+					</select>					
+				</td>			
 			</tr>
 			<tr>	
 				<th class="td_right"><em>*</em>产品点差 (最低)：</th>
