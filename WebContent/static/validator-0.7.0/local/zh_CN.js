@@ -26,7 +26,7 @@
             ,postcode: [/^[1-9]\d{5}$/, "邮政编码格式不正确"]
             ,chinese: [/^[\u0391-\uFFE5]+$/, "请输入中文"]
             ,username: [/^\w{3,12}$/, "请输入3-12位数字、字母、下划线"]
-            ,password: [/^[0-9a-zA-Z]{6,16}$/, "密码由6-16位数字、字母组成"]
+            ,password: [/^[0-9a-zA-Z]{8,16}$/, "密码由8-16位数字、字母组成"]
     		,money: [/^\d+(\.\d{0,2})?$/, "{0}只能输入数字且最多两位小数"]
             ,accept: function (element, params){
                 if (!params) return true;

@@ -38,6 +38,8 @@
 	.fr {
 	  float: right !important;
 	}
+	
+	
 </style>
 
 <script type="text/javascript">
@@ -82,20 +84,25 @@ $(function(){
 		}
 	});
 	
+	<c:if test="${type ne 'pos' }">
 	$('#myForm').validator({
+		rules : {
+			mypwd : [/^[0-9a-zA-Z]{8,16}$|[#]{8}/, "密码由8-16位数字、字母组成"]
+		},
 		fields : {
 			mobile : 'required;mobile;',
 			accountCategory : 'required',
 			accountType : 'required',
 			cnName : 'length[~64, true]',
-			enName : 'length[~64, true]',
+			nickName : 'length[~64, true]',
 			email : 'email',
 			card : 'length[~64, true]',
 			address : 'length[~512, true]',
 			bankAccount : 'length[~64, true]',
 			bankCardNum : 'length[~64, true]',
 			bankAddress : 'length[~512, true]',
-			status : 'required'
+			status : 'required',
+			pwd : 'mypwd'
 		},
 		valid : function(form){
 			layer.load();
@@ -122,6 +129,7 @@ $(function(){
 			});
 		}
 	});
+	</c:if>
 	
 	if('pos' == '${type}'){
 		setPosVal();
@@ -202,39 +210,55 @@ function myCancel(){
  * 设置提案的值
  */
 function setPosVal(){
-	$('input[name="no"]').val('${pmm.no}');
-	$('input[name="mobile"]').val('${pmm.mobile}');
-	$('select[name="accountCategory"]').val('${pmm.accountCategory}');
-	$('select[name="accountType"]').val('${pmm.accountType}');
-	$('input[name="cnName"]').val('${pmm.cnName}');
-	$('input[name="enName"]').val('${pmm.enName}');
-	$('input[name="sex"][value="${pmm.sex}"]').click();
-	$('input[name="email"]').val('${pmm.email}');
-	$('select[name="cardType"]').val('${pmm.cardType}');
-	$('input[name="card"]').val('${pmm.card}');
-	$('select[name="nationalityId"]').val('${pmm.nationalityId}');
-	$('select[name="status"]').val('${pmm.status}');
-	$('input[name="address"]').val('${pmm.address}');
-	$('input[name="bankAccount"]').val('${pmm.bankAccount}');
-	$('input[name="bankCardNum"]').val('${pmm.bankCardNum}');
-	$('input[name="bankAddress"]').val('${pmm.bankAddress}');
+	$('input[data-pos-name="no"]').val('${pmm.no}');
+	$('input[data-pos-name="mobile"]').val('${pmm.mobile}');
+	$('select[data-pos-name="accountCategory"]').val('${pmm.accountCategory}');
+	$('select[data-pos-name="accountType"]').val('${pmm.accountType}');
+	$('input[data-pos-name="cnName"]').val('${pmm.cnName}');
+	$('input[data-pos-name="nickName"]').val('${pmm.nickName}');
+	$('input[data-pos-name="sex"][value="${pmm.sex}"]').click();
+	$('input[data-pos-name="email"]').val('${pmm.email}');
+	$('select[data-pos-name="cardType"]').val('${pmm.cardType}');
+	$('input[data-pos-name="card"]').val('${pmm.card}');
+	$('select[data-pos-name="nationalityId"]').val('${pmm.nationalityId}');
+	$('select[data-pos-name="status"]').val('${pmm.status}');
+	$('input[data-pos-name="address"]').val('${pmm.address}');
+	$('input[data-pos-name="bankAccount"]').val('${pmm.bankAccount}');
+	$('input[data-pos-name="bankCardNum"]').val('${pmm.bankCardNum}');
+	$('input[data-pos-name="bankAddress"]').val('${pmm.bankAddress}');
 	
 	if('${pmm.imgIDCardA}'){
-		$('img[data-param-name="imgIDCardA"]').attr('src', '${ctx}${pmm.imgIDCardA}');
+		$('img[data-pos-param-name="imgIDCardA"]').attr('src', '${ctx}${pmm.imgIDCardA}');
 	}
-	if('${pmm.imgIDCardB}'){
+	/* if('${pmm.imgIDCardB}'){
 		$('img[data-param-name="imgIDCardB"]').attr('src', '${ctx}${pmm.imgIDCardB}');
-	}
+	} */
 	if('${pmm.imgBankCard}'){
-		$('img[data-param-name="imgBankCard"]').attr('src', '${ctx}${pmm.imgBankCard}');
+		$('img[data-pos-param-name="imgBankCard"]').attr('src', '${ctx}${pmm.imgBankCard}');
 	}
 	
+	if('${pmm.posType }' == '修改'){
+		$('#myForm input, #myForm select').each(function(idx, obj){
+			var pVal = $(obj).val();
+			var name = $(obj).attr('name');
+			if(name && name != 'sex'){
+				var $mObj = $('*[data-pos-name="'+name+'"]');
+				var val = $mObj.val();
+				if(!pVal && !val){
+				}else if(pVal != val){
+					$(obj).css('border', '1px solid red');
+					$mObj.css('border', '1px solid red');
+				}
+			}
+		});
+	}
+		
 }
 
 </script>
 </head>
 
-<body>
+<body style="width: 1700px;">
 
 	<div class="l_main">
 		<div class="l_titlebar">
@@ -253,248 +277,534 @@ function setPosVal(){
 			</div>
 		</div>
 		
+		
+		
 		<form id="myForm" method="post">
 			<input type="hidden" name="type" value="${type }"/>
 			<input type="hidden" name="memberId" value="${member.id }"/>
 			<input type="hidden" id="posId" value="${pmm.id }"/>
-			<div class="l_form mgt20">
-				
-				<table>
-					<tbody>
-						<tr>
-							<td class="f_title wd100">会员编号：</td>
-							<td class="f_content wd400">
-								<c:choose>
-									<c:when test="${type eq 'add' }">
-										<input type="text" name="no" value="${no }" disabled="disabled"/>
-										<input type="hidden" name="no" value="${no }"/>
-									</c:when>
-									<c:when test="${type eq 'update' }">
-										<input type="text" name="no" value="${member.no }" disabled="disabled"/>
-										<input type="hidden" name="no" value="${member.no }"/>
-									</c:when>
-									<c:when test="${type eq 'pos' }">
-										${pmm.no }
-									</c:when>
-								</c:choose>
-							</td>
-							<td class="f_title wd100">手机号码：</td>
-							<td class="f_content">
-								<input name="mobile" type="text" value="${member.mobile }"/>
-							</td>
-						</tr>
-						<tr>
-							
-							<td class="f_title wd100">账号类别：</td>
-							<td class="f_content">
-								<select name="accountCategory">
-								    <option value="0">客户</option>
-								    <option value="1">老师</option>
-								</select>
-							</td>
-							
-							<td class="f_title">账号类型：</td>
-							<td class="f_content">
-								<select name="accountType">
-								    <option value="0">真实</option>
-								    <option value="1">测试</option>
-								</select>
-							</td>
-							
-						</tr>
-						<tr>
-							<td class="f_title">中文姓名：</td>
-							<td class="f_content">
-								<input type="text" name="cnName" value="${member.cnName }"/>
-							</td>
-							<td class="f_title">英文姓名：</td>
-							<td class="f_content">
-								<input type="text" name="enName" value="${member.enName }"/>
-							</td>
-						</tr>
-						<tr>
-							<td class="f_title">性别：</td>
-							<td class="f_content">
-								<div class="t_check">
-									<label>
-										<input type="radio" name="sex" value="0"/>男
-									</label>
-									<label>
-										<input type="radio" name="sex" value="1"/>女
-									</label>
-								</div>
-							</td>
-							<td class="f_title">电子邮箱：</td>
-							<td class="f_content">
-								<input type="text" name="email" value="${member.email }"/>
-							</td>
-							
-						</tr>
-						<tr>
-							<td class="f_title">证件类型：</td>
-							<td class="f_content">
-								<select name="cardType">
-									<option value="">请选择</option>
-									<option value="0">身份证</option>
-									<option value="1">护照</option>
-								</select>
-							</td>
-							
-							<td class="f_title">证件编号：</td>
-							<td class="f_content">
-								<input type="text" name="card" value="${member.card }"/>
-							</td>
-							
-						</tr>
-						
-						<tr>
-							
-							<td class="f_title">国籍：</td>
-							<td class="f_content">
-								<select name="nationalityId">
-									<option value="">请选择</option>
-									<c:forEach items="${nationalities }" var="n">
-										<option value="${n.id }">${n.name }</option>
-									</c:forEach>
-								</select>
-							</td>
-							
-							<td class="f_title">状态：</td>
-							<td class="f_content">
-								<select name="status">
-								    <option value="0">启用</option>
-								    <option value="1">冻结</option>
-								    <option value="2">黑名单</option>
-								    <option value="3">销户</option>
-								</select>
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="f_title">联系地址：</td>
-							<td class="f_content" colspan="3">
-								<input type="text" name="address" style="width: 700px;" value="${member.address }"/>
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="f_title">银行账户：</td>
-							<td class="f_content">
-								<input type="text" name="bankAccount" value="${member.memBankInfo.bankAccount }"/>
-							</td>
-							
-							<td class="f_title">银行账号：</td>
-							<td class="f_content">
-								<input type="text" name="bankCardNum" value="${member.memBankInfo.bankCardNum }"/>
-							</td>
-							
-						</tr>
-						<tr>
-							<td class="f_title">银行地址：</td>
-							<td class="f_content" colspan="3">
-								<input type="text" name="bankAddress" style="width: 700px;" value="${member.memBankInfo.bankAddress }"/>
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="f_title">身份证明：</td>
-							<td class="f_content" colspan="3">
-								<div id="uploadImg" style="display: none;">
-									<input type="hidden" id="paramName" value=""/>
-									<input type="file" name="imgFile" multiple="multiple" style="opacity: .0;">
-								</div>
+			<div class="l_form mgt20 fl" style="padding: 0px 5px;">
+				<c:if test="${type eq 'pos' }">
+				<div style="display: inline-block;border-right: 1px dashed #ddd;">
+					<table>
+						<tbody>
+							<tr>
+								<td class="f_content" style="font-size: 16px;text-align: center;" colspan="4">审批资料(类型：${pmm.posType })</td>
+							</tr>
+							<tr>
+								<td class="f_title wd100">会员编号：</td>
+								<td class="f_content wd300">
+									${pmm.no }
+								</td>
+								<td class="f_title wd100">手机号码：</td>
+								<td class="f_content wd300">
+									<input data-pos-name="mobile" type="text"/>
+								</td>
+							</tr>
+							<tr>
 								
-								<div class="J_picBox clearfix">
-			                        <div class="p_item">
-			                            <div class="i_inner">
-			                                <div class="i_mask">
-			                                    <div class="ml10 fl">身份证正面</div>
-			                                    <div class="fr">
-			                                    	<c:if test="${type ne 'pos' }">
-			                                    		<a class="abtn orange" href="javascript:void(0)" onclick="uploadImg(this, 'imgIDCardA')">立即上传</a>
-			                                    	</c:if>
-			                                    </div>
-			                                </div>
-			                                <div class="i_pic">
-			                                	<c:choose>
-			                                		<c:when test="${not empty member.imgIDCardA }">
-			                                			<img src="${ctx }${member.imgIDCardA }" data-param-name="imgIDCardA">
-			                                			<input type="hidden" name="imgIDCardA" value="${member.imgIDCardA }"/>
-			                                		</c:when>
-			                                		<c:otherwise>
-			                                			<img src="${ctx }/static/images/J_null.png" data-param-name="imgIDCardA">
-			                                			<input type="hidden" name="imgIDCardA"/>
-			                                		</c:otherwise>
-			                                	</c:choose>
-			                                	
-			                                </div>
-			                            </div>
-			                        </div>
-			                        <div class="p_item">
-			                            <div class="i_inner">
-			                                <div class="i_mask">
-			                                    <div class="ml10 fl">身份证背面</div>
-			                                    <div class="fr">
-			                                    	<c:if test="${type ne 'pos' }">
-			                                    		<a class="abtn orange" href="javascript:void(0);" onclick="uploadImg(this, 'imgIDCardB')">立即上传</a>
-			                                    	</c:if>
-			                                    </div>
-			                                </div>
-			                                <div class="i_pic">
-			                                	<c:choose>
-			                                		<c:when test="${not empty member.imgIDCardB }">
-			                                			<img src="${ctx }${member.imgIDCardB }" data-param-name="imgIDCardB">
-			                                			<input type="hidden" name="imgIDCardB" value="${member.imgIDCardB }"/>
-			                                		</c:when>
-			                                		<c:otherwise>
-					                                	<img src="${ctx }/static/images/J_null.png" data-param-name="imgIDCardB">
-					                                	<input type="hidden" name="imgIDCardB"/>
-			                                		</c:otherwise>
-			                                	</c:choose>
-			                                </div>
-			                            </div>
-			                        </div>
-			                    </div>
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="f_title">银行证明：</td>
-							<td class="f_content" colspan="3">
-								<div class="J_picBox clearfix">
-									<div class="p_item">
-			                            <div class="i_inner">
-			                                <div class="i_mask">
-			                                    <div class="ml10 fl">银行证明</div>
-			                                    <div class="fr">
-			                                    	<c:if test="${type ne 'pos' }">
-			                                    		<a class="abtn orange" href="javascript:void(0);" onclick="uploadImg(this, 'imgBankCard')">立即上传</a>
-			                                    	</c:if>
-			                                    </div>
-			                                </div>
-			                                <div class="i_pic">
-			                                	<c:choose>
-			                                		<c:when test="${not empty member.imgBankCard }">
-			                                			<img src="${ctx }${member.imgBankCard }" data-param-name="imgBankCard">
-			                                			<input type="hidden" name="imgBankCard" value="${member.imgBankCard }"/>
-			                                		</c:when>
-			                                		<c:otherwise>
-					                                	<img src="${ctx }/static/images/J_null.png" data-param-name="imgBankCard">
-					                                	<input type="hidden" name="imgBankCard"/>
-			                                		</c:otherwise>
-			                                	</c:choose>
-			                                </div>
-			                            </div>
-			                        </div>
-								</div>
-							</td>
-						</tr>
-						
-					</tbody>
-				</table>
-			
+								<td class="f_title wd100">账号类别：</td>
+								<td class="f_content">
+									<select data-pos-name="accountCategory">
+									    <option value="0">客户</option>
+									    <option value="1">老师</option>
+									</select>
+								</td>
+								
+								<td class="f_title">账号类型：</td>
+								<td class="f_content">
+									<select data-pos-name="accountType">
+									    <option value="0">真实</option>
+									    <option value="1">测试</option>
+									</select>
+								</td>
+								
+							</tr>
+							<tr>
+								<td class="f_title">中文姓名：</td>
+								<td class="f_content">
+									<input type="text" data-pos-name="cnName"/>
+								</td>
+								<td class="f_title">昵称：</td>
+								<td class="f_content">
+									<input type="text" data-pos-name="nickName"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="f_title">性别：</td>
+								<td class="f_content">
+									<div class="t_check">
+										<label>
+											<input type="radio" data-pos-name="sex" value="0"/>男
+										</label>
+										<label>
+											<input type="radio" data-pos-name="sex" value="1"/>女
+										</label>
+									</div>
+								</td>
+								<td class="f_title">电子邮箱：</td>
+								<td class="f_content">
+									<input type="text" data-pos-name="email"/>
+								</td>
+								
+							</tr>
+							<tr>
+								<td class="f_title">证件类型：</td>
+								<td class="f_content">
+									<select data-pos-name="cardType">
+										<option value="">请选择</option>
+										<option value="0">身份证</option>
+										<option value="1">护照</option>
+									</select>
+								</td>
+								
+								<td class="f_title">证件编号：</td>
+								<td class="f_content">
+									<input type="text" data-pos-name="card"/>
+								</td>
+								
+							</tr>
+							
+							<tr>
+								
+								<td class="f_title">国籍：</td>
+								<td class="f_content">
+									<select data-pos-name="nationalityId">
+										<option value="">请选择</option>
+										<c:forEach items="${nationalities }" var="n">
+											<option value="${n.id }">${n.name }</option>
+										</c:forEach>
+									</select>
+								</td>
+								
+								<td class="f_title">密码：</td>
+								<td class="f_content">
+									<input type="password" data-pos-name="pwd" value="########"/>
+								</td>
+							</tr>
+							
+							
+							<tr>
+								<td class="f_title">银行名称：</td>
+								<td class="f_content">
+									<input type="text" data-pos-name="bankAccount"/>
+								</td>
+								
+								<td class="f_title">银行账号：</td>
+								<td class="f_content">
+									<input type="text" data-pos-name="bankCardNum"/>
+								</td>
+								
+							</tr>
+							<tr>
+								<td class="f_title">账户持有人：</td>
+								<td class="f_content">
+									<input type="text" data-pos-name="bankAddress"/>
+								</td>
+								
+								<td class="f_title">状态：</td>
+								<td class="f_content">
+									<select data-pos-name="status">
+									    <option value="0">启用</option>
+									    <option value="1">冻结</option>
+									    <option value="2">黑名单</option>
+									    <option value="3">销户</option>
+									</select>
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="f_title">联系地址：</td>
+								<td class="f_content" colspan="3">
+									<input type="text" data-pos-name="address" style="width: 600px;"/>
+								</td>
+							</tr>
+							
+							
+							<tr>
+								<td class="f_title">身份证明：</td>
+								<td class="f_content">
+									<div class="J_picBox clearfix">
+				                        <div class="p_item">
+				                            <div class="i_inner">
+				                                <div class="i_mask">
+				                                    <div class="ml10 fl"></div>
+			                            			<c:if test="${type ne 'pos' }">
+				                                    <div class="fr">
+				                                    	<a class="abtn orange" href="javascript:void(0)" onclick="uploadImg(this, 'imgIDCardA')">立即上传</a>
+				                                    </div>
+				                                    </c:if>				                                    
+				                                </div>
+				                                <div class="i_pic">
+		                                			<img src="${ctx }/static/images/J_null.png" data-pos-param-name="imgIDCardA">
+		                                			<input type="hidden" data-pos-name="imgIDCardA"/>
+				                                </div>
+				                            </div>
+				                        </div>
+				                    </div>
+								</td>
+								
+								<td class="f_title">银行证明：</td>
+								<td class="f_content">
+									<div class="J_picBox clearfix">
+										<div class="p_item">
+				                            <div class="i_inner">
+				                            	
+				                                <div class="i_mask">
+				                                    <div class="ml10 fl">
+				                                    </div>
+				                                    <c:if test="${type ne 'pos' }">
+				                                    <div class="fr">
+				                                    	<a class="abtn orange" href="javascript:void(0);" onclick="uploadImg(this, 'imgBankCard')">立即上传</a>
+				                                    </div>
+				                                    </c:if>				                                    
+				                                </div>
+				                                
+				                                <div class="i_pic">
+				                                	<img src="${ctx }/static/images/J_null.png" data-pos-param-name="imgBankCard">
+				                                	<input type="hidden" data-pos-name="imgBankCard"/>
+				                                </div>
+				                            </div>
+				                        </div>
+									</div>
+								</td>
+								
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+				</c:if>
+				<div style="display: inline-block;">
+					<table>
+						<tbody>
+							<c:if test="${type eq 'pos' }">
+								<tr>
+									<td align="center" class="f_title" style="font-size: 16px;text-align: center;" colspan="4">会员资料</td>
+								</tr>
+							</c:if>
+							<tr>
+								<td class="f_title wd100">会员编号：</td>
+								<td class="f_content wd300">
+									<c:choose>
+										<c:when test="${type eq 'add' }">
+											<input type="text" name="no" value="${no }" disabled="disabled"/>
+											<input type="hidden" name="no" value="${no }"/>
+										</c:when>
+										<c:when test="${type eq 'update' }">
+											<input type="text" name="no" value="${member.no }" disabled="disabled"/>
+											<input type="hidden" name="no" value="${member.no }"/>
+										</c:when>
+										<c:when test="${type eq 'pos' }">
+											${pmm.no }
+										</c:when>
+									</c:choose>
+								</td>
+								<td class="f_title wd100">手机号码：</td>
+								<td class="f_content wd300">
+									<input name="mobile" type="text" value="${member.mobile }"/>
+								</td>
+							</tr>
+							<tr>
+								
+								<td class="f_title wd100">账号类别：</td>
+								<td class="f_content">
+									<select name="accountCategory">
+									    <option value="0">客户</option>
+									    <option value="1">老师</option>
+									</select>
+								</td>
+								
+								<td class="f_title">账号类型：</td>
+								<td class="f_content">
+									<select name="accountType">
+									    <option value="0">真实</option>
+									    <option value="1">测试</option>
+									</select>
+								</td>
+								
+							</tr>
+							<tr>
+								<td class="f_title">中文姓名：</td>
+								<td class="f_content">
+									<input type="text" name="cnName" value="${member.cnName }"/>
+								</td>
+								<td class="f_title">昵称：</td>
+								<td class="f_content">
+									<input type="text" name="nickName" value="${member.nickName }"/>
+								</td>
+							</tr>
+							<tr>
+								<td class="f_title">性别：</td>
+								<td class="f_content">
+									<div class="t_check">
+										<label>
+											<input type="radio" name="sex" value="0"/>男
+										</label>
+										<label>
+											<input type="radio" name="sex" value="1"/>女
+										</label>
+									</div>
+								</td>
+								<td class="f_title">电子邮箱：</td>
+								<td class="f_content">
+									<input type="text" name="email" value="${member.email }"/>
+								</td>
+								
+							</tr>
+							<tr>
+								<td class="f_title">证件类型：</td>
+								<td class="f_content">
+									<select name="cardType">
+										<option value="">请选择</option>
+										<option value="0">身份证</option>
+										<option value="1">护照</option>
+									</select>
+								</td>
+								
+								<td class="f_title">证件编号：</td>
+								<td class="f_content">
+									<input type="text" name="card" value="${member.card }"/>
+								</td>
+								
+							</tr>
+							
+							<tr>
+								
+								<td class="f_title">国籍：</td>
+								<td class="f_content">
+									<select name="nationalityId">
+										<option value="">请选择</option>
+										<c:forEach items="${nationalities }" var="n">
+											<option value="${n.id }">${n.name }</option>
+										</c:forEach>
+									</select>
+								</td>
+								
+								<td class="f_title">密码：</td>
+								<td class="f_content">
+									<c:choose>
+										<c:when test="${type eq 'add' }">
+											<input type="password" name="pwd" value="12345678"/>
+										</c:when>
+										<c:otherwise>
+											<input type="password" name="pwd" value="########"/>
+										</c:otherwise>
+									</c:choose>
+								</td>
+							</tr>
+							
+							
+							<tr>
+								<td class="f_title">银行名称：</td>
+								<td class="f_content">
+									<input type="text" name="bankAccount" value="${member.memBankInfo.bankAccount }"/>
+								</td>
+								
+								<td class="f_title">银行账号：</td>
+								<td class="f_content">
+									<input type="text" name="bankCardNum" value="${member.memBankInfo.bankCardNum }"/>
+								</td>
+								
+							</tr>
+							<tr>
+								<td class="f_title">账户持有人：</td>
+								<td class="f_content">
+									<input type="text" name="bankAddress" value="${member.memBankInfo.bankAddress }"/>
+								</td>
+								
+								<td class="f_title">状态：</td>
+								<td class="f_content">
+									<select name="status">
+									    <option value="0">启用</option>
+									    <option value="1">冻结</option>
+									    <option value="2">黑名单</option>
+									    <option value="3">销户</option>
+									</select>
+								</td>
+							</tr>
+							
+							<tr>
+								<td class="f_title">联系地址：</td>
+								<td class="f_content" colspan="3">
+									<input type="text" name="address" style="width: 600px;" value="${member.address }"/>
+								</td>
+							</tr>
+							
+							
+							<tr>
+								<td class="f_title">身份证明：</td>
+								<td class="f_content">
+									<div id="uploadImg" style="display: none;">
+										<input type="hidden" id="paramName" value=""/>
+										<input type="file" name="imgFile" multiple="multiple" style="opacity: .0;">
+									</div>
+									
+									<div class="J_picBox clearfix">
+				                        <div class="p_item">
+				                            <div class="i_inner">
+				                            	
+				                                <div class="i_mask">
+				                                    <div class="ml10 fl">
+				                                    	<span>
+				                                    		<c:if test="${not empty member }">
+				                                    			<c:choose>
+					                                    			<c:when test="${empty member.imgIDCardStatus or member.imgIDCardStatus eq 0 }">
+					                                    				<label style="color: red;">未上传</label>
+					                                    			</c:when>
+					                                    			<c:when test="${member.imgIDCardStatus eq 1 }">
+					                                    				<label style="color: green;">待审核</label>
+					                                    			</c:when>
+					                                    			<c:when test="${member.imgIDCardStatus eq 2 }">
+					                                    				<label style="color: green;">有效</label>
+					                                    			</c:when>
+					                                    			<c:when test="${member.imgIDCardStatus eq 3 }">
+					                                    				<label style="color: green;">审批未通过</label>
+					                                    			</c:when>
+					                                    		</c:choose>
+				                                    		</c:if>
+				                                    	</span>
+				                                    </div>
+				                                    <div class="fr">
+				                                    	<c:if test="${type ne 'pos' }">
+				                                    		<a class="abtn orange" href="javascript:void(0)" onclick="uploadImg(this, 'imgIDCardA')">立即上传</a>
+				                                    	</c:if>
+				                                    </div>
+				                                </div>
+				                                
+				                                <div class="i_pic">
+				                                	<c:choose>
+				                                		<c:when test="${not empty member.imgIDCardA }">
+				                                			<img src="${ctx }${member.imgIDCardA }" data-param-name="imgIDCardA">
+				                                			<input type="hidden" name="imgIDCardA" value="${member.imgIDCardA }"/>
+				                                		</c:when>
+				                                		<c:otherwise>
+				                                			<img src="${ctx }/static/images/J_null.png" data-param-name="imgIDCardA">
+				                                			<input type="hidden" name="imgIDCardA"/>
+				                                		</c:otherwise>
+				                                	</c:choose>
+				                                </div>
+				                            </div>
+				                        </div>
+				                        <%-- <div class="p_item">
+				                            <div class="i_inner">
+				                                <div class="i_mask">
+				                                    <div class="ml10 fl">身份证背面</div>
+				                                    <div class="fr">
+				                                    	<c:if test="${type ne 'pos' }">
+				                                    		<a class="abtn orange" href="javascript:void(0);" onclick="uploadImg(this, 'imgIDCardB')">立即上传</a>
+				                                    	</c:if>
+				                                    </div>
+				                                </div>
+				                                <div class="i_pic">
+				                                	<c:choose>
+				                                		<c:when test="${not empty member.imgIDCardB }">
+				                                			<img src="${ctx }${member.imgIDCardB }" data-param-name="imgIDCardB">
+				                                			<input type="hidden" name="imgIDCardB" value="${member.imgIDCardB }"/>
+				                                		</c:when>
+				                                		<c:otherwise>
+						                                	<img src="${ctx }/static/images/J_null.png" data-param-name="imgIDCardB">
+						                                	<input type="hidden" name="imgIDCardB"/>
+				                                		</c:otherwise>
+				                                	</c:choose>
+				                                </div>
+				                            </div>
+				                        </div> --%>
+				                    </div>
+								</td>
+								
+								<td class="f_title">银行证明：</td>
+								<td class="f_content">
+									<div class="J_picBox clearfix">
+										<div class="p_item">
+				                            <div class="i_inner">
+				                            	
+				                                <div class="i_mask">
+				                                    <div class="ml10 fl">
+				                                    	<span>
+				                                    		<c:if test="${not empty member }">
+				                                    			<c:choose>
+					                                    			<c:when test="${empty member.imgBackCardStatus or member.imgBackCardStatus eq 0 }">
+					                                    				<label style="color: red;">未上传</label>
+					                                    			</c:when>
+					                                    			<c:when test="${member.imgBackCardStatus eq 1 }">
+					                                    				<label style="color: green;">待审核</label>
+					                                    			</c:when>
+					                                    			<c:when test="${member.imgBackCardStatus eq 2 }">
+					                                    				<label style="color: green;">有效</label>
+					                                    			</c:when>
+					                                    			<c:when test="${member.imgBackCardStatus eq 3 }">
+					                                    				<label style="color: green;">审批未通过</label>
+					                                    			</c:when>
+					                                    		</c:choose>
+				                                    		</c:if>
+				                                    	</span>
+				                                    </div>
+				                                    <div class="fr">
+				                                    	<c:if test="${type ne 'pos' }">
+				                                    		<a class="abtn orange" href="javascript:void(0);" onclick="uploadImg(this, 'imgBankCard')">立即上传</a>
+				                                    	</c:if>
+				                                    </div>
+				                                </div>
+				                                
+				                                <div class="i_pic">
+				                                	<c:choose>
+				                                		<c:when test="${not empty member.imgBankCard }">
+				                                			<img src="${ctx }${member.imgBankCard }" data-param-name="imgBankCard">
+				                                			<input type="hidden" name="imgBankCard" value="${member.imgBankCard }"/>
+				                                		</c:when>
+				                                		<c:otherwise>
+						                                	<img src="${ctx }/static/images/J_null.png" data-param-name="imgBankCard">
+						                                	<input type="hidden" name="imgBankCard"/>
+				                                		</c:otherwise>
+				                                	</c:choose>
+				                                </div>
+				                            </div>
+				                        </div>
+									</div>
+								</td>
+								
+							</tr>
+							
+							<%-- <tr>
+								<td class="f_title">银行证明：</td>
+								<td class="f_content">
+									<div class="J_picBox clearfix">
+										<div class="p_item">
+				                            <div class="i_inner">
+				                                <div class="i_mask">
+				                                    <div class="ml10 fl">银行证明</div>
+				                                    <div class="fr">
+				                                    	<c:if test="${type ne 'pos' }">
+				                                    		<a class="abtn orange" href="javascript:void(0);" onclick="uploadImg(this, 'imgBankCard')">立即上传</a>
+				                                    	</c:if>
+				                                    </div>
+				                                </div>
+				                                <div class="i_pic">
+				                                	<c:choose>
+				                                		<c:when test="${not empty member.imgBankCard }">
+				                                			<img src="${ctx }${member.imgBankCard }" data-param-name="imgBankCard">
+				                                			<input type="hidden" name="imgBankCard" value="${member.imgBankCard }"/>
+				                                		</c:when>
+				                                		<c:otherwise>
+						                                	<img src="${ctx }/static/images/J_null.png" data-param-name="imgBankCard">
+						                                	<input type="hidden" name="imgBankCard"/>
+				                                		</c:otherwise>
+				                                	</c:choose>
+				                                </div>
+				                            </div>
+				                        </div>
+									</div>
+								</td>
+							</tr> --%>
+							
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</form>
+	
+		
 	
 		<div class="l_btnGrounp mgt20">
 			<c:choose>

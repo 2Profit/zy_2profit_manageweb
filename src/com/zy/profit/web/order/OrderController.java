@@ -54,7 +54,7 @@ public class OrderController {
 		if(StringUtils.isNotBlank(name)){
 			params.put("name", "%" + name.trim() + "%");
 		}
-		model.addAttribute(name, name);
+		model.addAttribute("name", name);
 		
 		Date startDate = DateUtils.getStartDate(request.getParameter("startDate"));
 		if(startDate != null){

@@ -18,6 +18,7 @@ import com.zy.org.entity.Role;
 import com.zy.org.entity.User;
 import com.zy.org.service.UserRoleRelService;
 import com.zy.org.service.UserService;
+import com.zy.profit.web.util.SystemConfig;
 import com.zy.util.Md5Util;
 
 /**
@@ -38,6 +39,8 @@ public class IndexController {
 
 	// 后台用户信息
 	public final static String USER_SESSION_INFO = "user_session_info";
+	
+	public final static String USER_SESSION_ROLE = "user_session_role";
 
 	// 登陆错误信息
 	public final static String LOGIN_ERROR_INFO = "login_error_info";
@@ -66,6 +69,14 @@ public class IndexController {
 				if (Md5Util.validatePassword(user.getPassword(), pwd)) {
 					request.getSession().setAttribute(USER_SESSION_INFO, user);
 					setSessionUserDto(request.getSession(), user);
+					
+					//查询用户角色
+					List<Role> roles = userRoleRelService.getRoleListByUser(user.getId());
+					HttpSession session = request.getSession();
+					session.setAttribute(USER_SESSION_ROLE, roles);
+					session.setAttribute("approvierRoleId", SystemConfig.getApprovierRoleId());;
+					
+					
 					return "redirect:/boss/index";
 				} else {
 					errorMsg = "密码不正确!";

@@ -67,9 +67,9 @@
 			<table class="table table-bordered table-hover">
 				<thead>
 					<tr>
-						<th>
+						<!-- <th>
 							<input type="checkbox" name="checkAll" onclick="checkAllClick(this, 'chk')"/>
-						</th>
+						</th> -->
 						<!-- <th>操作</th> -->
 						<th>订单号</th>
 						<th>会员编号</th>
@@ -84,7 +84,7 @@
 				<tbody>
 					<c:forEach items="${page.list }" var="order">
 						<tr>
-							<td><input type="checkbox" name="chk" value="${trade.id }"/></td>
+							<%-- <td><input type="checkbox" name="chk" value="${trade.id }"/></td> --%>
 							<%-- <td>${order.id }</td> --%>
 							<td>${order.orderId }</td>
 							<td>${order.member.no }</td>

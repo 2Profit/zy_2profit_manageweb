@@ -7,14 +7,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>付款</title>
+<title>虚拟币调整</title>
 
 <link rel="stylesheet" href="${ctx }/static/css/lgl.css"  type="text/css">
 
 <script type="text/javascript">
 
 function myEdit(id){
-	//window.location.href = '${ctx}/fund/pay/edit?type=add';
+	window.location.href = '${ctx}/pos/coin/edit?type=add';
 }
 
 function myRefresh(){
@@ -23,14 +23,86 @@ function myRefresh(){
 
 $(function(){
 	
-	$('select[name="curType"]').val('${curType}');
-	$('select[name="payType"]').val('${payType}');
-	$('select[name="status"]').val('${status}');
+	$('select[name="posStatus"]').val('${posStatus}');
 	
 });
 
-function pass(){
+function myPass(){
+	var posIds = getPosIds();
+	if(posIds.length == 0){
+		layer.alert('请选择待审批的提案');
+		return;
+	}
 	
+	layer.confirm('确定要提案通过吗？', function(){
+		
+		$.ajax({
+			url : '${ctx}/pos/coin/ajax/pos/pass',
+			async : false,
+			traditional : true,
+			data : {
+				posIds : posIds
+			},
+			success : function(result){
+				if(result.success){
+					layer.alert('操作成功', function(){
+						window.location.reload();
+					});
+				}else{
+					layer.alert(result.msg);
+				}
+			}
+		});
+		
+	}, function(){
+		
+	});
+	
+}
+
+function myCancel(){
+	var posIds = getPosIds();
+	if(posIds.length == 0){
+		layer.alert('请选择待审批的提案');
+		return;
+	}
+	
+	layer.confirm('确定要提案拒绝吗？', function(){
+		
+		$.ajax({
+			url : '${ctx}/pos/coin/ajax/pos/cancel',
+			async : false,
+			traditional : true,
+			data : {
+				posIds : posIds
+			},
+			success : function(result){
+				if(result.success){
+					layer.alert('操作成功', function(){
+						window.location.reload();
+					});
+				}else{
+					layer.alert(result.msg);
+				}
+			}
+		});
+		
+	}, function(){
+		
+	});
+	
+}
+
+function getPosIds(){
+	var chkVals = new Array();
+	$('input[name="chk"][data-pos-status="0"]:checked').each(function(idx, obj){
+		chkVals.push($(obj).val());
+	});
+	return chkVals;
+}
+
+function myPos(posId){
+	window.location.href = '${ctx}/pos/coin/edit?type=pos&posId=' + posId;
 }
 
 </script>
@@ -49,25 +121,31 @@ function pass(){
 				<div class="form-inline">
 					<span>
 						<label>提案号：</label>
-						<input type="text" class="input-small" style="height: auto;" name="proposalNo" value="${ proposalNo}"/>
+						<input type="text" class="input-small" style="height: auto;" name="proposalNo" value="${proposalNo }"/>
 					</span>
 					
 					<span>
 						<label>提案状态：</label>
-						<select name="status">
+						<select name="posStatus">
 							<option value="">全部</option>
 							<c:forEach items="${proposalStatus }" var="ps">
 								<option value="${ps.key }">${ps.value }</option>
 							</c:forEach>
 						</select>
 					</span>
+					
+					<span>
+						<label>会员编号：</label>
+						<input type="text" class="input-small" style="height: auto;" name="memberNo" value="${memberNo }"/>
+					</span>
+					
 					<span>
 						<label>会员手机：</label>
-						<input type="text" class="input-small" style="height: auto;" name="mobile" value=""/>
+						<input type="text" class="input-small" style="height: auto;" name="mobile" value="${mobile }"/>
 					</span>
 					<span>
 						<label>会员姓名：</label>
-						<input type="text" class="input-small" style="height: auto;" name="name" value=""/>
+						<input type="text" class="input-small" style="height: auto;" name="name" value="${name }"/>
 					</span>
 					
 				</div>
@@ -83,8 +161,10 @@ function pass(){
 				<a class="btn btn-success" href="javascript:void(0);" onclick="myEdit()">
 					<i class="icon-plus-sign icon-white"></i> 添加
 				</a>
-				<a class="btn btn-success" href="javascript:void(0);">提案通过</a>
-				<a class="btn btn-danger" href="javascript:void(0);">提案拒绝</a>
+				<c:if test="${isApprovier }">
+					<a class="btn btn-success" href="javascript:myPass();">提案通过</a>
+					<a class="btn btn-danger" href="javascript:myCancel();">提案拒绝</a>
+				</c:if>
 			</div>
 		</div>
 	
@@ -97,23 +177,55 @@ function pass(){
 						</th>
 						<th>操作</th>
 						<th>提案号</th>
+						<th>提案状态</th>
 						<th>会员编号</th>
 						<th>会员手机</th>
 						<th>会员姓名</th>
 						<th>调整额度</th>
-						<th>账户货币</th>
-						<th>提案状态</th>
 						<th>提案人</th>
 						<th>提案时间</th>
-						<th>提案IP</th>
 						<th>审批人</th>
-						<th>备注</th>
+						<th>审批时间</th>
 					</tr>
 				</thead>
 				<tbody>
 					
+					<c:forEach items="${page.list }" var="p">
+					
+						<tr>
+							<td><input type="checkbox" name="chk" value="${p.id }" data-pos-status="${p.posStatus }"/></td>
+							<td>
+								<c:choose>
+									<c:when test="${p.posStatus eq 0 }">
+										<a class="a_btn" href="javascript:void(0);" onclick="myPos('${p.id}')">审批</a>
+									</c:when>
+									<c:otherwise>
+										<a class="a_btn gray" href="javascript:void(0);" title="已经审批" style="color: gray;">审批</a>
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td>${p.proposalNo }</td>
+							<td data-name="status" data-value="${p.posStatus }">
+								<c:choose>
+									<c:when test="${p.posStatus eq 0 }">待审核</c:when>
+									<c:when test="${p.posStatus eq 1 }">通过</c:when>
+									<c:when test="${p.posStatus eq 2 }">拒绝</c:when>
+								</c:choose>
+							</td>
+							<td>${p.member.no }</td>
+							<td>${p.member.mobile }</td>
+							<td>${p.member.cnName }</td>
+							<td>${p.coin }</td>
+							<td>${p.applier.realName }</td>
+							<td><fmt:formatDate value="${p.createDate }" type="date"/></td>
+							<td>${p.approvier.realName }</td>
+							<td><fmt:formatDate value="${p.approvierDate }" type="date"/></td>
+						</tr>
+					
+					</c:forEach>
+					
 					<tr>
-						<td colspan="16">
+						<td colspan="12">
 							<%@ include file="../common/pager.jsp"%>
 						</td>
 					</tr>

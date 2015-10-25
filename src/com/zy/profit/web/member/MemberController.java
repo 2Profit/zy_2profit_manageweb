@@ -1,5 +1,6 @@
 package com.zy.profit.web.member;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,8 +10,10 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +29,9 @@ import com.zy.common.entity.PageModel;
 import com.zy.common.entity.ResultDto;
 import com.zy.common.util.AjaxResult;
 import com.zy.common.util.CommonConstants;
+import com.zy.common.util.ConstantEnity;
 import com.zy.common.util.DateUtils;
+import com.zy.common.util.ExcelUtils;
 import com.zy.common.util.UserDto;
 import com.zy.common.util.UserSessionUtil;
 import com.zy.member.entity.Member;
@@ -36,8 +41,10 @@ import com.zy.personal.entity.MemBankInfo;
 import com.zy.personal.service.MemBankInfoService;
 import com.zy.profit.web.util.FileUploadUtil;
 import com.zy.profit.web.util.HttpUtils;
+import com.zy.profit.web.util.SystemConfig;
 import com.zy.proposal.entity.ProposalMemModify;
 import com.zy.proposal.service.ProposalMemModifyService;
+import com.zy.util.Md5Util;
 
 /**
  * 个人资料管理
@@ -138,6 +145,7 @@ public class MemberController {
 			String posId = request.getParameter("posId");
 			ProposalMemModify proposalMemModify = proposalMemModifyService.find(posId);
 			model.addAttribute("pmm", proposalMemModify);
+			model.addAttribute("member", proposalMemModify.getMember());
 		}
 		
 		List<Nationality> nationalities = nationalityService.findNationalities();
@@ -146,7 +154,7 @@ public class MemberController {
 		return "member/memberEdit";
 	}
 	
-	@RequestMapping(value="/save")
+	/*@RequestMapping(value="/save")
 	@ResponseBody
 	public ResultDto<Member> save(Member dto,HttpServletRequest request){
 		ResultDto<Member> result = new ResultDto<Member>();
@@ -175,7 +183,8 @@ public class MemberController {
 				member.setAccountCategory(dto.getAccountCategory());
 				member.setAccountType(dto.getAccountType());
 				member.setCnName(dto.getCnName());
-				member.setEnName(dto.getEnName());
+//				member.setEnName(dto.getEnName());
+				member.setNickName(dto.getNickName());
 				member.setCardType(dto.getCardType());
 				member.setCard(dto.getCard());
 				member.setMobile(dto.getMobile());
@@ -188,6 +197,12 @@ public class MemberController {
 				member.setCreateAccountDate(dto.getCreateAccountDate());
 				member.setIsBindWeChat(dto.getIsBindWeChat());
 				member.setStatus(dto.getStatus());
+				
+				String pwd = dto.getPwd();
+				if(!"########".equals(pwd)){
+					//有修改
+					member.setPwd(Md5Util.generatePassword(pwd));
+				}
 				
 				MemBankInfo memBankInfo = member.getMemBankInfo();
 				if(memBankInfo == null){
@@ -211,6 +226,8 @@ public class MemberController {
 				dto.setCreateId(userDto.getId());
 				dto.setCreateName(userDto.getUsername());
 				
+				dto.setPwd(Md5Util.generatePassword(dto.getPwd()));
+				
 				MemBankInfo memBankInfo = new MemBankInfo();
 				memBankInfo.setBankAccount(bankAccount);
 				memBankInfo.setBankCardNum(bankCardNum);
@@ -229,7 +246,7 @@ public class MemberController {
 			result.setSuccess(false);
 		}
 		return result;
-	}
+	}*/
 	
 	@RequestMapping("/ajax/upload/img")
 	@ResponseBody
@@ -290,7 +307,27 @@ public class MemberController {
 						ajaxResult.setMsg("该邮箱已经被注册");
 						return ajaxResult;	
 					}
+					
+					ret = proposalMemModifyService.findCountByEmail(posMember.getEmail(), CommonConstants.proposalStatusDefault.getIntKey());
+					if(ret > 0){
+						ajaxResult.setMsg("该邮箱注册会员的提案已添加");
+						return ajaxResult;
+					}
+					
 				}
+				
+				//判断是否已经加入到提案中
+				ret = proposalMemModifyService.findCountByMobile(posMember.getMobile(), CommonConstants.proposalStatusDefault.getIntKey());
+				if(ret > 0){
+					ajaxResult.setMsg("该手机号码注册会员的提案已添加");
+					return ajaxResult;
+				}
+				
+				if(posMember.getNo() == null){
+					Integer no = memberService.getSequenceNo();
+					posMember.setNo(no);
+				}
+				
 				
 			}else if("update".equals(type)){
 				String memberId = request.getParameter("memberId");
@@ -339,11 +376,78 @@ public class MemberController {
 			
 			proposalMemModifyService.save(posMember);
 			
+			ajaxResult.setData(posMember.getNo());
+			
 			ajaxResult.setSuccess(true);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			ajaxResult.setMsg("操作异常");
+		}
+		
+		return ajaxResult;
+	}
+	
+	@RequestMapping("/import/list")
+	public String importList(HttpServletRequest request, Model model){
+		
+		List<ConstantEnity> cardTypes = CommonConstants.getCardTypes();
+		model.addAttribute("cardTypes", cardTypes);
+		
+		List<Nationality> nationalities = nationalityService.findNationalities();
+		model.addAttribute("nationalities", nationalities);
+		
+		return "/member/mem_import_list";
+	}
+	
+	@RequestMapping("/download/template")
+	public ResponseEntity<byte[]> dowloadImportTemplate(){
+		String templatePath = "/static/template/member.xls";
+		String fileUrl = SystemConfig.getWebRoot() + templatePath;
+		return HttpUtils.download("导入模板.xls", fileUrl);
+	}
+	
+	@RequestMapping("/ajax/upload/import_file")
+	@ResponseBody
+	public AjaxResult ajaxUploadImportFile(HttpServletRequest request){
+		AjaxResult ajaxResult = new AjaxResult();
+		
+		ajaxResult.setSuccess(false);
+		
+		try {
+			
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+			
+			MultipartFile mf = multipartRequest.getFile("file");
+			String originFileName = mf.getOriginalFilename();
+			String ext = originFileName.substring(originFileName.lastIndexOf(".")).toLowerCase();
+			String fileName = UUID.randomUUID() + ext;
+			
+			if(!ext.equalsIgnoreCase(".xls")){
+				ajaxResult.setMsg("上传文件格式有误");
+				return ajaxResult;
+			}
+			
+			InputStream is = mf.getInputStream();
+			
+			String filePath = SystemConfig.getTmpPath() + fileName;
+			
+			File file = new File(SystemConfig.getWebRoot() + SystemConfig.getTmpPath());
+			if(!file.exists()){
+				file.mkdirs();
+			}
+			
+			FileUtils.copyInputStreamToFile(is, new File(file, fileName));
+			
+			List<List<String>> items = ExcelUtils.readJxlXls(SystemConfig.getWebRoot() + filePath, 1);
+			
+			ajaxResult.setData(items);
+			
+			ajaxResult.setSuccess(true);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			ajaxResult.setMsg("上传失败");
 		}
 		
 		return ajaxResult;

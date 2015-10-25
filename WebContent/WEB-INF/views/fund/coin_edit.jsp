@@ -22,10 +22,7 @@ $(function(){
 	
 	$('#myForm').validator({
 		fields : {
-			tradeId : 'required',
-			account : 'required',
-			amount : 'required;money',
-			curType : 'required'
+			coin : 'required;integer[+]',
 		},
 		valid : function(form){
 			var memberId = $('input[name="memberId"]').val();
@@ -35,18 +32,18 @@ $(function(){
 			}
 			layer.load();
 			$(form).ajaxSubmit({
-				url : '${ctx }/fund/ajax/pay/submit',
+				url : '${ctx }/pos/coin/ajax/save',
 				async : false,
 				success : function(result){
 					layer.closeAll('loading');
 					if(result.success){
 						if(type == 'add'){
 							layer.alert('添加成功', function(){
-								window.location.href = '${ctx}/fund/pay/list';
+								window.location.href = '${ctx}/pos/coin/list';
 							});
 						}else if(type == 'update'){
 							layer.alert('修改成功', function(){
-								window.location.href = '${ctx}/fund/pay/list';
+								window.location.href = '${ctx}/pos/coin/list';
 							});
 						}
 						
@@ -58,8 +55,6 @@ $(function(){
 		}
 	});
 	
-	//set值
-	$('#myForm select[name="payType"]').val('${trade.payType}');
 	
 });
 
@@ -105,12 +100,12 @@ function findMember(){
 
 function myPass(){
 	var posIds = new Array();
-	posIds.push('${trade.id}');
+	posIds.push('${p.id}');
 	
 	layer.confirm('确定要提案通过吗？', function(){
 		
 		$.ajax({
-			url : '${ctx}/fund/ajax/pay/pos/pass',
+			url : '${ctx}/pos/coin/ajax/pos/pass',
 			async : false,
 			traditional : true,
 			data : {
@@ -119,7 +114,7 @@ function myPass(){
 			success : function(result){
 				if(result.success){
 					layer.alert('操作成功', function(){
-						window.location.href = '${ctx}/fund/pay/list';
+						window.location.href = '${ctx}/pos/coin/list';
 					});
 				}else{
 					layer.alert(result.msg);
@@ -135,12 +130,12 @@ function myPass(){
 
 function myCancel(){
 	var posIds = new Array();
-	posIds.push('${trade.id}');
+	posIds.push('${p.id}');
 	
 	layer.confirm('确定要提案拒绝吗？', function(){
 		
 		$.ajax({
-			url : '${ctx}/fund/ajax/pay/pos/cancel',
+			url : '${ctx}/pos/coin/ajax/pos/cancel',
 			async : false,
 			traditional : true,
 			data : {
@@ -149,7 +144,7 @@ function myCancel(){
 			success : function(result){
 				if(result.success){
 					layer.alert('操作成功', function(){
-						window.location.href = '${ctx}/fund/pay/list';
+						window.location.href = '${ctx}/pos/coin/list';
 					});
 				}else{
 					layer.alert(result.msg);
@@ -174,13 +169,13 @@ function myCancel(){
 			<div class="l_text">
 			<c:choose>
 				<c:when test="${type eq 'add' }">
-					添加充值
+					添加额度调整提案
 				</c:when>
 				<c:when test="${type eq 'update' }">
 					修改
 				</c:when>
 				<c:when test="${type eq 'pos' }">
-					审批充值
+					审批额度调整提案
 				</c:when>
 				<c:otherwise>
 					预览
@@ -191,14 +186,14 @@ function myCancel(){
 		<form id="myForm" method="post">
 		<div class="l_form mgt20">
 			<input type="hidden" name="type" value="${type }"/>
-			<input type="hidden" name="id" value="${trade.id }"/>
+			<input type="hidden" name="id" value="${p.id }"/>
 			<table>
 				<tbody>
 					<c:if test="${type ne 'add' }">
 						<tr>
 							<td class="f_title wd200">提案号：</td>
 							<td class="f_content">
-								<label>${trade.proposalNo }</label>
+								<label>${p.proposalNo }</label>
 							</td>
 						</tr>
 					</c:if>
@@ -216,46 +211,29 @@ function myCancel(){
 					<tr>
 						<td class="f_title">会员编号：</td>
 						<td class="f_content">
-							<input type="text" name="memberNo" value="${trade.member.no }" readonly="readonly">
+							<input type="text" name="memberNo" value="${p.member.no }" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td class="f_title">会员姓名：</td>
 						<td class="f_content">
-							<input type="text" name="cnName" value="${trade.member.cnName }" readonly="readonly">
+							<input type="text" name="cnName" value="${p.member.cnName }" readonly="readonly">
 						</td>
 					</tr>
 					<tr>
 						<td class="f_title">手机号码：</td>
 						<td class="f_content">
-							<input type="text" name="mobile" value="${trade.member.mobile }" readonly="readonly">
+							<input type="text" name="mobile" value="${p.member.mobile }" readonly="readonly">
 						</td>
 					</tr>
 					
 					<tr>
-						<td class="f_title">订单号：</td>
+						<td class="f_title">调整额度：</td>
 						<td class="f_content">
-							<input type="text" name="tradeId" value="${trade.tradeId }"/>
+							<input type="text" name="coin" value="${p.coin }"/>
 						</td>
 					</tr>
 					
-					<tr>
-						<td class="f_title">存款金额：</td>
-						<td class="f_content">
-							<input type="text" name="amount" value="${trade.amount }"/>
-						</td>
-					</tr>
-					<tr>
-						<td class="f_title">存款途经：</td>
-						<td class="f_content">
-							<select name="payType">
-								<option value="3">人工添加</option>
-								<option value="0">支付宝</option>
-								<option value="1">微信</option>
-								<option value="2">银行</option>
-							</select>
-						</td>
-					</tr>
 				</tbody>
 			</table>
 		</div>
