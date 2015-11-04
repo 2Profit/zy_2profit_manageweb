@@ -114,6 +114,10 @@ public class UserController {
 					user.setPassword(Md5Util.generatePassword(pwd));
 				}
 				userService.update(user);
+				
+				//删除原有角色信息
+				userRoleRelService.deleteRoleByUserId(user.getId());
+				
 			}else{
 				if(StringUtils.isNotBlank(pwd)){
 					user = new User();
@@ -126,6 +130,7 @@ public class UserController {
 					userService.save(user);
 				}
 			}
+			
 			//保存关联关系
 			if(user != null && role != null){
 				UserRoleRel userRoleRel = new UserRoleRel();

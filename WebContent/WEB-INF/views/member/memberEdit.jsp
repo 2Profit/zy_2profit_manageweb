@@ -42,6 +42,14 @@
 	
 </style>
 
+<c:if test="${type eq 'pos' }">
+<style type="text/css">
+body {
+	width: 1700px
+}
+</style>
+</c:if>
+
 <script type="text/javascript">
 $(function(){
 	
@@ -258,7 +266,7 @@ function setPosVal(){
 </script>
 </head>
 
-<body style="width: 1700px;">
+<body>
 
 	<div class="l_main">
 		<div class="l_titlebar">
@@ -283,7 +291,7 @@ function setPosVal(){
 			<input type="hidden" name="type" value="${type }"/>
 			<input type="hidden" name="memberId" value="${member.id }"/>
 			<input type="hidden" id="posId" value="${pmm.id }"/>
-			<div class="l_form mgt20 fl" style="padding: 0px 5px;">
+			<div class="l_form mgt20" style="padding: 0px 5px;">
 				<c:if test="${type eq 'pos' }">
 				<div style="display: inline-block;border-right: 1px dashed #ddd;">
 					<table>

@@ -22,7 +22,7 @@ $(function(){
 	
 	$('#myForm').validator({
 		fields : {
-			coin : 'required;integer[+]',
+			coin : 'required;integer[*]',
 		},
 		valid : function(form){
 			var memberId = $('input[name="memberId"]').val();

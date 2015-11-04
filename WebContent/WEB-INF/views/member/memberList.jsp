@@ -73,10 +73,10 @@ function myRefresh(){
 						<label>中文名称：</label>
 						<input type="text" name="cnName" value="${cnName }" class="wd100"/>
 					</span>
-					<span>
+					<%-- <span>
 						<label>英文名称：</label>
 						<input type="text" name="enName" value="${enName }" class="wd100"/>
-					</span>
+					</span> --%>
 					<span>
 						<label>电话号码：</label>
 						<input type="text" name="mobile" value="${mobile }" class="wd100"/>
