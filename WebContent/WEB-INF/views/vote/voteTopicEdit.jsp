@@ -51,6 +51,16 @@
 			);
 		});
 		$('#endDate').blur(function(){
+			
+			if($('#startDate').val()!='' && $('#endDate').val()!=''){
+				var startDate = Date.parse($('#startDate').val().replace(/-/g,"/"));
+				var endDate = Date.parse($('#endDate').val().replace(/-/g,"/"));
+				if(startDate > endDate){
+					alert("结束日期不能小于开始日期！");
+					$('#endDate').val('');
+				}
+			}
+			
 			$.post(
 		       	"${ctx }/voteTopic/validate",
 		    	{'endDate':$('#endDate').val()},

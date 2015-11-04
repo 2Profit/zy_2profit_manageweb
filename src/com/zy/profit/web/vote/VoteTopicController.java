@@ -101,7 +101,13 @@ public class VoteTopicController {
 	public ResultDto<VoteTopic> deleteFlag(@RequestBody VoteTopicDto queryDto){
 		ResultDto<VoteTopic> result = new ResultDto<VoteTopic>();
 		try {
-			voteTopicService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
+			if(queryDto.getIds()!=null && queryDto.getIds().length > 0){
+				for(String id : queryDto.getIds()){
+					VoteTopic voteTopic = voteTopicService.get(id);
+					voteTopic.setDeleteFlag(queryDto.getDeleteFlag());
+					voteTopicService.update(voteTopic);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);

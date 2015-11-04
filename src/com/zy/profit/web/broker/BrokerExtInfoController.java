@@ -67,12 +67,27 @@ public class BrokerExtInfoController {
 		return "broker/brokerExtInfoList";
 	}
 	
+	@RequestMapping("/exl/list")
+	public String exportQueryPage(BrokerExtInfoDto queryDto,PageModel<BrokerExtInfo> pageModel,Model model){
+		
+		model.addAttribute("page", brokerExtInfoService.queryForPage(queryDto, pageModel));
+		model.addAttribute("queryDto",queryDto);
+		
+		return "broker/brokerExtInfoExlList";
+	}
+	
 	@ResponseBody
 	@RequestMapping("/deleteFlag")
 	public ResultDto<BrokerExtInfo> deleteFlag(@RequestBody BrokerExtInfoDto queryDto){
 		ResultDto<BrokerExtInfo> result = new ResultDto<BrokerExtInfo>();
 		try {
-			brokerExtInfoService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
+			if(queryDto.getIds()!=null && queryDto.getIds().length > 0){
+				for(String id : queryDto.getIds()){
+					BrokerExtInfo brokerExtInfo = brokerExtInfoService.get(id);
+					brokerExtInfo.setDeleteFlag(queryDto.getDeleteFlag());
+					brokerExtInfoService.update(brokerExtInfo);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);

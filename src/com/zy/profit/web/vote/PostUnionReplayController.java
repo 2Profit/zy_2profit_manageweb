@@ -12,6 +12,7 @@ import com.zy.common.entity.ResultDto;
 import com.zy.vote.dto.PostUnionReplayDto;
 import com.zy.vote.dto.ReportUnionDto;
 import com.zy.vote.entity.VoteTopic;
+import com.zy.vote.entity.VoteTopicPost;
 import com.zy.vote.service.VotePostReportService;
 import com.zy.vote.service.VoteTopicPostReplayService;
 import com.zy.vote.service.VoteTopicPostService;
@@ -63,18 +64,25 @@ public class PostUnionReplayController {
 		ResultDto<Object> result = new ResultDto<Object>();
 		try {
 			if(PostUnionReplayDto.TYPE_POST.equals(queryDto.getType())){
+				if(queryDto.getIds()!=null && queryDto.getIds().length > 0){
+					for(String id : queryDto.getIds()){
+						VoteTopicPost voteTopicPost = voteTopicPostService.get(id);
+						voteTopicPost.setDeleteFlag(queryDto.getDeleteFlag());
+						voteTopicPostService.update(voteTopicPost);
+					}
+				}
 				//删除
 				if(queryDto.getDeleteFlag()==1){
-					voteTopicPostService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
+					//voteTopicPostService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
 					VoteTopic entity = voteTopicService.get(queryDto.getTopicId());
-					entity.setPostCount(entity.getPostCount()-1);
+					entity.setPostCount(entity.getPostCount()==null?0 : entity.getPostCount()-queryDto.getIds().length);
 					voteTopicService.update(entity);
 				}
 				//恢复
 				if(queryDto.getDeleteFlag()==0){
-					voteTopicPostService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
+					//voteTopicPostService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
 					VoteTopic entity = voteTopicService.get(queryDto.getTopicId());
-					entity.setPostCount(entity.getPostCount()+1);
+					entity.setPostCount(entity.getPostCount()==null?0 : entity.getPostCount()+queryDto.getIds().length);
 					voteTopicService.update(entity);
 				}
 			}

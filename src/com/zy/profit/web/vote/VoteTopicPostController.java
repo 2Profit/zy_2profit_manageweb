@@ -62,7 +62,13 @@ public class VoteTopicPostController {
 	public ResultDto<Notice> deleteFlag(@RequestBody VoteTopicPost queryDto){
 		ResultDto<Notice> result = new ResultDto<Notice>();
 		try {
-			voteTopicPostService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
+			if(queryDto.getIds()!=null && queryDto.getIds().length > 0){
+				for(String id : queryDto.getIds()){
+					VoteTopicPost voteTopicPost = voteTopicPostService.get(id);
+					voteTopicPost.setDeleteFlag(queryDto.getDeleteFlag());
+					voteTopicPostService.update(voteTopicPost);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);

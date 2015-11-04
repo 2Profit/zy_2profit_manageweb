@@ -139,8 +139,8 @@ function updateDeleteFlag(ids,deleteFlag){
 				<button class="btn btn-info" id="fresh_button">
 					<i class="icon-repeat icon-white"></i> 刷新
 				</button>				
-				<button class="btn btn-success" onclick="return toAdd();">
-					<i class="icon-plus-sign icon-white"></i> 添加
+				<button class="btn btn-primary" id="export_button">
+					<i class="icon-download-alt icon-white"></i> 导出Excel
 				</button>	
 			</td>
 		</tr>
@@ -184,7 +184,6 @@ function updateDeleteFlag(ids,deleteFlag){
 				<th>推荐值</th>
 				<th>数据状态</th>
 				<th>更新时间</th>
-				<th nowrap="nowrap">操作</th>
 			</tr>
 		</thead>
 		<c:forEach items="${page.list }" var="u">
@@ -370,13 +369,6 @@ function updateDeleteFlag(ids,deleteFlag){
 			   		</c:choose>
 			   </td>
 			   <td>&nbsp;${u.companyIndex }</td>
-			   <%-- <td>
-			   		<p>
-				   		<c:if test="${u.noticeContent1 != '' }">${u.noticeContent1}<br/></c:if>
-				   		<c:if test="${u.noticeContent2 != '' }">${u.noticeContent2}<br/></c:if>
-				   		<c:if test="${u.noticeContent3 != '' }">${u.noticeContent3}<br/></c:if>
-			   		</p>
-			   </td> --%>		
 			   <td>
 			   		<c:choose>
 			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">正常</font></c:when>
@@ -384,24 +376,9 @@ function updateDeleteFlag(ids,deleteFlag){
 			   			<c:otherwise>&nbsp;</c:otherwise>
 			   		</c:choose>
 			   </td>			   	   
-			   <td><fmt:formatDate value="${u.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-				<td>
-			      <a href="${ctx }/brokerExtInfo/edit?id=${u.id}">编辑</a><br>
-			      <a href="${ctx }/brokerExtInfo/brokerCopy?id=${u.id}">复制</a><br>
-			      <c:choose>
-			      	<c:when test="${u.deleteFlag == 1}"><a name="revert_href"><input type="hidden" value="${u.id}"/>恢复</a>&nbsp;</c:when>
-			      	<c:otherwise><a name="delete_href"><input type="hidden" value="${u.id}"/>删除</a></c:otherwise>
-			      </c:choose>
-			   </td>			   
+			   <td><fmt:formatDate value="${u.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>			   
 		    </tr>
 		</c:forEach>
-		<tr>
-			<td width="50"><input type="checkbox" id="checkAll"/></td>
-			<td colspan="50">
-				<button id="delete_button" class="btn btn-danger"><i class="icon-remove icon-white"></i>删除</button>&nbsp;
-				<button id="revert_button" class="btn btn-warning"><i class="icon-repeat icon-white"></i>恢复</button>&nbsp;
-			</td>
-		</tr>		
 		<tr><td colspan="50" style="text-align:center;"><%@ include file="../common/pager.jsp"%></td>
 		</tr>
 	</table>

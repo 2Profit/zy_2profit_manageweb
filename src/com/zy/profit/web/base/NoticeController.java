@@ -87,8 +87,13 @@ public class NoticeController {
 	public ResultDto<Notice> deleteFlag(@RequestBody Notice queryDto){
 		ResultDto<Notice> result = new ResultDto<Notice>();
 		try {
-			noticeService.updateDeleteFlag(queryDto.getIds(),queryDto.getDeleteFlag());
-			result.setSuccess(true);
+			if(queryDto.getIds()!=null && queryDto.getIds().length > 0){
+				for(String id : queryDto.getIds()){
+					Notice notice = noticeService.get(id);
+					notice.setDeleteFlag(queryDto.getDeleteFlag());
+					noticeService.update(notice);
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);
