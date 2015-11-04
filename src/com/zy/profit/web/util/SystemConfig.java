@@ -47,4 +47,12 @@ public class SystemConfig {
 		return properties.getProperty("attachment");
 	}
 	
+	/**
+	 * 审批人ID
+	 * @return
+	 */
+	public static String getApprovierRoleId(){
+		return properties.getProperty("approvier.role.id");
+	}
+	
 }

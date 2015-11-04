@@ -122,8 +122,8 @@ function myRefresh(){
 						<th>手机号码</th>
 						<th>邮箱</th>
 						<th>中文名称</th>
-						<th>英文名称</th>
-						<th>银行账户</th>
+						<th>昵称</th>
+						<th>银行名称</th>
 						<th>银行账号</th>
 						<th>身份证明</th>
 						<th>银行证明</th>
@@ -161,27 +161,39 @@ function myRefresh(){
 							<td>${m.mobile }</td>
 							<td>${m.email }</td>
 							<td>${m.cnName }</td>
-							<td>${m.enName }</td>
+							<td>${m.nickName }</td>
 							<td>${m.memBankInfo.bankAccount }</td>
 							<td>${m.memBankInfo.bankCardNum }</td>
 							<td>
 								<c:choose>
-									<c:when test="${not empty m.imgIDCardA }">
-										已上传
-									</c:when>
-									<c:otherwise>
+									<c:when test="${empty m.imgIDCardStatus or m.imgIDCardStatus eq 0 }">
 										未上传
-									</c:otherwise>
+									</c:when>
+									<c:when test="${m.imgIDCardStatus eq 1 }">
+										待审核
+									</c:when>
+									<c:when test="${m.imgIDCardStatus eq 2 }">
+										有效
+									</c:when>
+									<c:when test="${m.imgIDCardStatus eq 3 }">
+										审批未通过
+									</c:when>
 								</c:choose>
 							</td>
 							<td>
 								<c:choose>
-									<c:when test="${not empty m.imgBankCard }">
-										已上传
-									</c:when>
-									<c:otherwise>
+									<c:when test="${empty m.imgBackCardStatus or m.imgBackCardStatus eq 0 }">
 										未上传
-									</c:otherwise>
+									</c:when>
+									<c:when test="${m.imgBackCardStatus eq 1 }">
+										待审核
+									</c:when>
+									<c:when test="${m.imgBackCardStatus eq 2 }">
+										有效
+									</c:when>
+									<c:when test="${m.imgBackCardStatus eq 3 }">
+										审批未通过
+									</c:when>
 								</c:choose>
 							</td>
 							<td> <fmt:formatDate value="${m.createAccountDate }"/> </td>

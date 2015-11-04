@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>提案列表</title>
+<title>会员证明审核</title>
 <%@ include file="../common/common.jsp"%>
 
 <script type="text/javascript" src="${ctx }/static/js/manage-web-common.js"/></script>
@@ -19,12 +19,8 @@ $(function(){
 	
 });
 
-function myAdd(){
-	window.location.href = '${ctx}/member/edit?type=add';
-}
-
 function myPos(posId){
-	window.location.href = '${ctx}/member/edit?type=pos&posId=' + posId;
+	window.location.href = '${ctx}/mem/pos/img/edit?type=pos&posId=' + posId;
 }
 
 function myRefresh(){
@@ -41,7 +37,7 @@ function myPass(){
 	layer.confirm('确定要提案通过吗？', function(){
 		
 		$.ajax({
-			url : '${ctx}/mem/pos/ajax/pass',
+			url : '${ctx}/mem/pos/ajax/img/pass',
 			async : false,
 			traditional : true,
 			data : {
@@ -74,7 +70,7 @@ function myCancel(){
 	layer.confirm('确定要提案拒绝吗？', function(){
 		
 		$.ajax({
-			url : '${ctx}/mem/pos/ajax/cancel',
+			url : '${ctx}/mem/pos/ajax/img/cancel',
 			async : false,
 			traditional : true,
 			data : {
@@ -108,13 +104,13 @@ function getPosIds(){
 </script>
 </head>
 
-<body>
+<body style="overflow:auto;">
 
 <form action="">
 	<div class="l_main">
 		<div class="l_titlebar">
 			<div class="l_text">
-				会员提案
+				会员证明提案
 			</div>
 		</div>
 		<div class="">
@@ -122,7 +118,7 @@ function getPosIds(){
 				<div class="form-inline">
 					
 					<span>
-						<label>提案编号：</label>
+						<label>提案号：</label>
 						<input type="text" name="proposalNo" value="${proposalNo }" class="wd100"/>
 					</span>
 					
@@ -172,120 +168,85 @@ function getPosIds(){
 						<th>
 							<input type="checkbox" name="checkAll" onclick="checkAllClick(this, 'chk')"/>
 						</th>
-						<th>操作</th>
-						<th>编号</th>
-						<th>提案时间</th>
-						<th>类型</th>
-						<th>状态</th>
-						<th>会员<br>编号</th>
-						<th>账号<br>类别</th>
-						<th>账号类型</th>
-						<th>手机号码</th>
-						<th>邮箱</th>
-						<th>姓名</th>
-						<th>昵称</th>
-						<th>银行<br>账户</th>
-						<th>银行<br>账号</th>
-						<th>身份<br>证明</th>
-						<th>银行<br>证明</th>
-						<th>会员<br>状态</th>
+						<th class="wd50">操作</th>
+						<th class="wd50">提案号</th>
+						<th class="wd100">提案时间</th>
+						<th class="wd100">类型</th>
+						<th class="wd100">状态</th>
+						<th class="wd100">会员<br>编号</th>
+						<th class="wd100">手机号码</th>
+						<th class="wd100">昵称</th>
+						<th class="wd100">姓名</th>
+						<th class="wd100">证件类型</th>
+						<th class="wd100">证件号</th>
+						<th class="wd100">银行<br>账户</th>
+						<th class="wd100">银行<br>账号</th>
+						<th class="wd100">账户持有人姓名</th>
+						<th class="wd100">审批人</th>
+						<th class="wd100">审批时间</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${page.list }" var="m">
+					<c:forEach items="${page.list }" var="p">
 						<tr>
 							<td>
-								<input type="checkbox" name="chk" value="${m.id }" data-pos-status="${m.posStatus }"/>
+								<input type="checkbox" name="chk" value="${p.id }" data-pos-status="${p.posStatus }"/>
 							</td>
 							<td>
 								<c:choose>
-									<c:when test="${m.posStatus eq 0 }">
-										<a class="a_btn" href="javascript:void(0);" onclick="myPos('${m.id}')">审批</a>
+									<c:when test="${p.posStatus eq 0 }">
+										<a class="a_btn" href="javascript:void(0);" onclick="myPos('${p.id}')">审批</a>
 									</c:when>
 									<c:otherwise>
 										<a class="a_btn gray" href="javascript:void(0);" title="已经审批" style="color: gray;">审批</a>
 									</c:otherwise>
 								</c:choose>
 							</td>
-							<td>${m.proposalNo }</td>
-							<td><fmt:formatDate value="${m.createDate }"/></td>
-							<td>${m.posType }</td>
+							<td>${p.proposalNo }</td>
+							<td><fmt:formatDate value="${p.createDate }"/></td>
 							<td>
 								<c:choose>
-									<c:when test="${m.posStatus eq 0 }">
+									<c:when test="${p.type eq 0 }">
+										身份证明
+									</c:when>
+									<c:when test="${p.type eq 1 }">
+										银行证明
+									</c:when>
+								</c:choose>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${p.posStatus eq 0 }">
 										待审批
 									</c:when>
-									<c:when test="${m.posStatus eq 1 }">
+									<c:when test="${p.posStatus eq 1 }">
 										通过
 									</c:when>
-									<c:when test="${m.posStatus eq 2 }">
+									<c:when test="${p.posStatus eq 2 }">
 										拒绝
 									</c:when>
 								</c:choose>
 							</td>
-							<td>${m.no }</td>
+							<td>${p.member.no }</td>
+							<td>${p.member.mobile }</td>
+							<td>${p.member.nickName }</td>
+							<td>${p.member.cnName }</td>
 							<td>
 								<c:choose>
-									<c:when test="${m.accountCategory eq 0 }">
-										客户
+									<c:when test="${p.member.cardType eq 0 }">
+										中国居民身份证
 									</c:when>
-									<c:when test="${m.accountCategory eq 1 }">
-										老师
+									<c:when test="${p.member.cardType eq 1 }">
+										护照
 									</c:when>
 								</c:choose>
 							</td>
-							<td>
-								<c:choose>
-									<c:when test="${m.accountType eq 0 }">
-										真实
-									</c:when>
-									<c:when test="${m.accountType eq 1 }">
-										测试
-									</c:when>
-								</c:choose>
-							</td>
-							<td>${m.mobile }</td>
-							<td>${m.email }</td>
-							<td>${m.cnName }</td>
-							<td>${m.nickName }</td>
-							<td>${m.bankAccount }</td>
-							<td>${m.bankCardNum }</td>
-							<td>
-								<c:choose>
-									<c:when test="${not empty m.imgIDCardA }">
-										已上传
-									</c:when>
-									<c:otherwise>
-										未上传
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:choose>
-									<c:when test="${not empty m.imgBankCard }">
-										已上传
-									</c:when>
-									<c:otherwise>
-										未上传
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								<c:choose>
-									<c:when test="${m.status eq '0' }">
-										启用
-									</c:when>
-									<c:when test="${m.status eq '1' }">
-										冻结
-									</c:when>
-									<c:when test="${m.status eq '2' }">
-										黑名单
-									</c:when>
-									<c:when test="${m.status eq '3' }">
-										销户
-									</c:when>
-								</c:choose>
-							</td>
+							<td>${p.member.card }</td>
+							<td>${p.member.memBankInfo.bankAccount }</td>
+							<td>${p.member.memBankInfo.bankCardNum }</td>
+							<td>${p.member.memBankInfo.bankAddress }</td>
+							<td>${p.approvier.realName }</td>
+							<td><fmt:formatDate value="${p.approveDate }" type="date"/> </td>
 						</tr>
 					</c:forEach>
 					

@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ page session="false"%>
 <%@ taglib uri="http://jsptags.com/tags/navigation/pager" prefix="pg"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
@@ -73,7 +72,7 @@ function pageAction(){
 	<div style="text-align: right; border: 0;padding: 4px 12px;" class="pageDiv">
 		<input type="hidden" name="currentPage" value="${page.currentPage }">
 		<input type="hidden" id="totalPage" value="${page.totalPage }">
-		<pg:pager url="http://manage.pinxuew.com?currentPage=${pageNumber}" items="${page.totalCount}"
+		<pg:pager items="${page.totalCount}"
 			export="currentPageNumber=pageNumber"
 			maxPageItems="${page.pageSize}" maxIndexPages="10" isOffset="true">
 					总共：${page.totalCount}条,共:${page.totalPage}页

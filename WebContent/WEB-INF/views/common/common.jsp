@@ -24,6 +24,19 @@
 <script type="text/javascript" src="${ctx }/static/js/base_util.js"></script>
 
 
+<c:set var="isApprovier" value="false"/>
+<c:if test="${not empty sessionScope.user_session_role }">
+	<c:forEach items="${sessionScope.user_session_role }" var="r">
+		<c:if test="${sessionScope.approvierRoleId eq r.id }">
+			<c:set var="isApprovier" value="true"/>
+		</c:if>
+	</c:forEach>
+</c:if>
+
+<c:if test="${sessionScope.user_session_info.username eq 'admin' }">
+	<c:set var="isApprovier" value="true"/>
+</c:if>
+
 <%
 String path = request.getContextPath();
 String serverPath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/";
