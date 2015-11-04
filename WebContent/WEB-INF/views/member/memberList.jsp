@@ -127,6 +127,7 @@ function myRefresh(){
 						<th>银行账号</th>
 						<th>身份证明</th>
 						<th>银行证明</th>
+						<th>经纪商</th>
 						<th>注册日期</th>
 						<th>状态</th>
 					</tr>
@@ -196,6 +197,7 @@ function myRefresh(){
 									</c:when>
 								</c:choose>
 							</td>
+							<td></td>
 							<td> <fmt:formatDate value="${m.createAccountDate }"/> </td>
 							<td>
 								<c:choose>
