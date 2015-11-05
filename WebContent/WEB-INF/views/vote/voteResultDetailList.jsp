@@ -27,9 +27,9 @@
 					<td colspan="4" style="background-color: #dff0d8;text-align: center;"><strong>投票详情列表</strong></td>
 				</tr>	      	
 	     		<tr>
-					<th class="td_right">账号：</th>
+					<th class="td_right">手机号：</th>
 					<td style="text-align: left;">
-					  	<input type="text" name="member.userName" id="userName" value="${queryDto.member.userName }"/>
+					  	<input type="text" name="member.mobile" id="mobile" value="${queryDto.member.mobile }"/>
 					</td>
 					<th class="td_right">投票时间：</th>
 					<td colspan="3">
@@ -52,7 +52,7 @@
 				<thead>
 					<tr style="background-color: #dff0d8">
 						<th>投票日期</th>
-						<th>交易账号</th>
+						<th>会员手机号</th>
 						<th>会员类型</th>
 						<th>投票结果</th>
 						<th>投票IP</th>
@@ -61,7 +61,7 @@
 				<c:forEach items="${page.list }" var="u">
 					<tr>
 					   <td><fmt:formatDate value="${u.createDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-					   <td>&nbsp;${u.member.userName }</td>
+					   <td>&nbsp;${u.member.mobile }</td>
 					   <td>
 					   		<c:choose>
 					   			<c:when test="${u.member!=null && u.member.id!='' }">会员</c:when>
