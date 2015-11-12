@@ -1,0 +1,6 @@
+INSERT INTO `org_user` VALUES ('2c9025a54d4ffb4a014d4ffe3a670001', '2015-09-06 12:56:59','1', '2015-09-06 12:56:59', null, '0', null, '2015-09-20 00:51:15', null, null, 'E10ADC3949BA59ABBE56E057F20F883E', '超级管理员', null, 'admin');
+INSERT INTO `resource` VALUES ('2c9083d14fa0fb46014fa10813be0004', null,null, '2015-09-19 23:16:58', null, '0', null, '2015-09-19 23:17:03', '系统管理', 'module', 'javascript:void(0);', null);
+INSERT INTO `resource` VALUES ('2c9083d14fa0fb46014fa10813be0005', null,null, '2015-09-19 23:18:05', null, '0', null, '2015-09-19 23:18:15', '用户管理', 'page', '/boss/user/list', '2c9083d14fa0fb46014fa10813be0004');
+INSERT INTO `resource` VALUES ('2c9083d14fa0fb46014fa10813be0006', null,null, '2015-09-19 23:20:03', null, '0', null, '2015-09-19 23:20:09', '修改密码', 'page', '/boss/user/updatePwd', '2c9083d14fa0fb46014fa10813be0004');
+INSERT INTO `resource` VALUES ('2c9083d14fa0fb46014fa10813be0007', null,null, '2015-09-19 23:18:05', null, '0', null, '2015-09-19 23:18:15', '角色管理', 'page', '/boss/role/list', '2c9083d14fa0fb46014fa10813be0004');
+INSERT INTO `resource` VALUES ('2c9083d14fa0fb46014fa10813be0008', null,null, '2015-09-19 23:18:05', null, '0', null, '2015-09-19 23:18:15', '资源管理', 'page', '/boss/resource/list', '2c9083d14fa0fb46014fa10813be0004');
