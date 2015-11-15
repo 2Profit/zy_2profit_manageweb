@@ -1,0 +1,35 @@
+<table cellpadding="0" cellspacing="0" bgcolor="#f7f7f7" width="100%" style="" class="baidu_pass">
+	<tbody>
+		<tr>
+			<td>
+				<table cellpadding="0" cellspacing="0" width="96%"
+					style="background:#ffffff;border:1px solid rgb(204,204,204);margin:2%;"> <tbody>
+						<tr>
+							<td width="30px;">&nbsp;</td>
+							<td align=""><div style="line-height:40px;height:40px;">&nbsp;</div>
+								<p style="margin:0px;padding:0px;">
+									<strong style="font-size:14px;line-height:30px;color:#333333;font-family:arial,sans-serif;">尊敬的客户：</strong>
+								</p>
+								<div style="line-height:20px;height:20px;">&nbsp;</div>
+								<p style="margin:0px;padding:0px;line-height:30px;font-size:14px;color:#333333;font-family:'宋体',arial,sans-serif;">
+									&nbsp;&nbsp;&nbsp;&nbsp;您好，您提交的返佣申请填写资料格式不正确喔！返佣申请未能成功，请您qq联系我们。
+								</p>
+								<p style="margin:0px;padding:0px;line-height:30px;font-size:14px;color:#333333;font-family:'宋体',arial,sans-serif;">
+									QQ：3089044657
+								</p>
+								<div style="line-height:80px;height:80px;">&nbsp;</div>
+								<p style="margin:0px;padding:0px;line-height:30px;font-size:14px;color:#333333;font-family:'宋体',arial,sans-serif;">谢谢</p>
+								<p style="margin:0px;padding:0px;line-height:30px;font-size:14px;color:#333333;font-family:'宋体',arial,sans-serif;">至盈网</p>
+								<p style="margin:0px;padding:0px;line-height:30px;font-size:14px;color:#333333;font-family:'宋体',arial,sans-serif;">${gatewebUrl}</p>
+								<p style="margin:0px;padding:0px;line-height:30px;font-size:14px;color:#333333;font-family:'宋体',arial,sans-serif;">QQ：3089044657</p>
+								<div style="line-height:20px;height:20px;">&nbsp;</div>
+							</td>
+							<td width="30px;">&nbsp;</td>
+						</tr>
+						
+					</tbody>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>

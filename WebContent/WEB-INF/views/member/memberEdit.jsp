@@ -774,37 +774,27 @@ function setPosVal(){
 								
 							</tr>
 							
-							<%-- <tr>
-								<td class="f_title">银行证明：</td>
-								<td class="f_content">
-									<div class="J_picBox clearfix">
-										<div class="p_item">
-				                            <div class="i_inner">
-				                                <div class="i_mask">
-				                                    <div class="ml10 fl">银行证明</div>
-				                                    <div class="fr">
-				                                    	<c:if test="${type ne 'pos' }">
-				                                    		<a class="abtn orange" href="javascript:void(0);" onclick="uploadImg(this, 'imgBankCard')">立即上传</a>
-				                                    	</c:if>
-				                                    </div>
-				                                </div>
-				                                <div class="i_pic">
-				                                	<c:choose>
-				                                		<c:when test="${not empty member.imgBankCard }">
-				                                			<img src="${ctx }${member.imgBankCard }" data-param-name="imgBankCard">
-				                                			<input type="hidden" name="imgBankCard" value="${member.imgBankCard }"/>
-				                                		</c:when>
-				                                		<c:otherwise>
-						                                	<img src="${ctx }/static/images/J_null.png" data-param-name="imgBankCard">
-						                                	<input type="hidden" name="imgBankCard"/>
-				                                		</c:otherwise>
-				                                	</c:choose>
-				                                </div>
-				                            </div>
-				                        </div>
-									</div>
+							<tr>
+								<td class="f_title">交易账号：</td>
+								<td colspan="3">
+									<table>
+										<tbody>
+											<tr>
+												<td>开户平台</td>
+												<td>开户邮箱</td>
+												<td>MT4账号</td>
+											</tr>
+											<c:forEach items="${member.memBrokerRels }" var="mbr">
+												<tr>
+													<td>${mbr.brokerInfo.cnName }</td>
+													<td>${member.email }</td>
+													<td>${mbr.mt4Card }</td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>	
 								</td>
-							</tr> --%>
+							</tr>
 							
 						</tbody>
 					</table>

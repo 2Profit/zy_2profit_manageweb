@@ -138,8 +138,8 @@ public class MemberController {
 			Member member = memberService.find(memberId);
 			model.addAttribute("member", member);
 		}else if("add".equals(type)){
-			Integer no = memberService.getSequenceNo();
-			model.addAttribute("no", no);
+//			Integer no = memberService.getSequenceNo();
+//			model.addAttribute("no", no);
 		}else if("pos".equals(type)){
 			//审批
 			String posId = request.getParameter("posId");
@@ -323,10 +323,10 @@ public class MemberController {
 					return ajaxResult;
 				}
 				
-				if(posMember.getNo() == null){
-					Integer no = memberService.getSequenceNo();
-					posMember.setNo(no);
-				}
+//				if(posMember.getNo() == null){
+//					Integer no = memberService.getSequenceNo();
+//					posMember.setNo(no);
+//				}
 				
 				
 			}else if("update".equals(type)){

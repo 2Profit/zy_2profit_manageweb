@@ -55,4 +55,24 @@ public class SystemConfig {
 		return properties.getProperty("approvier.role.id");
 	}
 	
+	public static String getMailSmtp(){
+		return properties.getProperty("mail.smtp");
+	}
+	
+	public static String getMailUser(){
+		return properties.getProperty("mail.user");
+	}
+	
+	public static String getMailPwd(){
+		return properties.getProperty("mail.pwd");
+	}
+	
+	public static String getGatewebUrl(){
+		return properties.getProperty("gateweb.url");
+	}
+	
+	public static String getGatewebDiscountRegUrl(){
+		return properties.getProperty("gateweb.discount.reg.url");
+	}
+	
 }
