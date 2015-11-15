@@ -596,9 +596,26 @@ $(function(){
 			
 			<tr>
 				<th class="td_right"><em>*</em>公司推荐值：</th>
-				<td style="text-align: left;" colspan="3">
+				<td style="text-align: left;">
 					<input type="text" name="companyIndex" id="companyIndex" value="${brokerExtInfo.companyIndex }" data-rule="公司推荐值:required;companyIndex;"/>
 				</td>
+				<th class="td_right"><em>*</em>至盈评级：</th>
+				<td style="text-align: left;">
+					<select id="profitStar" name="profitStar" data-rule="至盈评级:required;profitStar;">
+					    <option value="1" <c:if test="${brokerExtInfo.profitStar == null || 1 == brokerExtInfo.profitStar }">selected</c:if>>一颗星</option>
+					    <option value="2" <c:if test="${2 == brokerExtInfo.profitStar }">selected</c:if>>两颗星</option>
+					    <option value="3" <c:if test="${3 == brokerExtInfo.profitStar }">selected</c:if>>三颗星</option>
+					    <option value="4" <c:if test="${4 == brokerExtInfo.profitStar }">selected</c:if>>四颗星</option>
+					    <option value="5" <c:if test="${5 == brokerExtInfo.profitStar }">selected</c:if>>五颗星</option>
+					    <option value="6" <c:if test="${6 == brokerExtInfo.profitStar }">selected</c:if>>六颗星</option>
+					</select>	
+				</td>				
+			</tr>
+			<tr>
+				<th class="td_right"><em>*</em>最低入金：</th>
+				<td style="text-align: left;" colspan="3">
+					<input type="text" name="minIncomeMoney" id="minIncomeMoney" value="${brokerExtInfo.minIncomeMoney }" data-rule="最低入金:required;minIncomeMoney;"/>
+				</td>				
 			</tr>
 			
 			<tr>
@@ -607,6 +624,12 @@ $(function(){
 					<textarea rows="5" cols="20" name="noticeContent1" id="noticeContent1" >${brokerExtInfo.noticeContent1 }</textarea>
 					<textarea rows="5" cols="20" name="noticeContent2" id="noticeContent2" >${brokerExtInfo.noticeContent2 }</textarea>
 					<textarea rows="5" cols="20" name="noticeContent3" id="noticeContent3" >${brokerExtInfo.noticeContent3 }</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th class="td_right">公司简介：</th>
+				<td style="text-align: left;" colspan="3">
+					<textarea rows="5" cols="20" name="introduction" id="introduction" >${brokerExtInfo.introduction }</textarea>
 				</td>
 			</tr>
 			
