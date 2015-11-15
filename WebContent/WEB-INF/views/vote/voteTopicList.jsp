@@ -49,25 +49,6 @@ function updateDeleteFlag(ids,deleteFlag){
 			<td>
 				<input type="text" name="titleContent" value="${queryDto.titleContent }">
 			</td>
-			<th class="td_right">显示模式：</th>
-			<td>
-				<select id="displayType" name="displayType">
-					<option value="">--请选择--</option>
-					<option value="0" <c:if test="${'0' == queryDto.displayType }">selected</c:if>>百分比</option>
-					<option value="1" <c:if test="${'1' == queryDto.displayType }">selected</c:if>>实数</option>
-				</select>
-			</td>			
-		</tr>
-		<tr>
-			<th class="td_right">显示位置：</th>
-			<td>
-				<select id="displayPosition" name="displayPosition">
-					<option value="">--请选择--</option>
-					<option value="0" <c:if test="${'0' == queryDto.displayPosition }">selected</c:if>>用户中心</option>
-					<option value="1" <c:if test="${'1' == queryDto.displayPosition }">selected</c:if>>网页</option>
-					<option value="2" <c:if test="${'2' == queryDto.displayPosition }">selected</c:if>>用户中心+网页</option>
-				</select>
-			</td>
 			<th class="td_right">评论功能：</th>
 			<td>
 				<select id="isComment" name="isComment">
@@ -115,13 +96,10 @@ function updateDeleteFlag(ids,deleteFlag){
 			<tr style="background-color: #dff0d8">
 				<th width="20"><input type="checkbox" id="firstCheckbox"/></th>
 				<th>题目内容</th>
-				<th>显示位置</th>
-				<th>显示模式</th>
 				<th>评论功能</th>
 				<th>开始日期</th>
 				<th>结束日期</th>
 				<th>发布者</th>
-				<th>提案状态</th>
 				<th>数据状态</th>
 				<th nowrap="nowrap">操作</th>
 			</tr>
@@ -132,21 +110,6 @@ function updateDeleteFlag(ids,deleteFlag){
 			   <td>&nbsp;${u.titleContent }</td>
 			   <td>
 			   		<c:choose>
-			   			<c:when test="${u.displayPosition == '0' }">用户中心</c:when>
-			   			<c:when test="${u.displayPosition == '1' }">网页</c:when>
-			   			<c:when test="${u.displayPosition == '2' }">用户中心+网页</c:when>
-			   			<c:otherwise>&nbsp;</c:otherwise>
-			   		</c:choose>
-			   </td>
-			   <td>
-			   		<c:choose>
-			   			<c:when test="${u.displayType == '0' }">百分比</c:when>
-			   			<c:when test="${u.displayType == '1' }">实数</c:when>
-			   			<c:otherwise>&nbsp;</c:otherwise>
-			   		</c:choose>
-			   </td>
-			   <td>
-			   		<c:choose>
 			   			<c:when test="${u.isComment}"><font color="green">开启</font></c:when>
 			   			<c:when test="${u.isComment == false}"><font color="red">关闭</font></c:when>
 			   			<c:otherwise>&nbsp;</c:otherwise>
@@ -155,13 +118,6 @@ function updateDeleteFlag(ids,deleteFlag){
 			   <td><fmt:formatDate value="${u.startDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			   <td><fmt:formatDate value="${u.endDate}" type="both" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 			   <td>&nbsp;${u.createName }</td>
-			   <td>
-			   		<c:choose>
-			   			<c:when test="${u.deleteFlag == '1' }"><font color="red">删除</font></c:when>
-			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">初始</font></c:when>
-			   			<c:otherwise>&nbsp;</c:otherwise>
-			   		</c:choose>
-			   </td>
 			   <td>
 			   		<c:choose>
 			   			<c:when test="${u.deleteFlag == '0' }"><font color="green">正常</font></c:when>

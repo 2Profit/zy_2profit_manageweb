@@ -89,14 +89,8 @@
  			if($('#displayPosition').val()==''){
  				$('#displayPosition').focus();return false;
  			}
- 			if($('#displayType').val()==''){
- 				$('#displayType').focus();return false;
- 			}
  			if($('#isComment').val()==''){
  				$('#isComment').focus();return false;
- 			}
- 			if($('#schedule').val()==''){
- 				$('#schedule').focus();return false;
  			}
  			var flagReturn = false;
 			$('input[name="optionContent"]').each(function(){
@@ -177,14 +171,10 @@
 				</td>
 		 	</tr>
 			<tr>
-				<th class="td_right">显示位置：</th>
+				<th>题目内容：</th>
 				<td>
-			        <select id="displayPosition" name="displayPosition" data-rule="显示位置:required;displayPosition;">
-						<option value="">--请选择--</option>
-						<option value="0" <c:if test="${'0' == voteTopic.displayPosition }">selected</c:if>>用户中心</option>
-						<option value="1" <c:if test="${'1' == voteTopic.displayPosition }">selected</c:if>>网页</option>
-						<option value="2" <c:if test="${'2' == voteTopic.displayPosition }">selected</c:if>>用户中心+网页</option>
-					</select>
+		  			<input type="text" name="titleContent" data-rule="题目内容:required;titleContent;"  
+		  				id="titleContent" value="${voteTopic.titleContent}"/>
 				</td>
 				<th class="td_right">评论功能：</th>
 				<td>
@@ -193,39 +183,6 @@
 						<option value="0" <c:if test="${!voteTopic.isComment }">selected</c:if>>关闭</option>
 						<option value="1" <c:if test="${voteTopic.isComment }">selected</c:if>>开启</option>
 					</select>
-				</td>
-			</tr>
-		 	<tr>
-		 		<th>显示模式：</th>
-		 		<td>
-					<select id="displayType" name="displayType" data-rule="显示模式:required;displayType;">
-						<option value="">--请选择--</option>
-						<option value="0" <c:if test="${'0' == voteTopic.displayType }">selected</c:if>>百分比</option>
-						<option value="1" <c:if test="${'1' == voteTopic.displayType }">selected</c:if>>实数</option>
-					</select>
-		 		</td>
-		 		<th>主题排期：</th>
-		 		<td>
-					<select id="schedule" name="schedule" data-rule="主题排期:required;schedule;">
-						<option value="">--请选择--</option>
-						<option value="1" <c:if test="${'1' == voteTopic.schedule }">selected</c:if>>当前期</option>
-						<option value="2" <c:if test="${'2' == voteTopic.schedule }">selected</c:if>>下期</option>
-					</select>
-		 		</td>
-
-		 	</tr>
-			<tr>
-				<th>题目内容：</th>
-				<td>
-		  			<input type="text" name="titleContent" data-rule="题目内容:required;titleContent;"  
-		  				id="titleContent" value="${voteTopic.titleContent}"/>
-				</td>
-		 		<th>主题图片</th>
-				<td style="text-align: left;">
-					<input type='file' id="image" name="file"/><br>
-					宽：<input type="text" name="imageWidth" value="230"> <br/>
-					高：<input type="text" name="imageHeight" value="130"> <br>
-   					<img id="blah" src="${ctx}/${voteTopic.imageUrl}" alt="图片预览" />						
 				</td>				
 		 	</tr>		 	
 		 	<tr>
