@@ -11,17 +11,10 @@
 <script type="text/javascript" src="${ctx }/static/js/manage-web-common.js"/></script>
 <script type="text/javascript">
 $(function(){
-	$('#fresh_button').bind("click",function(){
-		$("input[name='exchangeNo']").val("");
-		$("input[name='name']").val("");
-		$("#companyArea").val("");
-		$("#companyType").val("");
-		$("#deleteFlag").val("");
-	});
-	
-	$('#export_button').click(function(event){
-		event.preventDefault();
-		window.location.href = "${ctx }/brokerExtInfo/export?"+$('#form').serialize();
+	$('#fresh_button').bind("click",function(e){
+		
+		e.preventDefault();
+		window.location.href = "${ctx }/brokerExtInfo/list";
 	});
 	
 	$('#export_button').click(function(event){
