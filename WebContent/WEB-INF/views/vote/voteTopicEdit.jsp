@@ -103,7 +103,7 @@
 				return false;
 			}
 			
- 			var formData = new FormData($('#form')[0]);
+ 			/* var formData = new FormData($('#form')[0]);
  			$.ajax({
  		        type: "POST",
  		        url: "${ctx }/voteTopic/save",
@@ -121,8 +121,20 @@
  		        		alert('保存失败！','');
  		        	}
  		        }
- 		    });
+ 		    }); */
+ 		    
+			$('#form').ajaxSubmit({
+				success : function(result){
+					if(result.success){
+						alert('保存成功');
+						window.location.href = '${ctx}/voteTopic/list';
+					}else{
+						alert("保存失败");
+					}
+				}
+			});
  		});
+		
 	});
 	
 	//删除选项
@@ -135,7 +147,7 @@
 </head>
 
 <body>
-	<form action="post" namespace="/" theme="simple" id="form" method="post" enctype="multipart/form-data">
+	<form action="${ctx }/voteTopic/save" id="form" method="post">
 		<table class="table table-bordered">
 			<tr>
 				<td colspan="4" style="background-color: #dff0d8;text-align: center;">

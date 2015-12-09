@@ -78,7 +78,8 @@ public class VoteResultController {
 					voteTopicOptionService.update(optionEntity);
 				}
 			}
-			voteTopic.setVoteCount(voteTopic.getVoteCount() + totalChangeNumb);
+			int voteCount = voteTopic.getVoteCount()==null ? 0:voteTopic.getVoteCount();
+			voteTopic.setVoteCount(voteCount + totalChangeNumb);
 			voteTopicService.update(voteTopic);
 		} catch (Exception e) {
 			e.printStackTrace();

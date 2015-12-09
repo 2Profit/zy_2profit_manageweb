@@ -67,18 +67,17 @@ public class VoteTopicController {
 	
 	@RequestMapping("/save")
 	@ResponseBody
-	public ResultDto<VoteTopic> save(VoteTopic dto,HttpServletRequest request,
-			@RequestParam("file") MultipartFile file){
+	public ResultDto<VoteTopic> save(VoteTopic dto,HttpServletRequest request){
 		
 		ResultDto<VoteTopic> result = new ResultDto<VoteTopic>();
 		try {
 			//上传图片到服务器
-			if(file!=null && !file.isEmpty()){
+			/*if(file!=null && !file.isEmpty()){
 				String returnCode = uploadFile(file, dto);
 				if(!"400".equals(returnCode)){
 					dto.setImageUrl(returnCode);
 				}
-			}
+			}*/
 			
 			UserDto userDto = UserSessionUtil.getSessionUser(request.getSession());
 			if(userDto!=null)
