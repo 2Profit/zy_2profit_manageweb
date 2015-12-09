@@ -2,7 +2,9 @@ package com.zy.profit.web.vote;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -94,7 +96,13 @@ public class VoteResultController {
 	public ResultDto<VoteTopicOption> voteResult(VoteTopicDto queryDto){
 		ResultDto<VoteTopicOption> result = new ResultDto<VoteTopicOption>();
 		try {
-			result.setList(voteTopicOptionService.getOptionByVoteTopic(queryDto.getId()));
+			List<VoteTopicOption> list = voteTopicOptionService.getOptionByVoteTopic(queryDto.getId());
+			if(CollectionUtils.isNotEmpty(list)){
+				for(VoteTopicOption option : list){
+					option.setVoteTopic(null);
+				}
+			}
+			result.setList(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setSuccess(false);
